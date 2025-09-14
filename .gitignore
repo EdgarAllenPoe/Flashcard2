@@ -370,3 +370,12 @@ decks/
 
 # Build scripts output
 copy-files-to-build.bat
+
+# Compiled executables
+*.exe
+*.dll
+*.pdb
+
+# Test projects
+Tests/
+*Tests/
