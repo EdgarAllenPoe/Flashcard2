@@ -370,7 +370,7 @@ namespace FlashcardApp.Services
             }
             
             Console.WriteLine();
-            Console.WriteLine("       FLASHCARD");
+            Console.WriteLine("    FLASHCARD");
             Console.WriteLine();
             
             Console.ResetColor();
@@ -419,7 +419,7 @@ namespace FlashcardApp.Services
                 Console.ForegroundColor = ConsoleColor.Green;
             }
             
-            Console.WriteLine("       Press any key to reveal the answer...");
+            Console.WriteLine("    Press any key to reveal the answer...");
             
             Console.ResetColor();
         }
@@ -434,12 +434,12 @@ namespace FlashcardApp.Services
                 Console.ForegroundColor = ConsoleColor.Green;
             }
             
-            Console.WriteLine("       ANSWER REVEALED!");
+            Console.WriteLine("    ANSWER REVEALED!");
             
             Console.ResetColor();
             Console.WriteLine();
             
-            var answerSide = showedFrontFirst ? "   ANSWER" : "   QUESTION";
+            var answerSide = showedFrontFirst ? "ANSWER" : "QUESTION";
             var answerContent = showedFrontFirst ? card.Back : card.Front;
             
             if (config.UI.UseColors)
@@ -624,21 +624,21 @@ namespace FlashcardApp.Services
                 Console.ForegroundColor = ConsoleColor.Green;
             }
             
-            Console.WriteLine($"     {shortcuts.CorrectAnswer} - Mark as CORRECT (move to higher box)");
+            Console.WriteLine($"    {shortcuts.CorrectAnswer} - Mark as CORRECT (move to higher box)");
             
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
             }
             
-            Console.WriteLine($"     {shortcuts.IncorrectAnswer} - Mark as INCORRECT (move to lower box)");
+            Console.WriteLine($"    {shortcuts.IncorrectAnswer} - Mark as INCORRECT (move to lower box)");
             
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
             
-            Console.WriteLine($"      {shortcuts.Skip} - SKIP card (no box change)");
+            Console.WriteLine($"    {shortcuts.Skip} - SKIP card (no box change)");
             
             if (config.UI.UseColors)
             {
@@ -652,14 +652,14 @@ namespace FlashcardApp.Services
                 Console.ForegroundColor = ConsoleColor.Magenta;
             }
             
-            Console.WriteLine($"     {shortcuts.Quit} or ESC - QUIT session (saves progress)");
+            Console.WriteLine($"    {shortcuts.Quit} or ESC - QUIT session (saves progress)");
             
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
             }
             
-            Console.WriteLine($"     {shortcuts.Help} - Show HELP");
+            Console.WriteLine($"    {shortcuts.Help} - Show HELP");
             
             Console.ResetColor();
         }

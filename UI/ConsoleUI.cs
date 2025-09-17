@@ -695,10 +695,10 @@ namespace FlashcardApp.UI
             }
             
             Console.WriteLine();
-            Console.WriteLine("    >  THANK YOU FOR LEARNING!");
+            Console.WriteLine("    THANK YOU FOR LEARNING!");
             Console.WriteLine();
-            Console.WriteLine("    !  Remember: Every study session brings you closer to mastery!");
-            Console.WriteLine("    *  Keep up the great work and never stop learning!");
+            Console.WriteLine("    Remember: Every study session brings you closer to mastery!");
+            Console.WriteLine("    Keep up the great work and never stop learning!");
             Console.WriteLine();
             
             Console.ResetColor();
@@ -751,32 +751,32 @@ namespace FlashcardApp.UI
             ShowSectionHeader("HELP & GUIDE", ConsoleColor.Cyan);
             Console.WriteLine();
             
-            Console.WriteLine("    =  This application uses the scientifically-proven Leitner Box system for");
-            Console.WriteLine("       spaced repetition learning, helping you retain information long-term.");
+            Console.WriteLine("    This application uses the scientifically-proven Leitner Box system for");
+            Console.WriteLine("    spaced repetition learning, helping you retain information long-term.");
             Console.WriteLine();
             
-            Console.WriteLine("    🔬  How the Leitner Box System Works:");
-            Console.WriteLine("       • Cards start in Box 0 (review daily)");
-            Console.WriteLine("       • Correct answers move cards to higher boxes");
-            Console.WriteLine("       • Incorrect answers move cards back to lower boxes");
-            Console.WriteLine("       • Higher boxes have longer review intervals");
-            Console.WriteLine("       • This optimizes your study time and retention");
+            Console.WriteLine("    How the Leitner Box System Works:");
+            Console.WriteLine("    • Cards start in Box 0 (review daily)");
+            Console.WriteLine("    • Correct answers move cards to higher boxes");
+            Console.WriteLine("    • Incorrect answers move cards back to lower boxes");
+            Console.WriteLine("    • Higher boxes have longer review intervals");
+            Console.WriteLine("    • This optimizes your study time and retention");
             Console.WriteLine();
             
             Console.WriteLine("    Study Session Controls:");
-            Console.WriteLine("       • Any Key - Show answer (space, enter, letters, numbers)");
-            Console.WriteLine("       • 1 - Mark as correct (move to higher box)");
-            Console.WriteLine("       • 2 - Mark as incorrect (move to lower box)");
-            Console.WriteLine("       • S - Skip card (no box change)");
-            Console.WriteLine("       • Q or ESC - Quit session (saves progress)");
-            Console.WriteLine("       • H - Show this help");
+            Console.WriteLine("    • Any Key - Show answer (space, enter, letters, numbers)");
+            Console.WriteLine("    • 1 - Mark as correct (move to higher box)");
+            Console.WriteLine("    • 2 - Mark as incorrect (move to lower box)");
+            Console.WriteLine("    • S - Skip card (no box change)");
+            Console.WriteLine("    • Q or ESC - Quit session (saves progress)");
+            Console.WriteLine("    • H - Show this help");
             Console.WriteLine();
             
-            Console.WriteLine("    !  Pro Tips:");
-            Console.WriteLine("       • Study regularly for best results");
-            Console.WriteLine("       • Don't worry about mistakes - they're part of learning!");
-            Console.WriteLine("       • Use the statistics to track your progress");
-            Console.WriteLine("       • Create focused decks for different subjects");
+            Console.WriteLine("    Pro Tips:");
+            Console.WriteLine("    • Study regularly for best results");
+            Console.WriteLine("    • Don't worry about mistakes - they're part of learning!");
+            Console.WriteLine("    • Use the statistics to track your progress");
+            Console.WriteLine("    • Create focused decks for different subjects");
         }
 
         private void ShowStatisticsHeader()
@@ -793,7 +793,7 @@ namespace FlashcardApp.UI
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
             
-            Console.WriteLine($"    =  {deck.Name}");
+            Console.WriteLine($"    {deck.Name}");
             
             if (config.UI.UseColors)
             {
@@ -811,7 +811,7 @@ namespace FlashcardApp.UI
             Console.WriteLine("    Box Distribution:");
             for (int i = 0; i < boxStats.Count; i++)
             {
-                Console.WriteLine($"       Box {i}: {boxStats[i]} cards");
+                Console.WriteLine($"    Box {i}: {boxStats[i]} cards");
             }
             Console.ResetColor();
         }
@@ -1295,36 +1295,36 @@ namespace FlashcardApp.UI
                 
                 var config = _configService.GetConfiguration();
                 
-                Console.WriteLine("Current Settings:");
-                Console.WriteLine($"   Default Study Mode: {config.StudySession.DefaultStudyMode}");
-                Console.WriteLine($"   Show Statistics: {config.StudySession.ShowStatistics}");
-                Console.WriteLine($"   Auto Advance: {config.StudySession.AutoAdvance}");
-                Console.WriteLine($"   Shuffle Cards: {config.StudySession.ShuffleCards}");
-                Console.WriteLine($"   Show Progress: {config.StudySession.ShowProgress}");
+                Console.WriteLine("    Current Settings:");
+                Console.WriteLine($"    Default Study Mode: {config.StudySession.DefaultStudyMode}");
+                Console.WriteLine($"    Show Statistics: {config.StudySession.ShowStatistics}");
+                Console.WriteLine($"    Auto Advance: {config.StudySession.AutoAdvance}");
+                Console.WriteLine($"    Shuffle Cards: {config.StudySession.ShuffleCards}");
+                Console.WriteLine($"    Show Progress: {config.StudySession.ShowProgress}");
                 Console.WriteLine();
                 
-                Console.WriteLine("KEYBOARD SHORTCUTS:");
-                Console.WriteLine($"   Correct Answer: {config.StudySession.KeyboardShortcuts.CorrectAnswer}");
-                Console.WriteLine($"   Incorrect Answer: {config.StudySession.KeyboardShortcuts.IncorrectAnswer}");
-                Console.WriteLine($"   Show Answer: {config.StudySession.KeyboardShortcuts.ShowAnswer}");
-                Console.WriteLine($"   Skip Card: {config.StudySession.KeyboardShortcuts.Skip}");
-                Console.WriteLine($"   Help: {config.StudySession.KeyboardShortcuts.Help}");
-                Console.WriteLine($"   Quit: {config.StudySession.KeyboardShortcuts.Quit}");
+                Console.WriteLine("    KEYBOARD SHORTCUTS:");
+                Console.WriteLine($"    Correct Answer: {config.StudySession.KeyboardShortcuts.CorrectAnswer}");
+                Console.WriteLine($"    Incorrect Answer: {config.StudySession.KeyboardShortcuts.IncorrectAnswer}");
+                Console.WriteLine($"    Show Answer: {config.StudySession.KeyboardShortcuts.ShowAnswer}");
+                Console.WriteLine($"    Skip Card: {config.StudySession.KeyboardShortcuts.Skip}");
+                Console.WriteLine($"    Help: {config.StudySession.KeyboardShortcuts.Help}");
+                Console.WriteLine($"    Quit: {config.StudySession.KeyboardShortcuts.Quit}");
                 Console.WriteLine();
                 
-                Console.WriteLine("TIMING SETTINGS:");
-                Console.WriteLine($"   Auto Advance Delay: {config.StudySession.AutoAdvanceDelay} seconds");
+                Console.WriteLine("    TIMING SETTINGS:");
+                Console.WriteLine($"    Auto Advance Delay: {config.StudySession.AutoAdvanceDelay} seconds");
                 Console.WriteLine();
                 
-                Console.WriteLine("EDITING OPTIONS:");
-                Console.WriteLine("   1. Change Default Study Mode");
-                Console.WriteLine("   2. Toggle Show Statistics");
-                Console.WriteLine("   3. Toggle Auto Advance");
-                Console.WriteLine("   4. Toggle Shuffle Cards");
-                Console.WriteLine("   5. Toggle Show Progress");
-                Console.WriteLine("   6. Change Auto Advance Delay");
-                Console.WriteLine("   7. Edit Keyboard Shortcuts");
-                Console.WriteLine("   ESC. Back to Configuration Menu");
+                Console.WriteLine("    EDITING OPTIONS:");
+                Console.WriteLine("    1. Change Default Study Mode");
+                Console.WriteLine("    2. Toggle Show Statistics");
+                Console.WriteLine("    3. Toggle Auto Advance");
+                Console.WriteLine("    4. Toggle Shuffle Cards");
+                Console.WriteLine("    5. Toggle Show Progress");
+                Console.WriteLine("    6. Change Auto Advance Delay");
+                Console.WriteLine("    7. Edit Keyboard Shortcuts");
+                Console.WriteLine("    ESC. Back to Configuration Menu");
                 Console.WriteLine();
                 
                 ShowInputPrompt("Enter your choice");
