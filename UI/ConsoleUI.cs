@@ -388,6 +388,29 @@ namespace FlashcardApp.UI
                 return;
             }
 
+            // Check for duplicate names and offer to use a unique name
+            if (_deckService.DeckNameExists(name))
+            {
+                Console.WriteLine();
+                ShowInfoMessage($"A deck named '{name}' already exists.");
+                var uniqueName = _deckService.GetUniqueDeckName(name);
+                Console.WriteLine($"Suggested unique name: '{uniqueName}'");
+                Console.WriteLine();
+                ShowInputPrompt("Use suggested name? (Y/n)");
+                var useUnique = Console.ReadLine()?.ToLower();
+                
+                if (useUnique == "y" || useUnique == "yes" || string.IsNullOrWhiteSpace(useUnique))
+                {
+                    name = uniqueName;
+                    ShowInfoMessage($"Using name: '{name}'");
+                }
+                else
+                {
+                    ShowInfoMessage("Deck creation cancelled.");
+                    return;
+                }
+            }
+
             ShowInputPrompt("Description (optional)");
             var description = Console.ReadLine() ?? "";
 

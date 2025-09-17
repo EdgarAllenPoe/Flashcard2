@@ -124,6 +124,30 @@ namespace FlashcardApp.Services
             };
         }
 
+        public bool DeckNameExists(string name)
+        {
+            var existingDecks = LoadAllDecks();
+            return existingDecks.Any(d => d.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public string GetUniqueDeckName(string baseName)
+        {
+            if (!DeckNameExists(baseName))
+            {
+                return baseName;
+            }
+
+            int counter = 1;
+            string uniqueName;
+            do
+            {
+                uniqueName = $"{baseName} ({counter})";
+                counter++;
+            } while (DeckNameExists(uniqueName));
+
+            return uniqueName;
+        }
+
         public bool AddFlashcardToDeck(Deck deck, Flashcard flashcard)
         {
             try
@@ -233,6 +257,9 @@ namespace FlashcardApp.Services
                 deck.CreatedDate = DateTime.Now;
                 deck.LastModified = DateTime.Now;
                 
+                // Ensure unique deck name
+                deck.Name = GetUniqueDeckName(deck.Name);
+                
                 // Reset all flashcard IDs and statistics
                 foreach (var flashcard in deck.Flashcards)
                 {
@@ -279,10 +306,11 @@ namespace FlashcardApp.Services
 
         private Deck? ImportFromCsv(string importPath)
         {
+            var baseName = Path.GetFileNameWithoutExtension(importPath);
             var deck = new Deck
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = Path.GetFileNameWithoutExtension(importPath),
+                Name = GetUniqueDeckName(baseName),
                 Description = "Imported from CSV",
                 CreatedDate = DateTime.Now,
                 LastModified = DateTime.Now,
@@ -387,10 +415,11 @@ namespace FlashcardApp.Services
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             
+            var baseName = Path.GetFileNameWithoutExtension(importPath);
             var deck = new Deck
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = Path.GetFileNameWithoutExtension(importPath),
+                Name = GetUniqueDeckName(baseName),
                 Description = "Imported from XLSX",
                 CreatedDate = DateTime.Now,
                 LastModified = DateTime.Now,
