@@ -2237,7 +2237,7 @@ namespace FlashcardApp.UI
             }
             
             Console.WriteLine();
-            Console.WriteLine("🔄  RESET STUDY DATES");
+            Console.WriteLine("    RESET STUDY DATES");
             Console.WriteLine();
             Console.WriteLine("This will reset all study dates for cards in this deck to today.");
             Console.WriteLine("This means all cards will be available for study immediately.");
