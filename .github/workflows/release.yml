@@ -1,0 +1,138 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+      release_notes:
+        description: 'Release notes'
+        required: false
+        default: 'Bug fixes and improvements'
+
+env:
+  DOTNET_VERSION: '8.0.x'
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build project
+      run: dotnet build --configuration Release --no-restore
+      
+    - name: Publish Windows x64
+      run: dotnet publish --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true --no-build
+      
+    - name: Create release archive
+      run: |
+        # Create a release directory
+        New-Item -ItemType Directory -Path "./release" -Force
+        
+        # Copy the published files
+        Copy-Item -Path "bin/Release/net8.0/win-x64/publish/*" -Destination "./release/" -Recurse -Force
+        
+        # Copy additional files
+        Copy-Item -Path "README.md" -Destination "./release/" -ErrorAction SilentlyContinue
+        Copy-Item -Path "run-flashcard.bat" -Destination "./release/" -ErrorAction SilentlyContinue
+        
+        # Create a simple README for the release
+        $releaseReadme = @"
+# Flashcard App ${{ github.event.inputs.version }}
+
+A portable console application for spaced repetition learning using the Leitner box system.
+
+## Quick Start
+
+1. Double-click `Flashcard.exe` to run the application
+2. The app will automatically create necessary directories
+3. Start with the included sample deck or create your own
+
+## Features
+
+- **Leitner Box System**: Spaced repetition with 5 configurable boxes
+- **Multiple Study Modes**: Front-to-back, back-to-front, or mixed
+- **Statistics Tracking**: Monitor your progress and success rates
+- **Keyboard Shortcuts**: Efficient studying with hotkeys
+- **Portable**: No installation required, runs from any folder
+- **Unicode Support**: Proper emoji display with fallback to text alternatives
+
+## Study Session Controls
+
+- `SPACE` - Show answer
+- `1` - Mark as correct
+- `2` - Mark as incorrect
+- `S` - Skip card
+- `Q` - Quit session
+- `H` - Show help
+
+## System Requirements
+
+- Windows 10 or later
+- No additional software required (self-contained)
+
+## Getting Started
+
+1. Run the application
+2. Select "Manage Decks" to create your first deck
+3. Add flashcards with questions and answers
+4. Start studying with "Start Study Session"
+
+Happy learning! 🚀
+"@
+        $releaseReadme | Out-File -FilePath "./release/README.txt" -Encoding UTF8
+        
+        # Create the zip file
+        Compress-Archive -Path "./release/*" -DestinationPath "./FlashcardApp-${{ github.event.inputs.version }}-Windows-x64.zip" -Force
+        
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.event.inputs.version }}
+        release_name: Flashcard App ${{ github.event.inputs.version }}
+        body: |
+          ## What's New
+          ${{ github.event.inputs.release_notes }}
+          
+          ## Downloads
+          - **Windows x64**: Download the zip file below
+          
+          ## Installation
+          1. Download the zip file
+          2. Extract to any folder
+          3. Run `Flashcard.exe`
+          
+          ## Features
+          - Leitner Box spaced repetition system
+          - Multiple study modes
+          - Progress tracking and statistics
+          - Portable - no installation required
+          - Unicode/emoji support with text fallbacks
+        draft: false
+        prerelease: false
+        
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./FlashcardApp-${{ github.event.inputs.version }}-Windows-x64.zip
+        asset_name: FlashcardApp-${{ github.event.inputs.version }}-Windows-x64.zip
+        asset_content_type: application/zip

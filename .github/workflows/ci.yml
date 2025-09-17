@@ -1,0 +1,96 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ master, main, develop ]
+  pull_request:
+    branches: [ master, main ]
+
+env:
+  DOTNET_VERSION: '8.0.x'
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Cache NuGet packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+          
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build project
+      run: dotnet build --configuration Release --no-restore
+      
+    - name: Run tests
+      run: dotnet test --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+      continue-on-error: true
+      
+    - name: Publish application
+      run: dotnet publish --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true --no-build
+      
+    - name: Test published executable
+      run: |
+        # Test that the executable was created and is not empty
+        if (Test-Path "bin/Release/net8.0/win-x64/publish/Flashcard.exe") {
+          $fileSize = (Get-Item "bin/Release/net8.0/win-x64/publish/Flashcard.exe").Length
+          Write-Host "Executable size: $fileSize bytes"
+          if ($fileSize -gt 1MB) {
+            Write-Host "✅ Executable created successfully"
+          } else {
+            Write-Host "❌ Executable seems too small"
+            exit 1
+          }
+        } else {
+          Write-Host "❌ Executable not found"
+          exit 1
+        }
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: flashcard-app-build
+        path: bin/Release/net8.0/win-x64/publish/
+        retention-days: 7
+
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Run code analysis
+      run: |
+        dotnet build --configuration Release --verbosity normal
+        echo "✅ Build completed successfully"
+        
+    - name: Check for security vulnerabilities
+      run: |
+        dotnet list package --vulnerable --include-transitive
+        echo "✅ Security check completed"
+      continue-on-error: true

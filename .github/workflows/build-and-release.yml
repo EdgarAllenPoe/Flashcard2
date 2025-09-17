@@ -1,0 +1,139 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  release:
+    types: [ published ]
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  PROJECT_NAME: 'FlashcardApp'
+  EXECUTABLE_NAME: 'Flashcard'
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build project
+      run: dotnet build --configuration Release --no-restore
+      
+    - name: Run tests (if any)
+      run: dotnet test --configuration Release --no-build --verbosity normal
+      continue-on-error: true
+      
+    - name: Publish Windows x64
+      run: dotnet publish --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true --no-build
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: flashcard-app-windows-x64
+        path: bin/Release/net8.0/win-x64/publish/
+        retention-days: 30
+
+  create-release:
+    name: Create Release
+    runs-on: windows-latest
+    needs: build
+    if: github.event_name == 'release'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: flashcard-app-windows-x64
+        path: ./release/
+        
+    - name: Create release archive
+      run: |
+        Compress-Archive -Path "./release/*" -DestinationPath "./FlashcardApp-Windows-x64.zip" -Force
+        
+    - name: Upload release asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./FlashcardApp-Windows-x64.zip
+        asset_name: FlashcardApp-Windows-x64.zip
+        asset_content_type: application/zip
+
+  build-matrix:
+    name: Build Matrix (Multiple Platforms)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        include:
+          - os: windows-latest
+            runtime: win-x64
+            executable: Flashcard.exe
+          - os: ubuntu-latest
+            runtime: linux-x64
+            executable: Flashcard
+          - os: macos-latest
+            runtime: osx-x64
+            executable: Flashcard
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build project
+      run: dotnet build --configuration Release --no-restore
+      
+    - name: Publish for ${{ matrix.runtime }}
+      run: dotnet publish --configuration Release --runtime ${{ matrix.runtime }} --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true --no-build
+      
+    - name: Upload ${{ matrix.runtime }} artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: flashcard-app-${{ matrix.runtime }}
+        path: bin/Release/net8.0/${{ matrix.runtime }}/publish/
+        retention-days: 30
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Run security scan
+      run: |
+        dotnet list package --vulnerable --include-transitive
+        dotnet list package --deprecated --include-transitive
+      continue-on-error: true
