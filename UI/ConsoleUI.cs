@@ -25,10 +25,9 @@ namespace FlashcardApp.UI
         {
             try
             {
-                // For now, we'll be conservative and assume emojis might not work
-                // Users can enable them in the UI settings if they want to test
-                // This prevents the box display issue
-                return false;
+                // Enable emoji support - modern terminals handle emojis well
+                // Users can still disable them in UI settings if needed
+                return true;
             }
             catch
             {
@@ -573,12 +572,23 @@ namespace FlashcardApp.UI
             var config = _configService.GetConfiguration();
             
             ShowInputPrompt($"Maximum cards for this session (default: {config.DailyLimits.MaxCardsPerDay})");
-            var input = GetUserChoice();
             
-            if (input == "ESC")
+            // Handle input properly for numeric input with Enter support
+            var keyInfo = Console.ReadKey(true);
+            if (keyInfo.Key == ConsoleKey.Escape)
             {
                 return config.DailyLimits.MaxCardsPerDay; // Return default on ESC
             }
+            
+            // If Enter was pressed immediately, use default
+            if (keyInfo.Key == ConsoleKey.Enter)
+            {
+                return config.DailyLimits.MaxCardsPerDay;
+            }
+            
+            // Otherwise, read the full input line
+            Console.Write(keyInfo.KeyChar);
+            var input = keyInfo.KeyChar + Console.ReadLine();
             
             if (int.TryParse(input, out int maxCards) && maxCards > 0)
             {
