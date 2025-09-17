@@ -27,10 +27,12 @@ try {
     # Check if the published version exists
     if (Test-Path "bin\Release\net8.0\win-x64\publish\Flashcard.exe") {
         Write-Host "✅ Found published version, running it..." -ForegroundColor Green
-        & "bin\Release\net8.0\win-x64\publish\Flashcard.exe"
+        $exePath = Join-Path $ScriptDir "bin\Release\net8.0\win-x64\publish\Flashcard.exe"
+        & $exePath
     } elseif (Test-Path "Flashcard.exe") {
         Write-Host "✅ Found Flashcard.exe, running it..." -ForegroundColor Green
-        & "Flashcard.exe"
+        $exePath = Join-Path $ScriptDir "Flashcard.exe"
+        & $exePath
     } else {
         Write-Host "❌ Error: Flashcard.exe not found!" -ForegroundColor Red
         Write-Host "Please run 'dotnet publish' first or ensure the executable is in the current directory." -ForegroundColor Yellow
