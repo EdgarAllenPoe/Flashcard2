@@ -966,11 +966,11 @@ namespace FlashcardApp.UI
             {
                 if (_deckService.DeleteDeck(selectedDeck.Id))
                 {
-                    ShowSuccessMessage($"✅  Deck '{selectedDeck.Name}' deleted successfully!");
+                    ShowSuccessMessage($"Deck '{selectedDeck.Name}' deleted successfully!");
                 }
                 else
                 {
-                    ShowErrorMessage("❌  Failed to delete deck.");
+                    ShowErrorMessage("Failed to delete deck.");
                 }
             }
             else
@@ -1065,23 +1065,23 @@ namespace FlashcardApp.UI
                 {
                     if (_deckService.SaveDeck(importedDeck))
                     {
-                        ShowSuccessMessage($"✅  Deck '{importedDeck.Name}' imported successfully!");
+                        ShowSuccessMessage($"Deck '{importedDeck.Name}' imported successfully!");
                         Console.WriteLine($"   T  {importedDeck.TotalCards} cards imported");
-                        Console.WriteLine($"   📁  Format: {Path.GetExtension(filePath).ToUpper()}");
+                        Console.WriteLine($"   Format: {Path.GetExtension(filePath).ToUpper()}");
                     }
                     else
                     {
-                        ShowErrorMessage("❌  Failed to save imported deck.");
+                        ShowErrorMessage("Failed to save imported deck.");
                     }
                 }
                 else
                 {
-                    ShowErrorMessage("❌  Failed to import deck. Please check the file format.");
+                    ShowErrorMessage("Failed to import deck. Please check the file format.");
                 }
             }
             catch (Exception ex)
             {
-                ShowErrorMessage($"❌  Error importing deck: {ex.Message}");
+                ShowErrorMessage($"Error importing deck: {ex.Message}");
             }
         }
         private void ExportDeck()
@@ -1132,19 +1132,19 @@ namespace FlashcardApp.UI
             {
                 if (_deckService.ExportDeck(selectedDeck, filePath))
                 {
-                    ShowSuccessMessage($"✅  Deck '{selectedDeck.Name}' exported successfully!");
-                    Console.WriteLine($"   📁  Saved to: {filePath}");
+                    ShowSuccessMessage($"Deck '{selectedDeck.Name}' exported successfully!");
+                    Console.WriteLine($"   Saved to: {filePath}");
                     Console.WriteLine($"   T  {selectedDeck.TotalCards} cards exported");
                     Console.WriteLine($"   Format: {Path.GetExtension(filePath).ToUpper()}");
                 }
                 else
                 {
-                    ShowErrorMessage("❌  Failed to export deck.");
+                    ShowErrorMessage("Failed to export deck.");
                 }
             }
             catch (Exception ex)
             {
-                ShowErrorMessage($"❌  Error exporting deck: {ex.Message}");
+                ShowErrorMessage($"Error exporting deck: {ex.Message}");
             }
         }
         private void ShowConfigurationMenu()
@@ -1211,7 +1211,7 @@ namespace FlashcardApp.UI
             Console.WriteLine($"   Show Detailed Statistics: {config.UI.ShowDetailedStatistics}");
             Console.WriteLine();
             
-            Console.WriteLine("📁  FILE PATHS:");
+            Console.WriteLine("FILE PATHS:");
             Console.WriteLine($"   Decks Directory: {config.FilePaths.DecksDirectory}");
             Console.WriteLine($"   Config File: {config.FilePaths.ConfigFileName}");
             Console.WriteLine($"   Deck File Extension: {config.FilePaths.DeckFileExtension}");
@@ -2057,11 +2057,11 @@ namespace FlashcardApp.UI
             
             if (_deckService.AddFlashcardToDeck(deck, flashcard))
             {
-                ShowSuccessMessage("✅  Flashcard added successfully!");
+                ShowSuccessMessage("Flashcard added successfully!");
             }
             else
             {
-                ShowErrorMessage("❌  Failed to add flashcard.");
+                ShowErrorMessage("Failed to add flashcard.");
             }
         }
 
@@ -2134,11 +2134,11 @@ namespace FlashcardApp.UI
             
             if (_deckService.SaveDeck(deck))
             {
-                ShowSuccessMessage("✅  Flashcard updated successfully!");
+                ShowSuccessMessage("Flashcard updated successfully!");
             }
             else
             {
-                ShowErrorMessage("❌  Failed to update flashcard.");
+                ShowErrorMessage("Failed to update flashcard.");
             }
         }
 
@@ -2176,11 +2176,11 @@ namespace FlashcardApp.UI
                 {
                     if (_deckService.RemoveFlashcardFromDeck(deck, flashcard.Id))
                     {
-                        ShowSuccessMessage("✅  Flashcard deleted successfully!");
+                        ShowSuccessMessage("Flashcard deleted successfully!");
                     }
                     else
                     {
-                        ShowErrorMessage("❌  Failed to delete flashcard.");
+                        ShowErrorMessage("Failed to delete flashcard.");
                     }
                 }
                 else
@@ -2229,14 +2229,14 @@ namespace FlashcardApp.UI
                 
                 if (_deckService.SaveDeck(deck))
                 {
-                    ShowSuccessMessage($"✅  Study dates reset for {resetCount} cards!");
+                    ShowSuccessMessage($"Study dates reset for {resetCount} cards!");
                     Console.WriteLine("   All cards are now available for study today.");
                     Console.WriteLine($"   Reset date: {yesterday:yyyy-MM-dd}");
                     Console.WriteLine($"   Current date: {DateTime.Now:yyyy-MM-dd}");
                 }
                 else
                 {
-                    ShowErrorMessage("❌  Failed to reset study dates.");
+                    ShowErrorMessage("Failed to reset study dates.");
                 }
             }
             else

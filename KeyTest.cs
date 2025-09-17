@@ -31,12 +31,12 @@ namespace FlashcardApp
                 
                 if (result == testCase.Expected)
                 {
-                    Console.WriteLine($"✅ PASS: {testCase.Description}");
+                    Console.WriteLine($"PASS: {testCase.Description}");
                     passed++;
                 }
                 else
                 {
-                    Console.WriteLine($"❌ FAIL: {testCase.Description} - Expected {testCase.Expected}, got {result}");
+                    Console.WriteLine($"FAIL: {testCase.Description} - Expected {testCase.Expected}, got {result}");
                     failed++;
                 }
             }
@@ -46,11 +46,11 @@ namespace FlashcardApp
             
             if (failed == 0)
             {
-                Console.WriteLine("🎉 All tests passed! The key validation logic is working correctly.");
+                Console.WriteLine("All tests passed! The key validation logic is working correctly.");
             }
             else
             {
-                Console.WriteLine("⚠️  Some tests failed. The key validation logic needs fixing.");
+                Console.WriteLine("Some tests failed. The key validation logic needs fixing.");
             }
         }
         

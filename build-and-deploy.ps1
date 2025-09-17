@@ -40,12 +40,12 @@ Write-Host "Target directory created!" -ForegroundColor Green
 $exeSource = "bin\Release\net8.0\win-x64\publish\Flashcard.exe"
 $exeTarget = Join-Path $TargetPath "Flashcard.exe"
 
-Write-Host "📋 Copying executable..." -ForegroundColor Yellow
+Write-Host "Copying executable..." -ForegroundColor Yellow
 if (Test-Path $exeSource) {
     Copy-Item -Path $exeSource -Destination $exeTarget -Force
-    Write-Host "✅ Executable copied!" -ForegroundColor Green
+    Write-Host "Executable copied!" -ForegroundColor Green
 } else {
-    Write-Host "❌ Executable not found at: $exeSource" -ForegroundColor Red
+    Write-Host "Executable not found at: $exeSource" -ForegroundColor Red
     exit 1
 }
 
@@ -53,12 +53,12 @@ if (Test-Path $exeSource) {
 $configSource = "config.json"
 $configTarget = Join-Path $TargetPath "config.json"
 
-Write-Host "⚙️  Setting up configuration..." -ForegroundColor Yellow
+Write-Host "Setting up configuration..." -ForegroundColor Yellow
 if (Test-Path $configSource) {
     Copy-Item -Path $configSource -Destination $configTarget -Force
-    Write-Host "✅ Configuration file copied!" -ForegroundColor Green
+    Write-Host "Configuration file copied!" -ForegroundColor Green
 } else {
-    Write-Host "⚠️  Config file not found, creating default..." -ForegroundColor Yellow
+    Write-Host "Config file not found, creating default..." -ForegroundColor Yellow
     # Create default config if it doesn't exist
     $defaultConfig = @"
 {
@@ -141,9 +141,9 @@ $batchLauncherSource = "run-flashcard.bat"
 $batchLauncherTarget = Join-Path $TargetPath "run-flashcard.bat"
 if (Test-Path $batchLauncherSource) {
     Copy-Item -Path $batchLauncherSource -Destination $batchLauncherTarget -Force
-    Write-Host "✅ Batch launcher script copied!" -ForegroundColor Green
+    Write-Host "Batch launcher script copied!" -ForegroundColor Green
 } else {
-    Write-Host "⚠️  Batch launcher script not found, skipping..." -ForegroundColor Yellow
+    Write-Host "Batch launcher script not found, skipping..." -ForegroundColor Yellow
 }
 
 # Copy PowerShell launcher
@@ -250,18 +250,18 @@ $exampleDeck = @"
 
 $exampleDeckPath = Join-Path $decksDir "sample-vocabulary-deck.json"
 $exampleDeck | Out-File -FilePath $exampleDeckPath -Encoding UTF8
-Write-Host "✅ Example deck created!" -ForegroundColor Green
+Write-Host "Example deck created!" -ForegroundColor Green
 
 # Step 7: Create additional directories
-Write-Host "📁 Creating additional directories..." -ForegroundColor Yellow
+Write-Host "Creating additional directories..." -ForegroundColor Yellow
 $backupsDir = Join-Path $TargetPath "backups"
 $exportsDir = Join-Path $TargetPath "exports"
 New-Item -ItemType Directory -Path $backupsDir -Force | Out-Null
 New-Item -ItemType Directory -Path $exportsDir -Force | Out-Null
-Write-Host "✅ Additional directories created!" -ForegroundColor Green
+Write-Host "Additional directories created!" -ForegroundColor Green
 
 # Step 8: Create a README for the deployed version
-Write-Host "📖 Creating README..." -ForegroundColor Yellow
+Write-Host "Creating README..." -ForegroundColor Yellow
 $readmeContent = @"
 # Flashcard App
 

@@ -1,4 +1,4 @@
-# Flashcard App
+# Flashcard App 
 
 A beautiful, feature-rich console-based flashcard application with spaced repetition learning using the Leitner Box system.
 
@@ -10,20 +10,20 @@ A beautiful, feature-rich console-based flashcard application with spaced repeti
 - **Session State**: Resume study sessions anytime with graceful exit
 - **Statistics Tracking**: Comprehensive learning analytics (hidden during study)
 
-### 🎨 **Modern UI**
-- **Beautiful Console Interface**: Colorful, emoji-rich design
+### **Modern UI**
+- **Beautiful Console Interface**: Colorful, modern design
 - **ESC Key Navigation**: Intuitive menu navigation throughout
 - **Word Wrapping**: Clean text display for long content
 - **No ASCII Boxes**: Clean, modern appearance
 
-### ⚙️ **Configuration & Customization**
+### **Configuration & Customization**
 - **Full Configuration Editing**: Interactive settings for all options
 - **Leitner Box Settings**: Customizable promotion/demotion rules
 - **Study Session Settings**: Flexible study modes and shortcuts
 - **Daily Limits**: Control study intensity and time
 - **UI Preferences**: Colors, icons, and display options
 
-### 📊 **Import/Export**
+### **Import/Export**
 - **Multiple Formats**: JSON, CSV, and XLSX support
 - **Deck Management**: Create, edit, delete, and organize decks
 - **Data Portability**: Easy backup and sharing
@@ -64,7 +64,7 @@ A beautiful, feature-rich console-based flashcard application with spaced repeti
    ./bin/Release/net8.0/FlashcardApp.exe
    ```
 
-## 📖 Usage
+## Usage
 
 ### First Time Setup
 1. Run the application
@@ -88,7 +88,7 @@ A beautiful, feature-rich console-based flashcard application with spaced repeti
 - **Import/Export**: Backup and share decks
 - **Delete**: Remove unwanted decks
 
-## ⚙️ Configuration
+## Configuration
 
 ### Leitner Box Settings
 - **Number of Boxes**: Configure spaced repetition intervals
@@ -107,11 +107,11 @@ A beautiful, feature-rich console-based flashcard application with spaced repeti
 
 ### UI Settings
 - **Colors**: Enable/disable colored output
-- **Icons**: Toggle emoji display
+- **Icons**: Toggle icon display
 - **Welcome Message**: Customize startup experience
 - **Screen Clearing**: Control menu transitions
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 FlashcardApp/
@@ -131,7 +131,7 @@ FlashcardApp/
 └── copy-files-to-build.bat # Build automation
 ```
 
-## 🔧 Development
+## Development
 
 ### Building
 ```bash
@@ -154,7 +154,7 @@ dotnet run test
 ### File Management
 The `copy-files-to-build.bat` script automatically copies configuration and sample files to build output directories for easy testing.
 
-## 📋 Keyboard Shortcuts
+## Keyboard Shortcuts
 
 ### Main Navigation
 - **ESC**: Go back/Quit application
@@ -186,7 +186,7 @@ The app uses a scientifically-proven spaced repetition system:
 
 Cards advance when answered correctly and move back when missed.
 
-## 📊 Data Formats
+## Data Formats
 
 ### JSON Format
 ```json
@@ -212,7 +212,7 @@ Front,Back,Tags,CurrentBox,LastReviewed,NextReviewDate
 Question,Answer,"tag1,tag2",1,2024-01-01T00:00:00,2024-01-02T00:00:00
 ```
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -220,17 +220,17 @@ Question,Answer,"tag1,tag2",1,2024-01-01T00:00:00,2024-01-02T00:00:00
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Leitner Box system for spaced repetition
 - .NET community for excellent tooling
 - Contributors and testers
 
-## 📞 Support
+## Support
 
 If you encounter any issues or have questions:
 
