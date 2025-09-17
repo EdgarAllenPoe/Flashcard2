@@ -1,10 +1,10 @@
-# 📚 Flashcard App
+# Flashcard App
 
 A beautiful, feature-rich console-based flashcard application with spaced repetition learning using the Leitner Box system.
 
-## ✨ Features
+## Features
 
-### 🎯 **Core Learning System**
+### **Core Learning System**
 - **Leitner Box System**: Intelligent spaced repetition for optimal learning
 - **Card Retention**: Missed cards stay in study deck until answered correctly
 - **Session State**: Resume study sessions anytime with graceful exit
@@ -28,13 +28,13 @@ A beautiful, feature-rich console-based flashcard application with spaced repeti
 - **Deck Management**: Create, edit, delete, and organize decks
 - **Data Portability**: Easy backup and sharing
 
-### 🎮 **Study Features**
+### **Study Features**
 - **Any Key Reveal**: Press any key to show answers
 - **In-Session Editing**: Edit cards during study sessions
 - **Keyboard Shortcuts**: Quick access to skip, edit, help, quit
 - **Progress Tracking**: Visual study progress indicators
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - .NET 8.0 SDK or later
@@ -174,7 +174,7 @@ The `copy-files-to-build.bat` script automatically copies configuration and samp
 - **Enter**: Edit current setting
 - **Number keys**: Select options
 
-## 🎯 Leitner Box System
+## Leitner Box System
 
 The app uses a scientifically-proven spaced repetition system:
 
@@ -240,4 +240,4 @@ If you encounter any issues or have questions:
 
 ---
 
-**Happy Learning! 🎓✨**
+**Happy Learning!**

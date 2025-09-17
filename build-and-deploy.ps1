@@ -6,35 +6,35 @@ param(
     [string]$TargetPath = "$env:USERPROFILE\Documents\Flashcard"
 )
 
-Write-Host "🚀 Flashcard App Build and Deploy Script" -ForegroundColor Cyan
+Write-Host "Flashcard App Build and Deploy Script" -ForegroundColor Cyan
 Write-Host "=========================================" -ForegroundColor Cyan
 
 # Step 1: Build the application (unless skipped)
 if (-not $SkipBuild) {
-    Write-Host "📦 Building application..." -ForegroundColor Yellow
+    Write-Host "Building application..." -ForegroundColor Yellow
     dotnet build --configuration Release
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "❌ Build failed!" -ForegroundColor Red
+        Write-Host "Build failed!" -ForegroundColor Red
         exit 1
     }
     
-    Write-Host "📦 Publishing application..." -ForegroundColor Yellow
+    Write-Host "Publishing application..." -ForegroundColor Yellow
     dotnet publish --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "❌ Publish failed!" -ForegroundColor Red
+        Write-Host "Publish failed!" -ForegroundColor Red
         exit 1
     }
-    Write-Host "✅ Build completed successfully!" -ForegroundColor Green
+    Write-Host "Build completed successfully!" -ForegroundColor Green
 }
 
 # Step 2: Create target directory
-Write-Host "📁 Creating target directory: $TargetPath" -ForegroundColor Yellow
+Write-Host "Creating target directory: $TargetPath" -ForegroundColor Yellow
 if (Test-Path $TargetPath) {
-    Write-Host "⚠️  Directory already exists, cleaning it..." -ForegroundColor Yellow
+    Write-Host "Directory already exists, cleaning it..." -ForegroundColor Yellow
     Remove-Item -Path $TargetPath -Recurse -Force
 }
 New-Item -ItemType Directory -Path $TargetPath -Force | Out-Null
-Write-Host "✅ Target directory created!" -ForegroundColor Green
+Write-Host "Target directory created!" -ForegroundColor Green
 
 # Step 3: Copy executable
 $exeSource = "bin\Release\net8.0\win-x64\publish\Flashcard.exe"
@@ -130,11 +130,11 @@ if (Test-Path $configSource) {
 }
 "@
     $defaultConfig | Out-File -FilePath $configTarget -Encoding UTF8
-    Write-Host "✅ Default configuration created!" -ForegroundColor Green
+    Write-Host "Default configuration created!" -ForegroundColor Green
 }
 
 # Step 5: Copy launcher scripts
-Write-Host "🚀 Setting up launcher scripts..." -ForegroundColor Yellow
+Write-Host "Setting up launcher scripts..." -ForegroundColor Yellow
 
 # Copy batch launcher
 $batchLauncherSource = "run-flashcard.bat"
@@ -151,13 +151,13 @@ $psLauncherSource = "run-flashcard.ps1"
 $psLauncherTarget = Join-Path $TargetPath "run-flashcard.ps1"
 if (Test-Path $psLauncherSource) {
     Copy-Item -Path $psLauncherSource -Destination $psLauncherTarget -Force
-    Write-Host "✅ PowerShell launcher script copied!" -ForegroundColor Green
+    Write-Host "PowerShell launcher script copied!" -ForegroundColor Green
 } else {
-    Write-Host "⚠️  PowerShell launcher script not found, skipping..." -ForegroundColor Yellow
+    Write-Host "PowerShell launcher script not found, skipping..." -ForegroundColor Yellow
 }
 
 # Step 6: Create example deck
-Write-Host "📚 Creating example deck..." -ForegroundColor Yellow
+Write-Host "Creating example deck..." -ForegroundColor Yellow
 $decksDir = Join-Path $TargetPath "decks"
 New-Item -ItemType Directory -Path $decksDir -Force | Out-Null
 
@@ -307,22 +307,21 @@ A portable console application for spaced repetition learning using the Leitner 
 3. Add flashcards with questions and answers
 4. Start studying with "Start Study Session"
 
-Happy learning! 🚀
+Happy learning!
 "@
 
 $readmePath = Join-Path $TargetPath "README.txt"
 $readmeContent | Out-File -FilePath $readmePath -Encoding UTF8
-Write-Host "✅ README created!" -ForegroundColor Green
+Write-Host "README created!" -ForegroundColor Green
 
 # Summary
 Write-Host ""
-Write-Host "🎉 Deployment completed successfully!" -ForegroundColor Green
+Write-Host "Deployment completed successfully!" -ForegroundColor Green
 Write-Host "=====================================" -ForegroundColor Green
-Write-Host "📍 Location: $TargetPath" -ForegroundColor Cyan
-Write-Host "🚀 To run: Double-click run-flashcard.bat (recommended) or Flashcard.exe" -ForegroundColor Cyan
+Write-Host "Location: $TargetPath" -ForegroundColor Cyan
+Write-Host "To run: Double-click Flashcard.exe" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "📁 Contents:" -ForegroundColor Yellow
-Write-Host "  • run-flashcard.bat (launcher with emoji support - recommended)" -ForegroundColor White
+Write-Host "Contents:" -ForegroundColor Yellow
 Write-Host "  • Flashcard.exe (main application)" -ForegroundColor White
 Write-Host "  • config.json (configuration)" -ForegroundColor White
 Write-Host "  • decks/ (flashcard decks)" -ForegroundColor White
@@ -330,4 +329,4 @@ Write-Host "  • backups/ (automatic backups)" -ForegroundColor White
 Write-Host "  • exports/ (exported decks)" -ForegroundColor White
 Write-Host "  • README.txt (instructions)" -ForegroundColor White
 Write-Host ""
-Write-Host "✨ Ready to start learning!" -ForegroundColor Green
+Write-Host "Ready to start learning!" -ForegroundColor Green

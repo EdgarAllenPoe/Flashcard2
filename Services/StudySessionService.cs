@@ -31,8 +31,8 @@ namespace FlashcardApp.Services
             if (isResuming)
             {
                 Console.Clear();
-                Console.WriteLine("🔄 Resuming previous study session...");
-                Console.WriteLine($"📊 Progress: {sessionState.StudiedCards.Count} cards studied, {sessionState.IncorrectCards.Count} incorrect cards remaining");
+                Console.WriteLine("Resuming previous study session...");
+                Console.WriteLine($"Progress: {sessionState.StudiedCards.Count} cards studied, {sessionState.IncorrectCards.Count} incorrect cards remaining");
                 Console.WriteLine("Press any key to continue or ESC to start fresh...");
                 
                 var key = Console.ReadKey(true);
@@ -282,30 +282,30 @@ namespace FlashcardApp.Services
                     case var key when key == config.StudySession.KeyboardShortcuts.CorrectAnswer:
                         result.WasCorrect = true;
                         result.WasStudied = true;
-                        DisplayFeedback("✓ Correct!", ConsoleColor.Green);
+                        DisplayFeedback("Correct!", ConsoleColor.Green);
                         break;
                     case var key when key == config.StudySession.KeyboardShortcuts.IncorrectAnswer:
                         result.WasCorrect = false;
                         result.WasStudied = true;
-                        DisplayFeedback("✗ Incorrect", ConsoleColor.Red);
+                        DisplayFeedback("Incorrect", ConsoleColor.Red);
                         break;
                     case var key when key.ToLower() == config.StudySession.KeyboardShortcuts.Skip.ToLower():
                         result.WasStudied = false;
-                        DisplayFeedback("⏭ Skipped", ConsoleColor.Yellow);
+                        DisplayFeedback("Skipped", ConsoleColor.Yellow);
                         break;
                     case var key when key.ToLower() == "e":
                         result.WasStudied = false;
                         result.ShouldEditCard = true;
-                        DisplayFeedback("✏️ Editing card...", ConsoleColor.Cyan);
+                        DisplayFeedback("Editing card...", ConsoleColor.Cyan);
                         break;
                     case var key when key.ToLower() == config.StudySession.KeyboardShortcuts.Help.ToLower():
                         result.WasStudied = false;
                         result.ShouldShowHelp = true;
-                        DisplayFeedback("ℹ️ Showing help...", ConsoleColor.Blue);
+                        DisplayFeedback("Showing help...", ConsoleColor.Blue);
                         break;
                     default:
                         result.WasStudied = false;
-                        DisplayFeedback("⏭ Skipped", ConsoleColor.Yellow);
+                        DisplayFeedback("Skipped", ConsoleColor.Yellow);
                         break;
                 }
             }
@@ -348,7 +348,7 @@ namespace FlashcardApp.Services
             
             if (isResuming)
             {
-                Console.WriteLine("🔄 Resuming previous session");
+                Console.WriteLine("Resuming previous session");
             }
             
             Console.WriteLine();
@@ -370,7 +370,7 @@ namespace FlashcardApp.Services
             }
             
             Console.WriteLine();
-            Console.WriteLine("    🎯  FLASHCARD");
+            Console.WriteLine("       FLASHCARD");
             Console.WriteLine();
             
             Console.ResetColor();
@@ -382,13 +382,13 @@ namespace FlashcardApp.Services
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
             
-            Console.WriteLine($"    📊 Card {cardNumber} of {totalCards}");
+            Console.WriteLine($"    Card {cardNumber} of {totalCards}");
             Console.ResetColor();
             Console.WriteLine();
             
             // Display the question/answer with beautiful formatting
             var content = showFrontFirst ? card.Front : card.Back;
-            var side = showFrontFirst ? "📖 QUESTION" : "💡 ANSWER";
+            var side = showFrontFirst ? "QUESTION" : "ANSWER";
             
             if (config.UI.UseColors)
             {
@@ -419,7 +419,7 @@ namespace FlashcardApp.Services
                 Console.ForegroundColor = ConsoleColor.Green;
             }
             
-            Console.WriteLine("    💡  Press any key to reveal the answer...");
+            Console.WriteLine("       Press any key to reveal the answer...");
             
             Console.ResetColor();
         }
@@ -434,12 +434,12 @@ namespace FlashcardApp.Services
                 Console.ForegroundColor = ConsoleColor.Green;
             }
             
-            Console.WriteLine("    🎉  ANSWER REVEALED!");
+            Console.WriteLine("       ANSWER REVEALED!");
             
             Console.ResetColor();
             Console.WriteLine();
             
-            var answerSide = showedFrontFirst ? "💡  ANSWER" : "📖  QUESTION";
+            var answerSide = showedFrontFirst ? "   ANSWER" : "   QUESTION";
             var answerContent = showedFrontFirst ? card.Back : card.Front;
             
             if (config.UI.UseColors)
@@ -509,7 +509,7 @@ namespace FlashcardApp.Services
             }
             
             Console.WriteLine();
-            Console.WriteLine("    ✏️  EDIT CURRENT CARD");
+            Console.WriteLine("       EDIT CURRENT CARD");
             Console.WriteLine();
             
             Console.ResetColor();
@@ -556,7 +556,7 @@ namespace FlashcardApp.Services
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
-                Console.WriteLine("✅  Card updated successfully!");
+                Console.WriteLine("Card updated successfully!");
                 Console.ResetColor();
             }
             else
@@ -566,7 +566,7 @@ namespace FlashcardApp.Services
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                 }
-                Console.WriteLine("❌  Failed to update card.");
+                Console.WriteLine("Failed to update card.");
                 Console.ResetColor();
             }
             
@@ -614,7 +614,7 @@ namespace FlashcardApp.Services
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
             
-            Console.WriteLine("    🎮  KEYBOARD SHORTCUTS");
+            Console.WriteLine("    KEYBOARD SHORTCUTS");
             
             Console.ResetColor();
             Console.WriteLine();
@@ -624,42 +624,42 @@ namespace FlashcardApp.Services
                 Console.ForegroundColor = ConsoleColor.Green;
             }
             
-            Console.WriteLine($"    ✅ {shortcuts.CorrectAnswer} - Mark as CORRECT (move to higher box)");
+            Console.WriteLine($"     {shortcuts.CorrectAnswer} - Mark as CORRECT (move to higher box)");
             
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
             }
             
-            Console.WriteLine($"    ❌ {shortcuts.IncorrectAnswer} - Mark as INCORRECT (move to lower box)");
+            Console.WriteLine($"     {shortcuts.IncorrectAnswer} - Mark as INCORRECT (move to lower box)");
             
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
             
-            Console.WriteLine($"    ⏭️  {shortcuts.Skip} - SKIP card (no box change)");
+            Console.WriteLine($"      {shortcuts.Skip} - SKIP card (no box change)");
             
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
             
-            Console.WriteLine($"    ✏️  E - EDIT current card");
+            Console.WriteLine($"    E - EDIT current card");
             
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Magenta;
             }
             
-            Console.WriteLine($"    🚪 {shortcuts.Quit} or ESC - QUIT session (saves progress)");
+            Console.WriteLine($"     {shortcuts.Quit} or ESC - QUIT session (saves progress)");
             
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
             }
             
-            Console.WriteLine($"    ❓ {shortcuts.Help} - Show HELP");
+            Console.WriteLine($"     {shortcuts.Help} - Show HELP");
             
             Console.ResetColor();
         }
@@ -779,12 +779,12 @@ namespace FlashcardApp.Services
 
             return type switch
             {
-                "correct" => "✓",
-                "incorrect" => "✗",
-                "skip" => "⏭",
-                "quit" => "🚪",
-                "space" => "⏎",
-                "help" => "❓",
+                "correct" => "[CORRECT]",
+                "incorrect" => "[INCORRECT]",
+                "skip" => "[SKIP]",
+                "quit" => "[QUIT]",
+                "space" => "[SPACE]",
+                "help" => "[HELP]",
                 _ => ""
             };
         }

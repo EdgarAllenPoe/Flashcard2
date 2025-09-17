@@ -763,7 +763,7 @@ namespace FlashcardApp.UI
             Console.WriteLine("       • This optimizes your study time and retention");
             Console.WriteLine();
             
-            Console.WriteLine("    🎮  Study Session Controls:");
+            Console.WriteLine("    Study Session Controls:");
             Console.WriteLine("       • Any Key - Show answer (space, enter, letters, numbers)");
             Console.WriteLine("       • 1 - Mark as correct (move to higher box)");
             Console.WriteLine("       • 2 - Mark as incorrect (move to lower box)");
@@ -1303,7 +1303,7 @@ namespace FlashcardApp.UI
                 Console.WriteLine($"   Show Progress: {config.StudySession.ShowProgress}");
                 Console.WriteLine();
                 
-                Console.WriteLine("🎮  KEYBOARD SHORTCUTS:");
+                Console.WriteLine("KEYBOARD SHORTCUTS:");
                 Console.WriteLine($"   Correct Answer: {config.StudySession.KeyboardShortcuts.CorrectAnswer}");
                 Console.WriteLine($"   Incorrect Answer: {config.StudySession.KeyboardShortcuts.IncorrectAnswer}");
                 Console.WriteLine($"   Show Answer: {config.StudySession.KeyboardShortcuts.ShowAnswer}");

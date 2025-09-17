@@ -1,5 +1,5 @@
 @echo off
-echo 🚀 Flashcard App Build and Deploy Script
+echo Flashcard App Build and Deploy Script
 echo =========================================
 
 REM Run the PowerShell script
