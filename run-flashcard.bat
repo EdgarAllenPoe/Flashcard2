@@ -1,8 +1,8 @@
 @echo off
-REM Flashcard App Launcher with Unicode Support
-REM This batch file launches PowerShell with proper emoji display
+REM Flashcard App Launcher
+REM This batch file launches the Flashcard App
 
-echo Starting Flashcard App Launcher...
+echo Starting Flashcard App...
 echo.
 
 REM Check if PowerShell script exists
