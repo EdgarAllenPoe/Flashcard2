@@ -1,37 +1,37 @@
 @echo off
-echo 🚀 Flashcard App Deploy Script
+echo Flashcard App Deploy Script
 echo ==============================
 
 REM Set target path
 set TARGET_PATH=%USERPROFILE%\Documents\Flashcard
 
 REM Step 1: Create target directory
-echo 📁 Creating target directory: %TARGET_PATH%
+echo Creating target directory: %TARGET_PATH%
 if exist "%TARGET_PATH%" (
-    echo ⚠️  Directory already exists, cleaning it...
+    echo Directory already exists, cleaning it...
     rmdir /s /q "%TARGET_PATH%"
 )
 mkdir "%TARGET_PATH%"
-echo ✅ Target directory created!
+echo Target directory created!
 
 REM Step 2: Copy executable
-echo 📋 Copying executable...
+echo Copying executable...
 if exist "bin\Release\net8.0\win-x64\publish\Flashcard.exe" (
     copy "bin\Release\net8.0\win-x64\publish\Flashcard.exe" "%TARGET_PATH%\Flashcard.exe"
-    echo ✅ Executable copied!
+    echo Executable copied!
 ) else (
-    echo ❌ Executable not found! Please run 'dotnet publish' first!
+    echo Executable not found! Please run 'dotnet publish' first!
     pause
     exit /b 1
 )
 
 REM Step 3: Copy config file
-echo ⚙️  Setting up configuration...
+echo Setting up configuration...
 if exist "config.json" (
     copy "config.json" "%TARGET_PATH%\config.json"
-    echo ✅ Configuration file copied!
+    echo Configuration file copied!
 ) else (
-    echo ⚠️  Config file not found, creating default...
+    echo Config file not found, creating default...
     echo {> "%TARGET_PATH%\config.json"
     echo   "leitnerBoxes": {>> "%TARGET_PATH%\config.json"
     echo     "numberOfBoxes": 5,>> "%TARGET_PATH%\config.json"
@@ -93,68 +93,40 @@ if exist "config.json" (
     echo   },>> "%TARGET_PATH%\config.json"
     echo   "ui": {>> "%TARGET_PATH%\config.json"
     echo     "useColors": true,>> "%TARGET_PATH%\config.json"
-    echo     "useIcons": true,>> "%TARGET_PATH%\config.json"
+    echo     "useIcons": false,>> "%TARGET_PATH%\config.json"
     echo     "showWelcomeMessage": true,>> "%TARGET_PATH%\config.json"
     echo     "clearScreenOnMenuChange": true,>> "%TARGET_PATH%\config.json"
     echo     "showDetailedStatistics": true>> "%TARGET_PATH%\config.json"
     echo   }>> "%TARGET_PATH%\config.json"
     echo }>> "%TARGET_PATH%\config.json"
-    echo ✅ Default configuration created!
+    echo Default configuration created!
 )
 
 REM Step 4: Create directories
-echo 📁 Creating directories...
+echo Creating directories...
 mkdir "%TARGET_PATH%\decks"
 mkdir "%TARGET_PATH%\backups"
 mkdir "%TARGET_PATH%\exports"
-echo ✅ Directories created!
+echo Directories created!
 
-REM Step 5: Copy launcher scripts
-echo 🚀 Setting up launcher scripts...
-if exist "run-flashcard.bat" (
-    copy "run-flashcard.bat" "%TARGET_PATH%\run-flashcard.bat"
-    echo ✅ Batch launcher script copied!
-) else (
-    echo ⚠️  Batch launcher script not found, skipping...
-)
-if exist "run-flashcard.ps1" (
-    copy "run-flashcard.ps1" "%TARGET_PATH%\run-flashcard.ps1"
-    echo ✅ PowerShell launcher script copied!
-) else (
-    echo ⚠️  PowerShell launcher script not found, skipping...
-)
-if exist "run-flashcard-wt.bat" (
-    copy "run-flashcard-wt.bat" "%TARGET_PATH%\run-flashcard-wt.bat"
-    echo ✅ Windows Terminal launcher script copied!
-) else (
-    echo ⚠️  Windows Terminal launcher script not found, skipping...
-)
-if exist "run-flashcard-text.bat" (
-    copy "run-flashcard-text.bat" "%TARGET_PATH%\run-flashcard-text.bat"
-    echo ✅ Text-only launcher script copied!
-) else (
-    echo ⚠️  Text-only launcher script not found, skipping...
-)
-
-REM Step 6: Copy example deck
-echo 📚 Setting up example deck...
+REM Step 5: Copy example deck
+echo Setting up example deck...
 if exist "sample-vocabulary-deck.json" (
     copy "sample-vocabulary-deck.json" "%TARGET_PATH%\decks\sample-vocabulary-deck.json"
-    echo ✅ Example deck copied!
+    echo Example deck copied!
 ) else (
-    echo ⚠️  Example deck not found, skipping...
+    echo Example deck not found, skipping...
 )
 
-REM Step 7: Create README
-echo 📖 Creating README...
+REM Step 6: Create README
+echo Creating README...
 echo # Flashcard App> "%TARGET_PATH%\README.txt"
 echo.>> "%TARGET_PATH%\README.txt"
 echo A portable console application for spaced repetition learning using the Leitner box system.>> "%TARGET_PATH%\README.txt"
 echo.>> "%TARGET_PATH%\README.txt"
 echo ## Quick Start>> "%TARGET_PATH%\README.txt"
 echo.>> "%TARGET_PATH%\README.txt"
-echo 1. Double-click run-flashcard.bat for best emoji support (recommended)>> "%TARGET_PATH%\README.txt"
-echo    OR double-click Flashcard.exe to run the application directly>> "%TARGET_PATH%\README.txt"
+echo 1. Double-click Flashcard.exe to run the application>> "%TARGET_PATH%\README.txt"
 echo 2. The app will automatically create necessary directories>> "%TARGET_PATH%\README.txt"
 echo 3. Start with the included sample deck or create your own>> "%TARGET_PATH%\README.txt"
 echo.>> "%TARGET_PATH%\README.txt"
@@ -182,26 +154,24 @@ echo 2. Select "Manage Decks" to create your first deck>> "%TARGET_PATH%\README.
 echo 3. Add flashcards with questions and answers>> "%TARGET_PATH%\README.txt"
 echo 4. Start studying with "Start Study Session">> "%TARGET_PATH%\README.txt"
 echo.>> "%TARGET_PATH%\README.txt"
-echo Happy learning! 🚀>> "%TARGET_PATH%\README.txt"
-echo ✅ README created!
+echo Happy learning!>> "%TARGET_PATH%\README.txt"
+echo README created!
 
 REM Summary
 echo.
-echo 🎉 Deployment completed successfully!
+echo Deployment completed successfully!
 echo =====================================
-echo 📍 Location: %TARGET_PATH%
-echo 🚀 To run: Double-click run-flashcard.bat (recommended) or Flashcard.exe
+echo Location: %TARGET_PATH%
+echo To run: Double-click Flashcard.exe
 echo.
-echo 📁 Contents:
-echo   • run-flashcard.bat (launcher with emoji support - recommended)
-echo   • Flashcard.exe (main application)
-echo   • config.json (configuration)
-echo   • decks/ (flashcard decks)
-echo   • backups/ (automatic backups)
-echo   • exports/ (exported decks)
-echo   • README.txt (instructions)
+echo Contents:
+echo   - Flashcard.exe (main application)
+echo   - config.json (configuration)
+echo   - decks/ (flashcard decks)
+echo   - backups/ (automatic backups)
+echo   - exports/ (exported decks)
+echo   - README.txt (instructions)
 echo.
-echo ✨ Ready to start learning!
+echo Ready to start learning!
 echo.
 pause
-

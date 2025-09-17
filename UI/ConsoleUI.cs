@@ -2044,7 +2044,7 @@ namespace FlashcardApp.UI
                               .Select(t => t.Trim())
                               .ToList();
             
-            var flashcard = new Flashcard
+            var flashcard = new Flashcard 
             {
                 Id = Guid.NewGuid().ToString(),
                 Front = front,
