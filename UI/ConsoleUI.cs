@@ -752,7 +752,7 @@ namespace FlashcardApp.UI
             {
                 return "ESC";
             }
-            Console.Write(keyInfo.KeyChar);
+            Console.WriteLine(keyInfo.KeyChar);
             return keyInfo.KeyChar.ToString();
         }
 
