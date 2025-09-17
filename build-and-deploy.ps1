@@ -133,7 +133,19 @@ if (Test-Path $configSource) {
     Write-Host "✅ Default configuration created!" -ForegroundColor Green
 }
 
-# Step 5: Create example deck
+# Step 5: Copy launcher script
+Write-Host "🚀 Setting up launcher script..." -ForegroundColor Yellow
+$launcherSource = "run-flashcard.bat"
+$launcherTarget = Join-Path $TargetPath "run-flashcard.bat"
+
+if (Test-Path $launcherSource) {
+    Copy-Item -Path $launcherSource -Destination $launcherTarget -Force
+    Write-Host "✅ Launcher script copied!" -ForegroundColor Green
+} else {
+    Write-Host "⚠️  Launcher script not found, skipping..." -ForegroundColor Yellow
+}
+
+# Step 6: Create example deck
 Write-Host "📚 Creating example deck..." -ForegroundColor Yellow
 $decksDir = Join-Path $TargetPath "decks"
 New-Item -ItemType Directory -Path $decksDir -Force | Out-Null
@@ -229,7 +241,7 @@ $exampleDeckPath = Join-Path $decksDir "sample-vocabulary-deck.json"
 $exampleDeck | Out-File -FilePath $exampleDeckPath -Encoding UTF8
 Write-Host "✅ Example deck created!" -ForegroundColor Green
 
-# Step 6: Create additional directories
+# Step 7: Create additional directories
 Write-Host "📁 Creating additional directories..." -ForegroundColor Yellow
 $backupsDir = Join-Path $TargetPath "backups"
 $exportsDir = Join-Path $TargetPath "exports"
@@ -237,7 +249,7 @@ New-Item -ItemType Directory -Path $backupsDir -Force | Out-Null
 New-Item -ItemType Directory -Path $exportsDir -Force | Out-Null
 Write-Host "✅ Additional directories created!" -ForegroundColor Green
 
-# Step 7: Create a README for the deployed version
+# Step 8: Create a README for the deployed version
 Write-Host "📖 Creating README..." -ForegroundColor Yellow
 $readmeContent = @"
 # Flashcard App
@@ -246,7 +258,8 @@ A portable console application for spaced repetition learning using the Leitner 
 
 ## Quick Start
 
-1. Double-click `Flashcard.exe` to run the application
+1. Double-click `run-flashcard.bat` for best emoji support (recommended)
+   OR double-click `Flashcard.exe` to run the application directly
 2. The app will automatically create necessary directories
 3. Start with the included sample deck or create your own
 
@@ -269,6 +282,7 @@ A portable console application for spaced repetition learning using the Leitner 
 
 ## File Structure
 
+- `run-flashcard.bat` - Launcher with emoji support (recommended)
 - `Flashcard.exe` - Main application
 - `config.json` - Configuration settings
 - `decks/` - Your flashcard decks
@@ -294,9 +308,10 @@ Write-Host ""
 Write-Host "🎉 Deployment completed successfully!" -ForegroundColor Green
 Write-Host "=====================================" -ForegroundColor Green
 Write-Host "📍 Location: $TargetPath" -ForegroundColor Cyan
-Write-Host "🚀 To run: Double-click Flashcard.exe" -ForegroundColor Cyan
+Write-Host "🚀 To run: Double-click run-flashcard.bat (recommended) or Flashcard.exe" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "📁 Contents:" -ForegroundColor Yellow
+Write-Host "  • run-flashcard.bat (launcher with emoji support - recommended)" -ForegroundColor White
 Write-Host "  • Flashcard.exe (main application)" -ForegroundColor White
 Write-Host "  • config.json (configuration)" -ForegroundColor White
 Write-Host "  • decks/ (flashcard decks)" -ForegroundColor White

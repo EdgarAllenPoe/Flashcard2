@@ -109,7 +109,16 @@ mkdir "%TARGET_PATH%\backups"
 mkdir "%TARGET_PATH%\exports"
 echo ✅ Directories created!
 
-REM Step 5: Copy example deck
+REM Step 5: Copy launcher script
+echo 🚀 Setting up launcher script...
+if exist "run-flashcard.bat" (
+    copy "run-flashcard.bat" "%TARGET_PATH%\run-flashcard.bat"
+    echo ✅ Launcher script copied!
+) else (
+    echo ⚠️  Launcher script not found, skipping...
+)
+
+REM Step 6: Copy example deck
 echo 📚 Setting up example deck...
 if exist "sample-vocabulary-deck.json" (
     copy "sample-vocabulary-deck.json" "%TARGET_PATH%\decks\sample-vocabulary-deck.json"
@@ -118,7 +127,7 @@ if exist "sample-vocabulary-deck.json" (
     echo ⚠️  Example deck not found, skipping...
 )
 
-REM Step 6: Create README
+REM Step 7: Create README
 echo 📖 Creating README...
 echo # Flashcard App> "%TARGET_PATH%\README.txt"
 echo.>> "%TARGET_PATH%\README.txt"
@@ -126,7 +135,8 @@ echo A portable console application for spaced repetition learning using the Lei
 echo.>> "%TARGET_PATH%\README.txt"
 echo ## Quick Start>> "%TARGET_PATH%\README.txt"
 echo.>> "%TARGET_PATH%\README.txt"
-echo 1. Double-click Flashcard.exe to run the application>> "%TARGET_PATH%\README.txt"
+echo 1. Double-click run-flashcard.bat for best emoji support (recommended)>> "%TARGET_PATH%\README.txt"
+echo    OR double-click Flashcard.exe to run the application directly>> "%TARGET_PATH%\README.txt"
 echo 2. The app will automatically create necessary directories>> "%TARGET_PATH%\README.txt"
 echo 3. Start with the included sample deck or create your own>> "%TARGET_PATH%\README.txt"
 echo.>> "%TARGET_PATH%\README.txt"
@@ -162,9 +172,10 @@ echo.
 echo 🎉 Deployment completed successfully!
 echo =====================================
 echo 📍 Location: %TARGET_PATH%
-echo 🚀 To run: Double-click Flashcard.exe
+echo 🚀 To run: Double-click run-flashcard.bat (recommended) or Flashcard.exe
 echo.
 echo 📁 Contents:
+echo   • run-flashcard.bat (launcher with emoji support - recommended)
 echo   • Flashcard.exe (main application)
 echo   • config.json (configuration)
 echo   • decks/ (flashcard decks)
