@@ -27,10 +27,10 @@ namespace FlashcardApp.UI
             return false;
         }
 
-        private string GetEmojiOrText(string emoji, string textAlternative)
+        private string GetEmojiOrText(string asciiSymbol)
         {
-            // Always return ASCII symbols instead of emojis
-            return textAlternative;
+            // Always return ASCII symbols
+            return asciiSymbol;
         }
 
         private void CheckEmojiDisplayAndOfferFallback()
@@ -118,11 +118,11 @@ namespace FlashcardApp.UI
             }
             
             Console.WriteLine();
-            Console.WriteLine($"    {GetEmojiOrText("🎯", "*")}  FLASHCARD APP v2.0");
+            Console.WriteLine($"    {GetEmojiOrText("*")}  FLASHCARD APP v2.0");
             Console.WriteLine();
-            Console.WriteLine($"    {GetEmojiOrText("📚", "=")}  Advanced Leitner Box Spaced Repetition");
+            Console.WriteLine($"    {GetEmojiOrText("=")}  Advanced Leitner Box Spaced Repetition");
             Console.WriteLine();
-            Console.WriteLine($"    {GetEmojiOrText("✨", "+")}  Beautiful • Modern • Effective • Smart");
+            Console.WriteLine($"    {GetEmojiOrText("+")}  Beautiful • Modern • Effective • Smart");
             Console.WriteLine();
             
             Console.ResetColor();
@@ -133,9 +133,9 @@ namespace FlashcardApp.UI
             }
             
             Console.WriteLine();
-            Console.WriteLine($"    {GetEmojiOrText("🚀", ">")}  Welcome to your personalized learning journey!");
-            Console.WriteLine($"    {GetEmojiOrText("💡", "!")}  Master any subject with scientifically-proven spaced repetition");
-            Console.WriteLine($"    {GetEmojiOrText("🎨", "@")}  Enjoy a beautiful, intuitive interface designed for focus");
+            Console.WriteLine($"    {GetEmojiOrText(">")}  Welcome to your personalized learning journey!");
+            Console.WriteLine($"    {GetEmojiOrText("!")}  Master any subject with scientifically-proven spaced repetition");
+            Console.WriteLine($"    {GetEmojiOrText("@")}  Enjoy a beautiful, intuitive interface designed for focus");
             
             Console.ResetColor();
             Console.WriteLine();
@@ -168,12 +168,12 @@ namespace FlashcardApp.UI
             // Menu options with beautiful styling
             if (config.UI.UseIcons)
             {
-                ShowMenuOption("1", GetEmojiOrText("🎓", "S"), "  Start Study Session", "Begin your learning journey with spaced repetition");
-                ShowMenuOption("2", GetEmojiOrText("🗂️", "D"), "   Manage Decks", "Create, edit, and organize your flashcard collections");
-                ShowMenuOption("3", GetEmojiOrText("📊", "T"), "  View Statistics", "Track your progress and learning analytics");
-                ShowMenuOption("4", GetEmojiOrText("⚙️", "C"), "   Configuration", "Customize your learning experience");
-                ShowMenuOption("5", GetEmojiOrText("❓", "?"), "  Help & Guide", "Learn how to use the app effectively");
-                ShowMenuOption("ESC", GetEmojiOrText("🚪", "X"), "  Exit", "Close the application");
+                ShowMenuOption("1", GetEmojiOrText("S"), "  Start Study Session", "Begin your learning journey with spaced repetition");
+                ShowMenuOption("2", GetEmojiOrText("D"), "   Manage Decks", "Create, edit, and organize your flashcard collections");
+                ShowMenuOption("3", GetEmojiOrText("T"), "  View Statistics", "Track your progress and learning analytics");
+                ShowMenuOption("4", GetEmojiOrText("C"), "   Configuration", "Customize your learning experience");
+                ShowMenuOption("5", GetEmojiOrText("?"), "  Help & Guide", "Learn how to use the app effectively");
+                ShowMenuOption("ESC", GetEmojiOrText("X"), "  Exit", "Close the application");
             }
             else
             {
@@ -380,13 +380,13 @@ namespace FlashcardApp.UI
             
             if (config.UI.UseIcons)
             {
-                ShowMenuOption("1", GetEmojiOrText("➕", "+"), "  Create New Deck", "Start a new flashcard collection");
-                ShowMenuOption("2", GetEmojiOrText("📋", "L"), "  View All Decks", "Browse your existing decks");
-                ShowMenuOption("3", GetEmojiOrText("✏️", "E"), "   Edit Deck", "Modify deck properties and cards");
-                ShowMenuOption("4", GetEmojiOrText("🗑️", "-"), "   Delete Deck", "Remove a deck permanently");
-                ShowMenuOption("5", GetEmojiOrText("📥", "I"), "  Import Deck", "Load decks from external files");
-                ShowMenuOption("6", GetEmojiOrText("📤", "O"), "  Export Deck", "Save decks to external files");
-                ShowMenuOption("ESC", GetEmojiOrText("🔙", "<"), "  Back to Main Menu", "Return to the main menu");
+                ShowMenuOption("1", GetEmojiOrText("+"), "  Create New Deck", "Start a new flashcard collection");
+                ShowMenuOption("2", GetEmojiOrText("L"), "  View All Decks", "Browse your existing decks");
+                ShowMenuOption("3", GetEmojiOrText("E"), "   Edit Deck", "Modify deck properties and cards");
+                ShowMenuOption("4", GetEmojiOrText("-"), "   Delete Deck", "Remove a deck permanently");
+                ShowMenuOption("5", GetEmojiOrText("I"), "  Import Deck", "Load decks from external files");
+                ShowMenuOption("6", GetEmojiOrText("O"), "  Export Deck", "Save decks to external files");
+                ShowMenuOption("ESC", GetEmojiOrText("<"), "  Back to Main Menu", "Return to the main menu");
             }
             else
             {
@@ -1195,13 +1195,13 @@ namespace FlashcardApp.UI
             
             if (config.UI.UseIcons)
             {
-                ShowMenuOption("1", GetEmojiOrText("👁️", "V"), "  View Current Settings", "Display all current configuration settings");
-                ShowMenuOption("2", GetEmojiOrText("📦", "B"), "  Leitner Box Settings", "Configure box promotion and demotion rules");
-                ShowMenuOption("3", GetEmojiOrText("📚", "S"), "  Study Session Settings", "Customize study session behavior");
-                ShowMenuOption("4", GetEmojiOrText("⏰", "T"), "  Daily Limits", "Set maximum and minimum study limits");
-                ShowMenuOption("5", GetEmojiOrText("🎨", "U"), "  UI Settings", "Customize colors, icons, and display options");
-                ShowMenuOption("6", GetEmojiOrText("🔄", "R"), "  Reset to Defaults", "Restore all settings to default values");
-                ShowMenuOption("ESC", GetEmojiOrText("🔙", "<"), "  Back to Main Menu", "Return to the main menu");
+                ShowMenuOption("1", GetEmojiOrText("V"), "  View Current Settings", "Display all current configuration settings");
+                ShowMenuOption("2", GetEmojiOrText("B"), "  Leitner Box Settings", "Configure box promotion and demotion rules");
+                ShowMenuOption("3", GetEmojiOrText("S"), "  Study Session Settings", "Customize study session behavior");
+                ShowMenuOption("4", GetEmojiOrText("T"), "  Daily Limits", "Set maximum and minimum study limits");
+                ShowMenuOption("5", GetEmojiOrText("U"), "  UI Settings", "Customize colors, icons, and display options");
+                ShowMenuOption("6", GetEmojiOrText("R"), "  Reset to Defaults", "Restore all settings to default values");
+                ShowMenuOption("ESC", GetEmojiOrText("<"), "  Back to Main Menu", "Return to the main menu");
             }
             else
             {
