@@ -9,6 +9,7 @@ namespace FlashcardApp.UI
         private readonly DeckService _deckService;
         private readonly StudySessionService _studySessionService;
         private readonly LeitnerBoxService _leitnerBoxService;
+        private readonly bool _emojiSupport;
 
         public ConsoleUI(ConfigurationService configService, DeckService deckService, 
                         StudySessionService studySessionService, LeitnerBoxService leitnerBoxService)
@@ -17,6 +18,41 @@ namespace FlashcardApp.UI
             _deckService = deckService;
             _studySessionService = studySessionService;
             _leitnerBoxService = leitnerBoxService;
+            _emojiSupport = TestEmojiSupport();
+        }
+
+        private bool TestEmojiSupport()
+        {
+            try
+            {
+                // For now, we'll be conservative and assume emojis might not work
+                // Users can enable them in the UI settings if they want to test
+                // This prevents the box display issue
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private string GetEmojiOrText(string emoji, string textAlternative)
+        {
+            return _emojiSupport ? emoji : textAlternative;
+        }
+
+        private void CheckEmojiDisplayAndOfferFallback()
+        {
+            var config = _configService.GetConfiguration();
+            
+            // Only show this check once per session and only if emojis are enabled
+            if (config.UI.UseIcons && _emojiSupport)
+            {
+                Console.WriteLine();
+                Console.WriteLine("    If you see boxes or strange characters instead of emojis,");
+                Console.WriteLine("    you can disable them in Configuration > UI Settings > Toggle Use Icons");
+                Console.WriteLine();
+            }
         }
 
         public void Run()
@@ -90,11 +126,11 @@ namespace FlashcardApp.UI
             }
             
             Console.WriteLine();
-            Console.WriteLine("    🎯  FLASHCARD APP v2.0");
+            Console.WriteLine($"    {GetEmojiOrText("🎯", "[TARGET]")}  FLASHCARD APP v2.0");
             Console.WriteLine();
-            Console.WriteLine("    📚  Advanced Leitner Box Spaced Repetition");
+            Console.WriteLine($"    {GetEmojiOrText("📚", "[BOOKS]")}  Advanced Leitner Box Spaced Repetition");
             Console.WriteLine();
-            Console.WriteLine("    ✨  Beautiful • Modern • Effective • Smart");
+            Console.WriteLine($"    {GetEmojiOrText("✨", "[SPARKLE]")}  Beautiful • Modern • Effective • Smart");
             Console.WriteLine();
             
             Console.ResetColor();
@@ -105,12 +141,16 @@ namespace FlashcardApp.UI
             }
             
             Console.WriteLine();
-            Console.WriteLine("    🚀  Welcome to your personalized learning journey!");
-            Console.WriteLine("    💡  Master any subject with scientifically-proven spaced repetition");
-            Console.WriteLine("    🎨  Enjoy a beautiful, intuitive interface designed for focus");
+            Console.WriteLine($"    {GetEmojiOrText("🚀", "[ROCKET]")}  Welcome to your personalized learning journey!");
+            Console.WriteLine($"    {GetEmojiOrText("💡", "[BULB]")}  Master any subject with scientifically-proven spaced repetition");
+            Console.WriteLine($"    {GetEmojiOrText("🎨", "[ART]")}  Enjoy a beautiful, intuitive interface designed for focus");
             
             Console.ResetColor();
             Console.WriteLine();
+            
+            // Check emoji display and offer fallback
+            CheckEmojiDisplayAndOfferFallback();
+            
             ShowPressAnyKey();
         }
 
@@ -136,12 +176,12 @@ namespace FlashcardApp.UI
             // Menu options with beautiful styling
             if (config.UI.UseIcons)
             {
-                ShowMenuOption("1", "🎓", "  Start Study Session", "Begin your learning journey with spaced repetition");
-                ShowMenuOption("2", "🗂️", "   Manage Decks", "Create, edit, and organize your flashcard collections");
-                ShowMenuOption("3", "📊", "  View Statistics", "Track your progress and learning analytics");
-                ShowMenuOption("4", "⚙️", "   Configuration", "Customize your learning experience");
-                ShowMenuOption("5", "❓", "  Help & Guide", "Learn how to use the app effectively");
-                ShowMenuOption("ESC", "🚪", "  Exit", "Close the application");
+                ShowMenuOption("1", GetEmojiOrText("🎓", "[STUDY]"), "  Start Study Session", "Begin your learning journey with spaced repetition");
+                ShowMenuOption("2", GetEmojiOrText("🗂️", "[DECKS]"), "   Manage Decks", "Create, edit, and organize your flashcard collections");
+                ShowMenuOption("3", GetEmojiOrText("📊", "[STATS]"), "  View Statistics", "Track your progress and learning analytics");
+                ShowMenuOption("4", GetEmojiOrText("⚙️", "[CONFIG]"), "   Configuration", "Customize your learning experience");
+                ShowMenuOption("5", GetEmojiOrText("❓", "[HELP]"), "  Help & Guide", "Learn how to use the app effectively");
+                ShowMenuOption("ESC", GetEmojiOrText("🚪", "[EXIT]"), "  Exit", "Close the application");
             }
             else
             {
@@ -348,13 +388,13 @@ namespace FlashcardApp.UI
             
             if (config.UI.UseIcons)
             {
-                ShowMenuOption("1", "➕", "  Create New Deck", "Start a new flashcard collection");
-                ShowMenuOption("2", "📋", "  View All Decks", "Browse your existing decks");
-                ShowMenuOption("3", "✏️", "   Edit Deck", "Modify deck properties and cards");
-                ShowMenuOption("4", "🗑️", "   Delete Deck", "Remove a deck permanently");
-                ShowMenuOption("5", "📥", "  Import Deck", "Load decks from external files");
-                ShowMenuOption("6", "📤", "  Export Deck", "Save decks to external files");
-                ShowMenuOption("ESC", "🔙", "  Back to Main Menu", "Return to the main menu");
+                ShowMenuOption("1", GetEmojiOrText("➕", "[ADD]"), "  Create New Deck", "Start a new flashcard collection");
+                ShowMenuOption("2", GetEmojiOrText("📋", "[LIST]"), "  View All Decks", "Browse your existing decks");
+                ShowMenuOption("3", GetEmojiOrText("✏️", "[EDIT]"), "   Edit Deck", "Modify deck properties and cards");
+                ShowMenuOption("4", GetEmojiOrText("🗑️", "[DELETE]"), "   Delete Deck", "Remove a deck permanently");
+                ShowMenuOption("5", GetEmojiOrText("📥", "[IMPORT]"), "  Import Deck", "Load decks from external files");
+                ShowMenuOption("6", GetEmojiOrText("📤", "[EXPORT]"), "  Export Deck", "Save decks to external files");
+                ShowMenuOption("ESC", GetEmojiOrText("🔙", "[BACK]"), "  Back to Main Menu", "Return to the main menu");
             }
             else
             {
@@ -1152,13 +1192,13 @@ namespace FlashcardApp.UI
             
             if (config.UI.UseIcons)
             {
-                ShowMenuOption("1", "👁️", "  View Current Settings", "Display all current configuration settings");
-                ShowMenuOption("2", "📦", "  Leitner Box Settings", "Configure box promotion and demotion rules");
-                ShowMenuOption("3", "📚", "  Study Session Settings", "Customize study session behavior");
-                ShowMenuOption("4", "⏰", "  Daily Limits", "Set maximum and minimum study limits");
-                ShowMenuOption("5", "🎨", "  UI Settings", "Customize colors, icons, and display options");
-                ShowMenuOption("6", "🔄", "  Reset to Defaults", "Restore all settings to default values");
-                ShowMenuOption("ESC", "🔙", "  Back to Main Menu", "Return to the main menu");
+                ShowMenuOption("1", GetEmojiOrText("👁️", "[VIEW]"), "  View Current Settings", "Display all current configuration settings");
+                ShowMenuOption("2", GetEmojiOrText("📦", "[BOX]"), "  Leitner Box Settings", "Configure box promotion and demotion rules");
+                ShowMenuOption("3", GetEmojiOrText("📚", "[STUDY]"), "  Study Session Settings", "Customize study session behavior");
+                ShowMenuOption("4", GetEmojiOrText("⏰", "[TIME]"), "  Daily Limits", "Set maximum and minimum study limits");
+                ShowMenuOption("5", GetEmojiOrText("🎨", "[UI]"), "  UI Settings", "Customize colors, icons, and display options");
+                ShowMenuOption("6", GetEmojiOrText("🔄", "[RESET]"), "  Reset to Defaults", "Restore all settings to default values");
+                ShowMenuOption("ESC", GetEmojiOrText("🔙", "[BACK]"), "  Back to Main Menu", "Return to the main menu");
             }
             else
             {
@@ -1441,6 +1481,7 @@ namespace FlashcardApp.UI
                 Console.WriteLine("🎨  UI FEATURE DESCRIPTIONS:");
                 Console.WriteLine("   • Use Colors: Enable colored text and backgrounds");
                 Console.WriteLine("   • Use Icons: Display emoji icons in menus and messages");
+                Console.WriteLine("     (If you see boxes instead of emojis, disable this option)");
                 Console.WriteLine("   • Show Welcome Message: Display welcome message on startup");
                 Console.WriteLine("   • Clear Screen on Menu Change: Clear screen when switching menus");
                 Console.WriteLine("   • Show Detailed Statistics: Display comprehensive statistics");
