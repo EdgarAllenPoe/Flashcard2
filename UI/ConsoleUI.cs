@@ -24,14 +24,9 @@ namespace FlashcardApp.UI
         private bool TestEmojiSupport()
         {
             // Always return false - we're using ASCII symbols instead of emojis
-            return false;
+                return false;
         }
 
-        private string GetEmojiOrText(string asciiSymbol)
-        {
-            // Always return ASCII symbols
-            return asciiSymbol;
-        }
 
         private void CheckEmojiDisplayAndOfferFallback()
         {
@@ -52,7 +47,7 @@ namespace FlashcardApp.UI
             var config = _configService.GetConfiguration();
             
             // Set console properties for better appearance
-            Console.Title = "* Flashcard App - Leitner Box System";
+            Console.Title = "Flashcard App - Leitner Box System";
             Console.CursorVisible = true;
             
             if (config.UI.ShowWelcomeMessage)
@@ -118,11 +113,11 @@ namespace FlashcardApp.UI
             }
             
             Console.WriteLine();
-            Console.WriteLine($"    {GetEmojiOrText("*")}  FLASHCARD APP v2.0");
+            Console.WriteLine("    FLASHCARD APP v2.0");
             Console.WriteLine();
-            Console.WriteLine($"    {GetEmojiOrText("=")}  Advanced Leitner Box Spaced Repetition");
+            Console.WriteLine("    Advanced Leitner Box Spaced Repetition");
             Console.WriteLine();
-            Console.WriteLine($"    {GetEmojiOrText("+")}  Beautiful • Modern • Effective • Smart");
+            Console.WriteLine("    Beautiful • Modern • Effective • Smart");
             Console.WriteLine();
             
             Console.ResetColor();
@@ -133,9 +128,9 @@ namespace FlashcardApp.UI
             }
             
             Console.WriteLine();
-            Console.WriteLine($"    {GetEmojiOrText(">")}  Welcome to your personalized learning journey!");
-            Console.WriteLine($"    {GetEmojiOrText("!")}  Master any subject with scientifically-proven spaced repetition");
-            Console.WriteLine($"    {GetEmojiOrText("@")}  Enjoy a beautiful, intuitive interface designed for focus");
+            Console.WriteLine("    Welcome to your personalized learning journey!");
+            Console.WriteLine("    Master any subject with scientifically-proven spaced repetition");
+            Console.WriteLine("    Enjoy a beautiful, intuitive interface designed for focus");
             
             Console.ResetColor();
             Console.WriteLine();
@@ -159,37 +154,25 @@ namespace FlashcardApp.UI
             }
             
             Console.WriteLine();
-            Console.WriteLine("    🏠  MAIN MENU");
+            Console.WriteLine("    MAIN MENU");
             Console.WriteLine();
             
             Console.ResetColor();
             Console.WriteLine();
             
-            // Menu options with beautiful styling
-            if (config.UI.UseIcons)
-            {
-                ShowMenuOption("1", GetEmojiOrText("S"), "  Start Study Session", "Begin your learning journey with spaced repetition");
-                ShowMenuOption("2", GetEmojiOrText("D"), "   Manage Decks", "Create, edit, and organize your flashcard collections");
-                ShowMenuOption("3", GetEmojiOrText("T"), "  View Statistics", "Track your progress and learning analytics");
-                ShowMenuOption("4", GetEmojiOrText("C"), "   Configuration", "Customize your learning experience");
-                ShowMenuOption("5", GetEmojiOrText("?"), "  Help & Guide", "Learn how to use the app effectively");
-                ShowMenuOption("ESC", GetEmojiOrText("X"), "  Exit", "Close the application");
-            }
-            else
-            {
-                ShowMenuOption("1", "", "Start Study Session", "Begin your learning journey with spaced repetition");
-                ShowMenuOption("2", "", "Manage Decks", "Create, edit, and organize your flashcard collections");
-                ShowMenuOption("3", "", "View Statistics", "Track your progress and learning analytics");
-                ShowMenuOption("4", "", "Configuration", "Customize your learning experience");
-                ShowMenuOption("5", "", "Help & Guide", "Learn how to use the app effectively");
-                ShowMenuOption("ESC", "", "Exit", "Close the application");
-            }
+            // Menu options with clean text
+            ShowMenuOption("1", "Start Study Session", "Begin your learning journey with spaced repetition");
+            ShowMenuOption("2", "Manage Decks", "Create, edit, and organize your flashcard collections");
+            ShowMenuOption("3", "View Statistics", "Track your progress and learning analytics");
+            ShowMenuOption("4", "Configuration", "Customize your learning experience");
+            ShowMenuOption("5", "Help & Guide", "Learn how to use the app effectively");
+            ShowMenuOption("ESC", "Exit", "Close the application");
             
             Console.WriteLine();
             ShowInputPrompt("Enter your choice");
         }
 
-        private void ShowMenuOption(string number, string icon, string title, string description)
+        private void ShowMenuOption(string number, string title, string description)
         {
             var config = _configService.GetConfiguration();
             
@@ -205,7 +188,7 @@ namespace FlashcardApp.UI
                 Console.ForegroundColor = ConsoleColor.White;
             }
             
-            Console.Write($"{icon} {title}");
+            Console.Write(title);
             
             if (config.UI.UseColors)
             {
@@ -372,32 +355,19 @@ namespace FlashcardApp.UI
             }
             
             Console.WriteLine();
-            Console.WriteLine("    D  DECK MANAGEMENT");
+            Console.WriteLine("    DECK MANAGEMENT");
             Console.WriteLine();
             
             Console.ResetColor();
             Console.WriteLine();
             
-            if (config.UI.UseIcons)
-            {
-                ShowMenuOption("1", GetEmojiOrText("+"), "  Create New Deck", "Start a new flashcard collection");
-                ShowMenuOption("2", GetEmojiOrText("L"), "  View All Decks", "Browse your existing decks");
-                ShowMenuOption("3", GetEmojiOrText("E"), "   Edit Deck", "Modify deck properties and cards");
-                ShowMenuOption("4", GetEmojiOrText("-"), "   Delete Deck", "Remove a deck permanently");
-                ShowMenuOption("5", GetEmojiOrText("I"), "  Import Deck", "Load decks from external files");
-                ShowMenuOption("6", GetEmojiOrText("O"), "  Export Deck", "Save decks to external files");
-                ShowMenuOption("ESC", GetEmojiOrText("<"), "  Back to Main Menu", "Return to the main menu");
-            }
-            else
-            {
-                ShowMenuOption("1", "", "Create New Deck", "Start a new flashcard collection");
-                ShowMenuOption("2", "", "View All Decks", "Browse your existing decks");
-                ShowMenuOption("3", "", "Edit Deck", "Modify deck properties and cards");
-                ShowMenuOption("4", "", "Delete Deck", "Remove a deck permanently");
-                ShowMenuOption("5", "", "Import Deck", "Load decks from external files");
-                ShowMenuOption("6", "", "Export Deck", "Save decks to external files");
-                ShowMenuOption("ESC", "", "Back to Main Menu", "Return to the main menu");
-            }
+            ShowMenuOption("1", "Create New Deck", "Start a new flashcard collection");
+            ShowMenuOption("2", "View All Decks", "Browse your existing decks");
+            ShowMenuOption("3", "Edit Deck", "Modify deck properties and cards");
+            ShowMenuOption("4", "Delete Deck", "Remove a deck permanently");
+            ShowMenuOption("5", "Import Deck", "Load decks from external files");
+            ShowMenuOption("6", "Export Deck", "Save decks to external files");
+            ShowMenuOption("ESC", "Back to Main Menu", "Return to the main menu");
             
             Console.WriteLine();
             ShowInputPrompt("Enter your choice");
@@ -406,7 +376,7 @@ namespace FlashcardApp.UI
         private void CreateNewDeck()
         {
             Console.Clear();
-            ShowSectionHeader("+ CREATE NEW DECK", ConsoleColor.Green);
+            ShowSectionHeader("CREATE NEW DECK", ConsoleColor.Green);
             
             Console.WriteLine();
             ShowInputPrompt("Deck name");
@@ -431,11 +401,11 @@ namespace FlashcardApp.UI
             
             if (_deckService.SaveDeck(deck))
             {
-                ShowSuccessMessage($"🎉  Deck '{name}' created successfully!");
+                ShowSuccessMessage($"Deck '{name}' created successfully!");
             }
             else
             {
-                ShowErrorMessage("❌ Failed to create deck.");
+                ShowErrorMessage("Failed to create deck.");
             }
         }
 
@@ -444,7 +414,7 @@ namespace FlashcardApp.UI
             var decks = _deckService.LoadAllDecks();
             
             Console.Clear();
-            ShowSectionHeader("L ALL DECKS", ConsoleColor.Cyan);
+            ShowSectionHeader("ALL DECKS", ConsoleColor.Cyan);
             
             if (!decks.Any())
             {
@@ -478,15 +448,15 @@ namespace FlashcardApp.UI
             
             if (!string.IsNullOrEmpty(deck.Description))
             {
-                Console.WriteLine($"    📝  {deck.Description}");
+                Console.WriteLine($"    {deck.Description}");
             }
             
-            Console.WriteLine($"    T  Cards: {deck.ActiveCards}/{deck.TotalCards} | Created: {deck.CreatedDate:yyyy-MM-dd}");
-            Console.WriteLine($"    🕒  Last Modified: {deck.LastModified:yyyy-MM-dd HH:mm}");
+            Console.WriteLine($"    Cards: {deck.ActiveCards}/{deck.TotalCards} | Created: {deck.CreatedDate:yyyy-MM-dd}");
+            Console.WriteLine($"    Last Modified: {deck.LastModified:yyyy-MM-dd HH:mm}");
             
             if (deck.Tags.Any())
             {
-                Console.WriteLine($"    🏷️  Tags: {string.Join(", ", deck.Tags)}");
+                Console.WriteLine($"    Tags: {string.Join(", ", deck.Tags)}");
             }
             Console.ResetColor();
             Console.WriteLine();
@@ -497,17 +467,17 @@ namespace FlashcardApp.UI
             while (true)
             {
                 Console.Clear();
-                ShowSectionHeader("*  SELECT DECK", ConsoleColor.Magenta);
+                ShowSectionHeader("SELECT DECK", ConsoleColor.Magenta);
                 Console.WriteLine();
                 
                 for (int i = 0; i < decks.Count; i++)
                 {
                     var deck = decks[i];
-                    Console.WriteLine($"    {i + 1}. =  {deck.Name} ({deck.ActiveCards} active cards)");
+                    Console.WriteLine($"    {i + 1}. {deck.Name} ({deck.ActiveCards} active cards)");
                 }
                 
                 Console.WriteLine();
-                Console.WriteLine("    ESC. ❌  Cancel");
+                Console.WriteLine("    ESC. Cancel");
                 Console.WriteLine();
                 ShowInputPrompt("Enter your choice");
                 
@@ -537,12 +507,12 @@ namespace FlashcardApp.UI
             var config = _configService.GetConfiguration();
             
             Console.Clear();
-            ShowSectionHeader("S SELECT STUDY MODE", ConsoleColor.Blue);
+            ShowSectionHeader("SELECT STUDY MODE", ConsoleColor.Blue);
             Console.WriteLine();
             
-            Console.WriteLine("    1. 📖  Front to Back (default) - Show question first, then answer");
-            Console.WriteLine("    2. R  Back to Front - Show answer first, then question");
-            Console.WriteLine("    3. 🎲  Mixed - Randomly switch between modes");
+            Console.WriteLine("    1. Front to Back (default) - Show question first, then answer");
+            Console.WriteLine("    2. Back to Front - Show answer first, then question");
+            Console.WriteLine("    3. Mixed - Randomly switch between modes");
             Console.WriteLine();
             ShowInputPrompt($"Enter your choice (default: {config.StudySession.DefaultStudyMode})");
             
@@ -604,23 +574,23 @@ namespace FlashcardApp.UI
             }
             
             Console.WriteLine();
-            Console.WriteLine("    🎉  SESSION COMPLETED!");
+            Console.WriteLine("    SESSION COMPLETED!");
             Console.WriteLine();
             
             Console.ResetColor();
             Console.WriteLine();
             
             // Beautiful statistics display
-            ShowStatCard("⏱️  ", "Session Time", $"{stats.SessionTime:mm\\:ss}");
-            ShowStatCard("=  ", "Cards Studied", stats.TotalCards.ToString());
-            ShowStatCard("R  ", "Total Reviews", stats.TotalReviews.ToString());
-            ShowStatCard("✅  ", "Correct Answers", stats.CorrectAnswers.ToString());
-            ShowStatCard("❌  ", "Incorrect Answers", stats.IncorrectAnswers.ToString());
-            ShowStatCard("📈  ", "Success Rate", $"{stats.SuccessRate:F1}%");
+            ShowStatCard("", "Session Time", $"{stats.SessionTime:mm\\:ss}");
+            ShowStatCard("", "Cards Studied", stats.TotalCards.ToString());
+            ShowStatCard("", "Total Reviews", stats.TotalReviews.ToString());
+            ShowStatCard("", "Correct Answers", stats.CorrectAnswers.ToString());
+            ShowStatCard("", "Incorrect Answers", stats.IncorrectAnswers.ToString());
+            ShowStatCard("", "Success Rate", $"{stats.SuccessRate:F1}%");
             
             if (stats.TotalReviews > 0)
             {
-                ShowStatCard("⚡  ", "Avg Response Time", $"{stats.AverageResponseTime:F1}s");
+                ShowStatCard("", "Avg Response Time", $"{stats.AverageResponseTime:F1}s");
             }
             
             Console.WriteLine();
@@ -628,15 +598,15 @@ namespace FlashcardApp.UI
             // Motivational message based on performance
             if (stats.SuccessRate >= 80)
             {
-                ShowSuccessMessage("🌟 Excellent work! You're mastering this material!");
+                ShowSuccessMessage("Excellent work! You're mastering this material!");
             }
             else if (stats.SuccessRate >= 60)
             {
-                ShowInfoMessage("💪 Good progress! Keep practicing to improve further!");
+                ShowInfoMessage("Good progress! Keep practicing to improve further!");
             }
             else
             {
-                ShowInfoMessage("=  Keep studying! Every mistake is a learning opportunity!");
+                ShowInfoMessage("Keep studying! Every mistake is a learning opportunity!");
             }
         }
 
@@ -678,7 +648,7 @@ namespace FlashcardApp.UI
                 Console.ForegroundColor = ConsoleColor.Green;
             }
             
-            Console.WriteLine($"    ✅ {message}");
+            Console.WriteLine($"    {message}");
             Console.ResetColor();
         }
 
@@ -691,7 +661,7 @@ namespace FlashcardApp.UI
                 Console.ForegroundColor = ConsoleColor.Red;
             }
             
-            Console.WriteLine($"    ❌ {message}");
+            Console.WriteLine($"    {message}");
             Console.ResetColor();
         }
 
@@ -704,7 +674,7 @@ namespace FlashcardApp.UI
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
             
-            Console.WriteLine($"    ℹ️  {message}");
+            Console.WriteLine($"    {message}");
             Console.ResetColor();
         }
 
@@ -778,7 +748,7 @@ namespace FlashcardApp.UI
         private void ShowHelp()
         {
             Console.Clear();
-            ShowSectionHeader("? HELP & GUIDE", ConsoleColor.Cyan);
+            ShowSectionHeader("HELP & GUIDE", ConsoleColor.Cyan);
             Console.WriteLine();
             
             Console.WriteLine("    =  This application uses the scientifically-proven Leitner Box system for");
@@ -811,7 +781,7 @@ namespace FlashcardApp.UI
 
         private void ShowStatisticsHeader()
         {
-            ShowSectionHeader("T  LEARNING STATISTICS", ConsoleColor.Magenta);
+            ShowSectionHeader("LEARNING STATISTICS", ConsoleColor.Magenta);
         }
 
         private void ShowDeckStatistics(Deck deck)
@@ -830,15 +800,15 @@ namespace FlashcardApp.UI
                 Console.ForegroundColor = ConsoleColor.White;
             }
             
-            Console.WriteLine($"    T  Total Cards: {deck.TotalCards} | Active: {deck.ActiveCards}");
-            Console.WriteLine($"    *  Study Sessions: {deck.Statistics.TotalStudySessions}");
-            Console.WriteLine($"    ⏱️  Total Study Time: {deck.Statistics.TotalStudyTime:hh\\:mm\\:ss}");
-            Console.WriteLine($"    📈  Overall Success Rate: {deck.Statistics.OverallSuccessRate:F1}%");
-            Console.WriteLine($"    🔥  Study Streak: {deck.Statistics.StudyStreak} days");
+            Console.WriteLine($"    Total Cards: {deck.TotalCards} | Active: {deck.ActiveCards}");
+            Console.WriteLine($"    Study Sessions: {deck.Statistics.TotalStudySessions}");
+            Console.WriteLine($"    Total Study Time: {deck.Statistics.TotalStudyTime:hh\\:mm\\:ss}");
+            Console.WriteLine($"    Overall Success Rate: {deck.Statistics.OverallSuccessRate:F1}%");
+            Console.WriteLine($"    Study Streak: {deck.Statistics.StudyStreak} days");
             
             // Show box distribution
             var boxStats = _leitnerBoxService.GetBoxStatistics(deck);
-            Console.WriteLine("    B  Box Distribution:");
+            Console.WriteLine("    Box Distribution:");
             for (int i = 0; i < boxStats.Count; i++)
             {
                 Console.WriteLine($"       Box {i}: {boxStats[i]} cards");
@@ -862,10 +832,10 @@ namespace FlashcardApp.UI
             Console.ResetColor();
             Console.WriteLine();
             
-            ShowStatCard("=  ", "Total Decks", stats["TotalDecks"].ToString());
-            ShowStatCard("*  ", "Total Cards", stats["TotalCards"].ToString());
-            ShowStatCard("⏱️  ", "Total Study Time", stats["TotalStudyTime"].ToString());
-            ShowStatCard("📈  ", "Average Success Rate", $"{stats["AverageSuccessRate"]}%");
+            ShowStatCard("", "Total Decks", stats["TotalDecks"].ToString());
+            ShowStatCard("", "Total Cards", stats["TotalCards"].ToString());
+            ShowStatCard("", "Total Study Time", stats["TotalStudyTime"].ToString());
+            ShowStatCard("", "Average Success Rate", $"{stats["AverageSuccessRate"]}%");
         }
 
         private Dictionary<string, object> CalculateOverallStatistics(List<Deck> decks)
@@ -895,7 +865,7 @@ namespace FlashcardApp.UI
             }
 
             Console.Clear();
-            ShowSectionHeader("E  EDIT DECK", ConsoleColor.Yellow);
+            ShowSectionHeader("EDIT DECK", ConsoleColor.Yellow);
             Console.WriteLine();
             
             var selectedDeck = SelectDeck(decks, "Select a deck to edit:");
@@ -906,18 +876,18 @@ namespace FlashcardApp.UI
             }
 
             Console.Clear();
-            ShowSectionHeader($"E  EDITING: {selectedDeck.Name}", ConsoleColor.Yellow);
+            ShowSectionHeader($"EDITING: {selectedDeck.Name}", ConsoleColor.Yellow);
             Console.WriteLine();
             
             Console.WriteLine("What would you like to edit?");
-            Console.WriteLine("1. 📝  Deck Name");
-            Console.WriteLine("2. 📄  Description");
-            Console.WriteLine("3. 🏷️  Tags");
-            Console.WriteLine("4. =  Add Flashcard");
-            Console.WriteLine("5. E  Edit Flashcard");
-            Console.WriteLine("6. -  Delete Flashcard");
-            Console.WriteLine("7. R  Reset Study Dates");
-            Console.WriteLine("ESC. <  Back");
+            Console.WriteLine("1. Deck Name");
+            Console.WriteLine("2. Description");
+            Console.WriteLine("3. Tags");
+            Console.WriteLine("4. Add Flashcard");
+            Console.WriteLine("5. Edit Flashcard");
+            Console.WriteLine("6. Delete Flashcard");
+            Console.WriteLine("7. Reset Study Dates");
+            Console.WriteLine("ESC. Back");
             Console.WriteLine();
             ShowInputPrompt("Enter your choice");
             
@@ -975,7 +945,7 @@ namespace FlashcardApp.UI
             }
 
             Console.Clear();
-            ShowSectionHeader("-  DELETE DECK", ConsoleColor.Red);
+            ShowSectionHeader("DELETE DECK", ConsoleColor.Red);
             Console.WriteLine();
             
             var selectedDeck = SelectDeck(decks, "Select a deck to delete:");
@@ -986,7 +956,7 @@ namespace FlashcardApp.UI
             }
 
             Console.WriteLine();
-            Console.WriteLine($"⚠️  WARNING: You are about to delete the deck '{selectedDeck.Name}'");
+            Console.WriteLine($"WARNING: You are about to delete the deck '{selectedDeck.Name}'");
             Console.WriteLine($"   This will permanently remove {selectedDeck.TotalCards} cards and all statistics.");
             Console.WriteLine();
             ShowInputPrompt("Type 'DELETE' to confirm deletion (or anything else to cancel)");
@@ -1011,7 +981,7 @@ namespace FlashcardApp.UI
         private void ImportDeck()
         {
             Console.Clear();
-            ShowSectionHeader("I  IMPORT DECK", ConsoleColor.Green);
+            ShowSectionHeader("IMPORT DECK", ConsoleColor.Green);
             Console.WriteLine();
             
             Console.WriteLine("Import a deck from a CSV, XLSX, or JSON file.");
@@ -1125,7 +1095,7 @@ namespace FlashcardApp.UI
             }
 
             Console.Clear();
-            ShowSectionHeader("O  EXPORT DECK", ConsoleColor.Blue);
+            ShowSectionHeader("EXPORT DECK", ConsoleColor.Blue);
             Console.WriteLine();
             
             var selectedDeck = SelectDeck(decks, "Select a deck to export:");
@@ -1137,7 +1107,7 @@ namespace FlashcardApp.UI
 
             Console.WriteLine();
             Console.WriteLine("Supported export formats:");
-            Console.WriteLine("  📄  .csv  - Comma-separated values");
+            Console.WriteLine("  .csv  - Comma-separated values");
             Console.WriteLine("  T  .xlsx - Excel spreadsheet");
             Console.WriteLine("  L  .json - JSON format");
             Console.WriteLine();
@@ -1165,7 +1135,7 @@ namespace FlashcardApp.UI
                     ShowSuccessMessage($"✅  Deck '{selectedDeck.Name}' exported successfully!");
                     Console.WriteLine($"   📁  Saved to: {filePath}");
                     Console.WriteLine($"   T  {selectedDeck.TotalCards} cards exported");
-                    Console.WriteLine($"   📄  Format: {Path.GetExtension(filePath).ToUpper()}");
+                    Console.WriteLine($"   Format: {Path.GetExtension(filePath).ToUpper()}");
                 }
                 else
                 {
@@ -1187,32 +1157,19 @@ namespace FlashcardApp.UI
             }
             
             Console.WriteLine();
-            Console.WriteLine("    C  CONFIGURATION");
+            Console.WriteLine("    CONFIGURATION");
             Console.WriteLine();
             
             Console.ResetColor();
             Console.WriteLine();
             
-            if (config.UI.UseIcons)
-            {
-                ShowMenuOption("1", GetEmojiOrText("V"), "  View Current Settings", "Display all current configuration settings");
-                ShowMenuOption("2", GetEmojiOrText("B"), "  Leitner Box Settings", "Configure box promotion and demotion rules");
-                ShowMenuOption("3", GetEmojiOrText("S"), "  Study Session Settings", "Customize study session behavior");
-                ShowMenuOption("4", GetEmojiOrText("T"), "  Daily Limits", "Set maximum and minimum study limits");
-                ShowMenuOption("5", GetEmojiOrText("U"), "  UI Settings", "Customize colors, icons, and display options");
-                ShowMenuOption("6", GetEmojiOrText("R"), "  Reset to Defaults", "Restore all settings to default values");
-                ShowMenuOption("ESC", GetEmojiOrText("<"), "  Back to Main Menu", "Return to the main menu");
-            }
-            else
-            {
-                ShowMenuOption("1", "", "View Current Settings", "Display all current configuration settings");
-                ShowMenuOption("2", "", "Leitner Box Settings", "Configure box promotion and demotion rules");
-                ShowMenuOption("3", "", "Study Session Settings", "Customize study session behavior");
-                ShowMenuOption("4", "", "Daily Limits", "Set maximum and minimum study limits");
-                ShowMenuOption("5", "", "UI Settings", "Customize colors, icons, and display options");
-                ShowMenuOption("6", "", "Reset to Defaults", "Restore all settings to default values");
-                ShowMenuOption("ESC", "", "Back to Main Menu", "Return to the main menu");
-            }
+            ShowMenuOption("1", "View Current Settings", "Display all current configuration settings");
+            ShowMenuOption("2", "Leitner Box Settings", "Configure box promotion and demotion rules");
+            ShowMenuOption("3", "Study Session Settings", "Customize study session behavior");
+            ShowMenuOption("4", "Daily Limits", "Set maximum and minimum study limits");
+            ShowMenuOption("5", "UI Settings", "Customize colors, icons, and display options");
+            ShowMenuOption("6", "Reset to Defaults", "Restore all settings to default values");
+            ShowMenuOption("ESC", "Back to Main Menu", "Return to the main menu");
             
             Console.WriteLine();
             ShowInputPrompt("Enter your choice");
@@ -1220,7 +1177,7 @@ namespace FlashcardApp.UI
         private bool ViewCurrentConfiguration()
         {
             Console.Clear();
-            ShowSectionHeader("V  CURRENT CONFIGURATION", ConsoleColor.Cyan);
+            ShowSectionHeader("CURRENT CONFIGURATION", ConsoleColor.Cyan);
             Console.WriteLine();
             
             var config = _configService.GetConfiguration();
@@ -1271,7 +1228,7 @@ namespace FlashcardApp.UI
             while (true)
             {
                 Console.Clear();
-                ShowSectionHeader("B  LEITNER BOX SETTINGS", ConsoleColor.Yellow);
+                ShowSectionHeader("LEITNER BOX SETTINGS", ConsoleColor.Yellow);
                 Console.WriteLine();
                 
                 var config = _configService.GetConfiguration();
@@ -1298,11 +1255,11 @@ namespace FlashcardApp.UI
                 }
                 Console.WriteLine();
                 
-                Console.WriteLine("📝  EDITING OPTIONS:");
+                Console.WriteLine("EDITING OPTIONS:");
                 Console.WriteLine("   1. T  Change Number of Boxes");
-                Console.WriteLine("   2. 📈  Edit Promotion Rules");
+                Console.WriteLine("   2. Edit Promotion Rules");
                 Console.WriteLine("   3. 📉  Edit Demotion Rules");
-                Console.WriteLine("   ESC. <  Back to Configuration Menu");
+                Console.WriteLine("   ESC. Back to Configuration Menu");
                 Console.WriteLine();
                 
                 ShowInputPrompt("Enter your choice");
@@ -1333,7 +1290,7 @@ namespace FlashcardApp.UI
             while (true)
             {
                 Console.Clear();
-                ShowSectionHeader("=  STUDY SESSION SETTINGS", ConsoleColor.Yellow);
+                ShowSectionHeader("STUDY SESSION SETTINGS", ConsoleColor.Yellow);
                 Console.WriteLine();
                 
                 var config = _configService.GetConfiguration();
@@ -1355,19 +1312,19 @@ namespace FlashcardApp.UI
                 Console.WriteLine($"   Quit: {config.StudySession.KeyboardShortcuts.Quit}");
                 Console.WriteLine();
                 
-                Console.WriteLine("⏱️  TIMING SETTINGS:");
+                Console.WriteLine("TIMING SETTINGS:");
                 Console.WriteLine($"   Auto Advance Delay: {config.StudySession.AutoAdvanceDelay} seconds");
                 Console.WriteLine();
                 
-                Console.WriteLine("📝  EDITING OPTIONS:");
-                Console.WriteLine("   1. *  Change Default Study Mode");
-                Console.WriteLine("   2. T  Toggle Show Statistics");
-                Console.WriteLine("   3. ⚡  Toggle Auto Advance");
-                Console.WriteLine("   4. 🔀  Toggle Shuffle Cards");
-                Console.WriteLine("   5. 📈  Toggle Show Progress");
-                Console.WriteLine("   6. ⏱️  Change Auto Advance Delay");
-                Console.WriteLine("   7. ⌨️  Edit Keyboard Shortcuts");
-                Console.WriteLine("   ESC. <  Back to Configuration Menu");
+                Console.WriteLine("EDITING OPTIONS:");
+                Console.WriteLine("   1. Change Default Study Mode");
+                Console.WriteLine("   2. Toggle Show Statistics");
+                Console.WriteLine("   3. Toggle Auto Advance");
+                Console.WriteLine("   4. Toggle Shuffle Cards");
+                Console.WriteLine("   5. Toggle Show Progress");
+                Console.WriteLine("   6. Change Auto Advance Delay");
+                Console.WriteLine("   7. Edit Keyboard Shortcuts");
+                Console.WriteLine("   ESC. Back to Configuration Menu");
                 Console.WriteLine();
                 
                 ShowInputPrompt("Enter your choice");
@@ -1410,7 +1367,7 @@ namespace FlashcardApp.UI
             while (true)
             {
                 Console.Clear();
-                ShowSectionHeader("T  DAILY LIMITS", ConsoleColor.Yellow);
+                ShowSectionHeader("DAILY LIMITS", ConsoleColor.Yellow);
                 Console.WriteLine();
                 
                 var config = _configService.GetConfiguration();
@@ -1429,12 +1386,12 @@ namespace FlashcardApp.UI
                 Console.WriteLine("   • Min Study Time: Minimum time to spend studying per day");
                 Console.WriteLine();
                 
-                Console.WriteLine("📝  EDITING OPTIONS:");
-                Console.WriteLine("   1. T  Change Max Cards Per Day");
-                Console.WriteLine("   2. 📉  Change Min Cards Per Day");
-                Console.WriteLine("   3. T  Change Max Study Time");
-                Console.WriteLine("   4. ⏱️  Change Min Study Time");
-                Console.WriteLine("   ESC. <  Back to Configuration Menu");
+                Console.WriteLine("EDITING OPTIONS:");
+                Console.WriteLine("   1. Change Max Cards Per Day");
+                Console.WriteLine("   2. Change Min Cards Per Day");
+                Console.WriteLine("   3. Change Max Study Time");
+                Console.WriteLine("   4. Change Min Study Time");
+                Console.WriteLine("   ESC. Back to Configuration Menu");
                 Console.WriteLine();
                 
                 ShowInputPrompt("Enter your choice");
@@ -1468,7 +1425,7 @@ namespace FlashcardApp.UI
             while (true)
             {
                 Console.Clear();
-                ShowSectionHeader("@  UI SETTINGS", ConsoleColor.Yellow);
+                ShowSectionHeader("UI SETTINGS", ConsoleColor.Yellow);
                 Console.WriteLine();
                 
                 var config = _configService.GetConfiguration();
@@ -1490,13 +1447,13 @@ namespace FlashcardApp.UI
                 Console.WriteLine("   • Show Detailed Statistics: Display comprehensive statistics");
                 Console.WriteLine();
                 
-                Console.WriteLine("📝  EDITING OPTIONS:");
-                Console.WriteLine("   1. @  Toggle Use Colors");
-                Console.WriteLine("   2. 😀  Toggle Use Icons");
-                Console.WriteLine("   3. 👋  Toggle Show Welcome Message");
-                Console.WriteLine("   4. 🖥️  Toggle Clear Screen on Menu Change");
-                Console.WriteLine("   5. T  Toggle Show Detailed Statistics");
-                Console.WriteLine("   ESC. <  Back to Configuration Menu");
+                Console.WriteLine("EDITING OPTIONS:");
+                Console.WriteLine("   1. Toggle Use Colors");
+                Console.WriteLine("   2. Toggle Use Icons");
+                Console.WriteLine("   3. Toggle Show Welcome Message");
+                Console.WriteLine("   4. Toggle Clear Screen on Menu Change");
+                Console.WriteLine("   5. Toggle Show Detailed Statistics");
+                Console.WriteLine("   ESC. Back to Configuration Menu");
                 Console.WriteLine();
                 
                 ShowInputPrompt("Enter your choice");
@@ -1531,10 +1488,10 @@ namespace FlashcardApp.UI
         private bool ResetToDefaults()
         {
             Console.Clear();
-            ShowSectionHeader("R  RESET TO DEFAULTS", ConsoleColor.Red);
+            ShowSectionHeader("RESET TO DEFAULTS", ConsoleColor.Red);
             Console.WriteLine();
             
-            Console.WriteLine("⚠️  WARNING: This will reset ALL configuration settings to their default values!");
+            Console.WriteLine("WARNING: This will reset ALL configuration settings to their default values!");
             Console.WriteLine();
             Console.WriteLine("This includes:");
             Console.WriteLine("   • Leitner Box settings");
@@ -1564,11 +1521,11 @@ namespace FlashcardApp.UI
                         config.FilePaths = defaultConfig.FilePaths;
                         config.ReviewScheduling = defaultConfig.ReviewScheduling;
                     });
-                    ShowSuccessMessage("✅  Configuration has been reset to defaults!");
+                    ShowSuccessMessage("Configuration has been reset to defaults!");
                 }
                 catch (Exception ex)
                 {
-                    ShowErrorMessage($"❌  Failed to reset configuration: {ex.Message}");
+                    ShowErrorMessage($"Failed to reset configuration: {ex.Message}");
                 }
             }
             else
@@ -1599,11 +1556,11 @@ namespace FlashcardApp.UI
                     cfg.LeitnerBoxes.PromotionRules = GeneratePromotionRules(newCount);
                     cfg.LeitnerBoxes.DemotionRules = GenerateDemotionRules(newCount);
                 });
-                ShowSuccessMessage($"✅  Number of boxes updated to {newCount}!");
+                ShowSuccessMessage($"Number of boxes updated to {newCount}!");
             }
             else
             {
-                ShowErrorMessage("❌  Invalid input. Please enter a number between 3 and 10.");
+                ShowErrorMessage("Invalid input. Please enter a number between 3 and 10.");
             }
             
             ShowPressAnyKey();
@@ -1613,7 +1570,7 @@ namespace FlashcardApp.UI
         {
             var config = _configService.GetConfiguration();
             Console.WriteLine();
-            Console.WriteLine("📈  PROMOTION RULES EDITOR");
+            Console.WriteLine("PROMOTION RULES EDITOR");
             Console.WriteLine();
             
             for (int i = 0; i < config.LeitnerBoxes.PromotionRules.Count; i++)
@@ -1629,7 +1586,7 @@ namespace FlashcardApp.UI
                     {
                         cfg.LeitnerBoxes.PromotionRules[i].CorrectAnswersNeeded = newCount;
                     });
-                    ShowSuccessMessage($"✅  Box {i} promotion rule updated!");
+                    ShowSuccessMessage($"Box {i} promotion rule updated!");
                 }
                 else if (string.IsNullOrWhiteSpace(input))
                 {
@@ -1637,7 +1594,7 @@ namespace FlashcardApp.UI
                 }
                 else
                 {
-                    ShowErrorMessage("❌  Invalid input. Keeping current value.");
+                    ShowErrorMessage("Invalid input. Keeping current value.");
                 }
             }
             
@@ -1648,7 +1605,7 @@ namespace FlashcardApp.UI
         {
             var config = _configService.GetConfiguration();
             Console.WriteLine();
-            Console.WriteLine("📉  DEMOTION RULES EDITOR");
+            Console.WriteLine("DEMOTION RULES EDITOR");
             Console.WriteLine();
             
             for (int i = 0; i < config.LeitnerBoxes.DemotionRules.Count; i++)
@@ -1664,7 +1621,7 @@ namespace FlashcardApp.UI
                     {
                         cfg.LeitnerBoxes.DemotionRules[i].IncorrectAnswersNeeded = newCount;
                     });
-                    ShowSuccessMessage($"✅  Box {rule.BoxNumber} demotion rule updated!");
+                    ShowSuccessMessage($"Box {rule.BoxNumber} demotion rule updated!");
                 }
                 else if (string.IsNullOrWhiteSpace(input))
                 {
@@ -1672,7 +1629,7 @@ namespace FlashcardApp.UI
                 }
                 else
                 {
-                    ShowErrorMessage("❌  Invalid input. Keeping current value.");
+                    ShowErrorMessage("Invalid input. Keeping current value.");
                 }
             }
             
@@ -1729,11 +1686,11 @@ namespace FlashcardApp.UI
                 if (newMode != config.StudySession.DefaultStudyMode)
                 {
                     _configService.UpdateConfiguration(cfg => cfg.StudySession.DefaultStudyMode = newMode);
-                    ShowSuccessMessage($"✅  Default study mode updated to {newMode}!");
+                    ShowSuccessMessage($"Default study mode updated to {newMode}!");
                 }
                 else
                 {
-                    ShowErrorMessage("❌  Invalid input. Keeping current value.");
+                    ShowErrorMessage("Invalid input. Keeping current value.");
                 }
             }
             else
@@ -1749,7 +1706,7 @@ namespace FlashcardApp.UI
             var config = _configService.GetConfiguration();
             var newValue = !config.StudySession.ShowStatistics;
             _configService.UpdateConfiguration(cfg => cfg.StudySession.ShowStatistics = newValue);
-            ShowSuccessMessage($"✅  Show Statistics set to {newValue}!");
+            ShowSuccessMessage($"Show Statistics set to {newValue}!");
             ShowPressAnyKey();
         }
 
@@ -1758,7 +1715,7 @@ namespace FlashcardApp.UI
             var config = _configService.GetConfiguration();
             var newValue = !config.StudySession.AutoAdvance;
             _configService.UpdateConfiguration(cfg => cfg.StudySession.AutoAdvance = newValue);
-            ShowSuccessMessage($"✅  Auto Advance set to {newValue}!");
+            ShowSuccessMessage($"Auto Advance set to {newValue}!");
             ShowPressAnyKey();
         }
 
@@ -1767,7 +1724,7 @@ namespace FlashcardApp.UI
             var config = _configService.GetConfiguration();
             var newValue = !config.StudySession.ShuffleCards;
             _configService.UpdateConfiguration(cfg => cfg.StudySession.ShuffleCards = newValue);
-            ShowSuccessMessage($"✅  Shuffle Cards set to {newValue}!");
+            ShowSuccessMessage($"Shuffle Cards set to {newValue}!");
             ShowPressAnyKey();
         }
 
@@ -1776,7 +1733,7 @@ namespace FlashcardApp.UI
             var config = _configService.GetConfiguration();
             var newValue = !config.StudySession.ShowProgress;
             _configService.UpdateConfiguration(cfg => cfg.StudySession.ShowProgress = newValue);
-            ShowSuccessMessage($"✅  Show Progress set to {newValue}!");
+            ShowSuccessMessage($"Show Progress set to {newValue}!");
             ShowPressAnyKey();
         }
 
@@ -1791,7 +1748,7 @@ namespace FlashcardApp.UI
             if (!string.IsNullOrWhiteSpace(input) && int.TryParse(input, out int newDelay) && newDelay >= 1 && newDelay <= 30)
             {
                 _configService.UpdateConfiguration(cfg => cfg.StudySession.AutoAdvanceDelay = newDelay);
-                ShowSuccessMessage($"✅  Auto advance delay updated to {newDelay} seconds!");
+                ShowSuccessMessage($"Auto advance delay updated to {newDelay} seconds!");
             }
             else if (string.IsNullOrWhiteSpace(input))
             {
@@ -1799,7 +1756,7 @@ namespace FlashcardApp.UI
             }
             else
             {
-                ShowErrorMessage("❌  Invalid input. Please enter a number between 1 and 30.");
+                ShowErrorMessage("Invalid input. Please enter a number between 1 and 30.");
             }
             
             ShowPressAnyKey();
@@ -1809,7 +1766,7 @@ namespace FlashcardApp.UI
         {
             var config = _configService.GetConfiguration();
             Console.WriteLine();
-            Console.WriteLine("⌨️  KEYBOARD SHORTCUTS EDITOR");
+            Console.WriteLine("KEYBOARD SHORTCUTS EDITOR");
             Console.WriteLine();
             
             var shortcuts = config.StudySession.KeyboardShortcuts;
@@ -1822,7 +1779,7 @@ namespace FlashcardApp.UI
             EditShortcut("Help", shortcuts.Help, (cfg, value) => cfg.StudySession.KeyboardShortcuts.Help = value);
             EditShortcut("Quit", shortcuts.Quit, (cfg, value) => cfg.StudySession.KeyboardShortcuts.Quit = value);
             
-            ShowSuccessMessage("✅  Keyboard shortcuts updated!");
+            ShowSuccessMessage("Keyboard shortcuts updated!");
             ShowPressAnyKey();
         }
 
@@ -1855,7 +1812,7 @@ namespace FlashcardApp.UI
             if (!string.IsNullOrWhiteSpace(input) && int.TryParse(input, out int newMax) && newMax >= 10 && newMax <= 1000)
             {
                 _configService.UpdateConfiguration(cfg => cfg.DailyLimits.MaxCardsPerDay = newMax);
-                ShowSuccessMessage($"✅  Max cards per day updated to {newMax}!");
+                ShowSuccessMessage($"Max cards per day updated to {newMax}!");
             }
             else if (string.IsNullOrWhiteSpace(input))
             {
@@ -1863,7 +1820,7 @@ namespace FlashcardApp.UI
             }
             else
             {
-                ShowErrorMessage("❌  Invalid input. Please enter a number between 10 and 1000.");
+                ShowErrorMessage("Invalid input. Please enter a number between 10 and 1000.");
             }
             
             ShowPressAnyKey();
@@ -1880,7 +1837,7 @@ namespace FlashcardApp.UI
             if (!string.IsNullOrWhiteSpace(input) && int.TryParse(input, out int newMin) && newMin >= 1 && newMin <= 100)
             {
                 _configService.UpdateConfiguration(cfg => cfg.DailyLimits.MinCardsPerDay = newMin);
-                ShowSuccessMessage($"✅  Min cards per day updated to {newMin}!");
+                ShowSuccessMessage($"Min cards per day updated to {newMin}!");
             }
             else if (string.IsNullOrWhiteSpace(input))
             {
@@ -1888,7 +1845,7 @@ namespace FlashcardApp.UI
             }
             else
             {
-                ShowErrorMessage("❌  Invalid input. Please enter a number between 1 and 100.");
+                ShowErrorMessage("Invalid input. Please enter a number between 1 and 100.");
             }
             
             ShowPressAnyKey();
@@ -1906,7 +1863,7 @@ namespace FlashcardApp.UI
             if (!string.IsNullOrWhiteSpace(input) && TimeSpan.TryParse(input, out TimeSpan newTime) && newTime.TotalHours <= 24)
             {
                 _configService.UpdateConfiguration(cfg => cfg.DailyLimits.MaxStudyTimePerDay = newTime);
-                ShowSuccessMessage($"✅  Max study time updated to {newTime}!");
+                ShowSuccessMessage($"Max study time updated to {newTime}!");
             }
             else if (string.IsNullOrWhiteSpace(input))
             {
@@ -1914,7 +1871,7 @@ namespace FlashcardApp.UI
             }
             else
             {
-                ShowErrorMessage("❌  Invalid input. Please enter time in HH:MM:SS format (max 24 hours).");
+                ShowErrorMessage("Invalid input. Please enter time in HH:MM:SS format (max 24 hours).");
             }
             
             ShowPressAnyKey();
@@ -1932,7 +1889,7 @@ namespace FlashcardApp.UI
             if (!string.IsNullOrWhiteSpace(input) && TimeSpan.TryParse(input, out TimeSpan newTime) && newTime.TotalHours <= 24)
             {
                 _configService.UpdateConfiguration(cfg => cfg.DailyLimits.MinStudyTimePerDay = newTime);
-                ShowSuccessMessage($"✅  Min study time updated to {newTime}!");
+                ShowSuccessMessage($"Min study time updated to {newTime}!");
             }
             else if (string.IsNullOrWhiteSpace(input))
             {
@@ -1940,7 +1897,7 @@ namespace FlashcardApp.UI
             }
             else
             {
-                ShowErrorMessage("❌  Invalid input. Please enter time in HH:MM:SS format (max 24 hours).");
+                ShowErrorMessage("nvalid input. Please enter time in HH:MM:SS format (max 24 hours).");
             }
             
             ShowPressAnyKey();
@@ -1952,7 +1909,7 @@ namespace FlashcardApp.UI
             var config = _configService.GetConfiguration();
             var newValue = !config.UI.UseColors;
             _configService.UpdateConfiguration(cfg => cfg.UI.UseColors = newValue);
-            ShowSuccessMessage($"✅  Use Colors set to {newValue}!");
+            ShowSuccessMessage($"Use Colors set to {newValue}!");
             ShowPressAnyKey();
         }
 
@@ -1961,7 +1918,7 @@ namespace FlashcardApp.UI
             var config = _configService.GetConfiguration();
             var newValue = !config.UI.UseIcons;
             _configService.UpdateConfiguration(cfg => cfg.UI.UseIcons = newValue);
-            ShowSuccessMessage($"✅  Use Icons set to {newValue}!");
+            ShowSuccessMessage($"Use Icons set to {newValue}!");
             ShowPressAnyKey();
         }
 
@@ -1970,7 +1927,7 @@ namespace FlashcardApp.UI
             var config = _configService.GetConfiguration();
             var newValue = !config.UI.ShowWelcomeMessage;
             _configService.UpdateConfiguration(cfg => cfg.UI.ShowWelcomeMessage = newValue);
-            ShowSuccessMessage($"✅  Show Welcome Message set to {newValue}!");
+            ShowSuccessMessage($"Show Welcome Message set to {newValue}!");
             ShowPressAnyKey();
         }
 
@@ -1979,7 +1936,7 @@ namespace FlashcardApp.UI
             var config = _configService.GetConfiguration();
             var newValue = !config.UI.ClearScreenOnMenuChange;
             _configService.UpdateConfiguration(cfg => cfg.UI.ClearScreenOnMenuChange = newValue);
-            ShowSuccessMessage($"✅  Clear Screen on Menu Change set to {newValue}!");
+            ShowSuccessMessage($"Clear Screen on Menu Change set to {newValue}!");
             ShowPressAnyKey();
         }
 
@@ -1988,7 +1945,7 @@ namespace FlashcardApp.UI
             var config = _configService.GetConfiguration();
             var newValue = !config.UI.ShowDetailedStatistics;
             _configService.UpdateConfiguration(cfg => cfg.UI.ShowDetailedStatistics = newValue);
-            ShowSuccessMessage($"✅  Show Detailed Statistics set to {newValue}!");
+            ShowSuccessMessage($"Show Detailed Statistics set to {newValue}!");
             ShowPressAnyKey();
         }
 
@@ -2005,11 +1962,11 @@ namespace FlashcardApp.UI
                 deck.Name = newName;
                 if (_deckService.SaveDeck(deck))
                 {
-                    ShowSuccessMessage("✅  Deck name updated successfully!");
+                    ShowSuccessMessage("Deck name updated successfully!");
                 }
                 else
                 {
-                    ShowErrorMessage("❌  Failed to update deck name.");
+                    ShowErrorMessage("Failed to update deck name.");
                 }
             }
         }
@@ -2025,11 +1982,11 @@ namespace FlashcardApp.UI
             
             if (_deckService.SaveDeck(deck))
             {
-                ShowSuccessMessage("✅  Deck description updated successfully!");
+                ShowSuccessMessage("Deck description updated successfully!");
             }
             else
             {
-                ShowErrorMessage("❌  Failed to update deck description.");
+                ShowErrorMessage("Failed to update deck description.");
             }
         }
 
@@ -2049,18 +2006,18 @@ namespace FlashcardApp.UI
             
             if (_deckService.SaveDeck(deck))
             {
-                ShowSuccessMessage("✅  Deck tags updated successfully!");
+                ShowSuccessMessage("Deck tags updated successfully!");
             }
             else
             {
-                ShowErrorMessage("❌  Failed to update deck tags.");
+                ShowErrorMessage("Failed to update deck tags.");
             }
         }
 
         private void AddFlashcardToDeck(Deck deck)
         {
             Console.WriteLine();
-            ShowSectionHeader("=  ADD FLASHCARD", ConsoleColor.Green);
+            ShowSectionHeader("ADD FLASHCARD", ConsoleColor.Green);
             Console.WriteLine();
             
             ShowInputPrompt("Enter the front side of the card (question)");
@@ -2208,7 +2165,7 @@ namespace FlashcardApp.UI
             {
                 var flashcard = deck.Flashcards[cardIndex - 1];
                 Console.WriteLine();
-                Console.WriteLine($"⚠️  Are you sure you want to delete this flashcard?");
+                Console.WriteLine($"Are you sure you want to delete this flashcard?");
                 Console.WriteLine($"   Front: {flashcard.Front}");
                 Console.WriteLine($"   Back: {flashcard.Back}");
                 Console.WriteLine();
