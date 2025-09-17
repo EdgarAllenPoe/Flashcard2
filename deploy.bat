@@ -123,6 +123,18 @@ if exist "run-flashcard.ps1" (
 ) else (
     echo ⚠️  PowerShell launcher script not found, skipping...
 )
+if exist "run-flashcard-wt.bat" (
+    copy "run-flashcard-wt.bat" "%TARGET_PATH%\run-flashcard-wt.bat"
+    echo ✅ Windows Terminal launcher script copied!
+) else (
+    echo ⚠️  Windows Terminal launcher script not found, skipping...
+)
+if exist "run-flashcard-text.bat" (
+    copy "run-flashcard-text.bat" "%TARGET_PATH%\run-flashcard-text.bat"
+    echo ✅ Text-only launcher script copied!
+) else (
+    echo ⚠️  Text-only launcher script not found, skipping...
+)
 
 REM Step 6: Copy example deck
 echo 📚 Setting up example deck...

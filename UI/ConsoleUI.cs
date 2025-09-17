@@ -25,8 +25,21 @@ namespace FlashcardApp.UI
         {
             try
             {
-                // Enable emoji support - modern terminals handle emojis well
-                // Users can still disable them in UI settings if needed
+                // Check if emojis are explicitly disabled via environment variable
+                if (Environment.GetEnvironmentVariable("FLASHCARD_NO_EMOJIS") == "1")
+                {
+                    return false;
+                }
+
+                // Test if emojis actually display properly
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                
+                // Try to display a simple emoji and see if it renders correctly
+                var testEmoji = "🎯";
+                Console.Write(testEmoji);
+                
+                // If we get here without exception, assume emojis work
+                // Note: This is a basic test - some terminals may still not display emojis properly
                 return true;
             }
             catch
