@@ -58,7 +58,7 @@ namespace FlashcardApp.UI
             while (true)
             {
                 ShowMainMenu();
-                var choice = GetUserChoice();
+                var choice = GetImmediateChoice();
                 
                 if (config.UI.ClearScreenOnMenuChange)
                 {
@@ -237,7 +237,7 @@ namespace FlashcardApp.UI
             {
                 Console.Clear();
                 ShowDeckManagementMenu();
-                var choice = GetUserChoice();
+                var choice = GetImmediateChoice();
 
                 switch (choice)
                 {
@@ -303,7 +303,7 @@ namespace FlashcardApp.UI
             {
                 Console.Clear();
                 ShowConfigurationMenu();
-                var choice = GetUserChoice();
+                var choice = GetImmediateChoice();
 
                 switch (choice)
                 {
@@ -516,7 +516,7 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             ShowInputPrompt($"Enter your choice (default: {config.StudySession.DefaultStudyMode})");
             
-            var input = GetUserChoice();
+            var input = GetImmediateChoice();
             if (input == "ESC")
             {
                 return config.StudySession.DefaultStudyMode; // Return default on ESC
@@ -743,6 +743,17 @@ namespace FlashcardApp.UI
             Console.Write(keyInfo.KeyChar);
             var input = keyInfo.KeyChar + Console.ReadLine();
             return input;
+        }
+
+        private string GetImmediateChoice()
+        {
+            var keyInfo = Console.ReadKey(true);
+            if (keyInfo.Key == ConsoleKey.Escape)
+            {
+                return "ESC";
+            }
+            Console.Write(keyInfo.KeyChar);
+            return keyInfo.KeyChar.ToString();
         }
 
         private void ShowHelp()
@@ -1263,7 +1274,7 @@ namespace FlashcardApp.UI
                 Console.WriteLine();
                 
                 ShowInputPrompt("Enter your choice");
-                var choice = GetUserChoice();
+                var choice = GetImmediateChoice();
                 
                 switch (choice)
                 {
@@ -1328,7 +1339,7 @@ namespace FlashcardApp.UI
                 Console.WriteLine();
                 
                 ShowInputPrompt("Enter your choice");
-                var choice = GetUserChoice();
+                var choice = GetImmediateChoice();
                 
                 switch (choice)
                 {
@@ -1395,7 +1406,7 @@ namespace FlashcardApp.UI
                 Console.WriteLine();
                 
                 ShowInputPrompt("Enter your choice");
-                var choice = GetUserChoice();
+                var choice = GetImmediateChoice();
                 
                 switch (choice)
                 {
@@ -1457,7 +1468,7 @@ namespace FlashcardApp.UI
                 Console.WriteLine();
                 
                 ShowInputPrompt("Enter your choice");
-                var choice = GetUserChoice();
+                var choice = GetImmediateChoice();
                 
                 switch (choice)
                 {
