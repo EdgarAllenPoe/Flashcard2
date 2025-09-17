@@ -109,13 +109,19 @@ mkdir "%TARGET_PATH%\backups"
 mkdir "%TARGET_PATH%\exports"
 echo ✅ Directories created!
 
-REM Step 5: Copy launcher script
-echo 🚀 Setting up launcher script...
+REM Step 5: Copy launcher scripts
+echo 🚀 Setting up launcher scripts...
 if exist "run-flashcard.bat" (
     copy "run-flashcard.bat" "%TARGET_PATH%\run-flashcard.bat"
-    echo ✅ Launcher script copied!
+    echo ✅ Batch launcher script copied!
 ) else (
-    echo ⚠️  Launcher script not found, skipping...
+    echo ⚠️  Batch launcher script not found, skipping...
+)
+if exist "run-flashcard.ps1" (
+    copy "run-flashcard.ps1" "%TARGET_PATH%\run-flashcard.ps1"
+    echo ✅ PowerShell launcher script copied!
+) else (
+    echo ⚠️  PowerShell launcher script not found, skipping...
 )
 
 REM Step 6: Copy example deck

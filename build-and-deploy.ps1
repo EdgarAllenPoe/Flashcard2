@@ -133,16 +133,27 @@ if (Test-Path $configSource) {
     Write-Host "✅ Default configuration created!" -ForegroundColor Green
 }
 
-# Step 5: Copy launcher script
-Write-Host "🚀 Setting up launcher script..." -ForegroundColor Yellow
-$launcherSource = "run-flashcard.bat"
-$launcherTarget = Join-Path $TargetPath "run-flashcard.bat"
+# Step 5: Copy launcher scripts
+Write-Host "🚀 Setting up launcher scripts..." -ForegroundColor Yellow
 
-if (Test-Path $launcherSource) {
-    Copy-Item -Path $launcherSource -Destination $launcherTarget -Force
-    Write-Host "✅ Launcher script copied!" -ForegroundColor Green
+# Copy batch launcher
+$batchLauncherSource = "run-flashcard.bat"
+$batchLauncherTarget = Join-Path $TargetPath "run-flashcard.bat"
+if (Test-Path $batchLauncherSource) {
+    Copy-Item -Path $batchLauncherSource -Destination $batchLauncherTarget -Force
+    Write-Host "✅ Batch launcher script copied!" -ForegroundColor Green
 } else {
-    Write-Host "⚠️  Launcher script not found, skipping..." -ForegroundColor Yellow
+    Write-Host "⚠️  Batch launcher script not found, skipping..." -ForegroundColor Yellow
+}
+
+# Copy PowerShell launcher
+$psLauncherSource = "run-flashcard.ps1"
+$psLauncherTarget = Join-Path $TargetPath "run-flashcard.ps1"
+if (Test-Path $psLauncherSource) {
+    Copy-Item -Path $psLauncherSource -Destination $psLauncherTarget -Force
+    Write-Host "✅ PowerShell launcher script copied!" -ForegroundColor Green
+} else {
+    Write-Host "⚠️  PowerShell launcher script not found, skipping..." -ForegroundColor Yellow
 }
 
 # Step 6: Create example deck
