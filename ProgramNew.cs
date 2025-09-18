@@ -1,11 +1,17 @@
 using FlashcardApp.Services;
 using FlashcardApp.UI;
+using FlashcardApp.UI.Abstractions;
+using FlashcardApp.UI.Implementations.Console;
 
 namespace FlashcardApp
 {
-    class Program
+    /// <summary>
+    /// Alternative Program entry point that demonstrates the new UI abstraction architecture
+    /// This shows how the application can be wired up with the new abstraction layer
+    /// </summary>
+    class ProgramNew
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             try
             {
@@ -30,8 +36,20 @@ namespace FlashcardApp
                 // Ensure directories exist
                 configService.EnsureDirectoriesExist();
 
-                // Initialize and run the UI
-                var ui = new ConsoleUI(configService, deckService, studySessionService, leitnerBoxService);
+                // Initialize UI abstractions
+                var output = new ConsoleOutput();
+                var input = new ConsoleInput();
+                var theme = new ConsoleTheme();
+                var renderer = new ConsoleRenderer(output, theme);
+                var userInteraction = new ConsoleUserInteractionService(input, output, theme, renderer);
+
+                // Initialize application service
+                var applicationService = new ConsoleApplicationService(
+                    configService, deckService, studySessionService, leitnerBoxService);
+
+                // For now, use the bridge to maintain compatibility
+                // In the future, this could be replaced with a fully refactored UI
+                var ui = new ConsoleUIBridge(configService, deckService, studySessionService, leitnerBoxService);
                 ui.Run();
             }
             catch (Exception ex)

@@ -1,19 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>Flashcard</AssemblyName>
-    <PublishSingleFile>true</PublishSingleFile>
-    <SelfContained>true</SelfContained>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <PublishReadyToRun>true</PublishReadyToRun>
-    <ConsoleApplication>true</ConsoleApplication>
-    <UseWindowsForms>false</UseWindowsForms>
-    <UseWPF>false</UseWPF>
-    <ApplicationIcon>app.ico</ApplicationIcon>
+    <AssemblyName>FlashcardApp</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,6 +17,12 @@
     <Compile Remove="FlashcardApp.Tests\**" />
     <EmbeddedResource Remove="FlashcardApp.Tests\**" />
     <None Remove="FlashcardApp.Tests\**" />
+    <Compile Remove="FlashcardApp.WinUI\**" />
+    <EmbeddedResource Remove="FlashcardApp.WinUI\**" />
+    <None Remove="FlashcardApp.WinUI\**" />
+    <Compile Remove="FlashcardApp.Console\**" />
+    <EmbeddedResource Remove="FlashcardApp.Console\**" />
+    <None Remove="FlashcardApp.Console\**" />
   </ItemGroup>
 
 </Project>
