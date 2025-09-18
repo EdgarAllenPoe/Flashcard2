@@ -1281,7 +1281,7 @@ namespace FlashcardApp.UI
                 }
                 Console.WriteLine();
                 
-                Console.WriteLine("📉  DEMOTION RULES (Incorrect answers):");
+                Console.WriteLine("DEMOTION RULES (Incorrect answers):");
                 for (int i = 0; i < config.LeitnerBoxes.DemotionRules.Count; i++)
                 {
                     var rule = config.LeitnerBoxes.DemotionRules[i];
@@ -1292,7 +1292,7 @@ namespace FlashcardApp.UI
                 Console.WriteLine("EDITING OPTIONS:");
                 Console.WriteLine("   1. T  Change Number of Boxes");
                 Console.WriteLine("   2. Edit Promotion Rules");
-                Console.WriteLine("   3. 📉  Edit Demotion Rules");
+                Console.WriteLine("   3. Edit Demotion Rules");
                 Console.WriteLine("   ESC. Back to Configuration Menu");
                 Console.WriteLine();
                 
