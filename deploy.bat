@@ -111,8 +111,8 @@ echo Directories created!
 
 REM Step 5: Copy example deck
 echo Setting up example deck...
-if exist "sample-vocabulary-deck.json" (
-    copy "sample-vocabulary-deck.json" "%TARGET_PATH%\decks\sample-vocabulary-deck.json"
+if exist "decks\example-deck-001.json" (
+    copy "decks\example-deck-001.json" "%TARGET_PATH%\decks\example-deck-001.json"
     echo Example deck copied!
 ) else (
     echo Example deck not found, skipping...

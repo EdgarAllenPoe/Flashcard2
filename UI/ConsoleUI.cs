@@ -2248,14 +2248,21 @@ namespace FlashcardApp.UI
             if (confirmation?.ToUpper() == "RESET")
             {
                 var today = DateTime.Today;
-                var yesterday = today.AddDays(-1); // Set to yesterday to ensure cards are due today
                 var resetCount = 0;
                 
                 foreach (var flashcard in deck.Flashcards)
                 {
-                    flashcard.LastReviewed = yesterday;
-                    flashcard.NextReviewDate = yesterday; // Set to yesterday so they're due today
+                    flashcard.LastReviewed = today.AddDays(-1); // Set to yesterday
+                    flashcard.NextReviewDate = today.AddDays(-1); // Set to yesterday so they're due today
                     flashcard.CurrentBox = 0; // Reset to box 0 for fresh start
+                    // Reset statistics to make them available as new cards
+                    flashcard.Statistics.TotalReviews = 0;
+                    flashcard.Statistics.CorrectAnswers = 0;
+                    flashcard.Statistics.IncorrectAnswers = 0;
+                    flashcard.Statistics.Streak = 0;
+                    flashcard.Statistics.TotalStudyTime = TimeSpan.Zero;
+                    flashcard.Statistics.AverageResponseTime = 0.0;
+                    flashcard.Statistics.LastStudySession = null;
                     resetCount++;
                 }
                 
@@ -2263,9 +2270,14 @@ namespace FlashcardApp.UI
                 
                 if (_deckService.SaveDeck(deck))
                 {
-                    ShowSuccessMessage($"Study dates reset for {resetCount} cards!");
+                    // Clear any existing session state for this deck
+                    _studySessionService.ClearSessionState(deck.Id);
+                    
+                    ShowSuccessMessage($"Study dates and statistics reset for {resetCount} cards!");
                     Console.WriteLine("   All cards are now available for study today.");
-                    Console.WriteLine($"   Reset date: {yesterday:yyyy-MM-dd}");
+                    Console.WriteLine("   Statistics have been cleared for a fresh start.");
+                    Console.WriteLine("   Session state has been cleared.");
+                    Console.WriteLine($"   Reset date: {today.AddDays(-1):yyyy-MM-dd}");
                     Console.WriteLine($"   Current date: {DateTime.Now:yyyy-MM-dd}");
                 }
                 else

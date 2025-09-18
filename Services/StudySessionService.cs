@@ -826,6 +826,28 @@ namespace FlashcardApp.Services
             }
         }
 
+        public void ClearSessionState(string deckId)
+        {
+            try
+            {
+                if (File.Exists(_sessionStatePath))
+                {
+                    var json = File.ReadAllText(_sessionStatePath);
+                    var sessionState = JsonConvert.DeserializeObject<SessionState>(json);
+                    
+                    // Only clear if it's for the same deck
+                    if (sessionState?.DeckId == deckId)
+                    {
+                        File.Delete(_sessionStatePath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error clearing session state: {ex.Message}");
+            }
+        }
+
         private StudySessionStatistics ConvertToStudySessionStatistics(SessionStatistics sessionStats)
         {
             return new StudySessionStatistics

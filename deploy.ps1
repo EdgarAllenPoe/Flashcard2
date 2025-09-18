@@ -120,8 +120,8 @@ Write-Host "Directories created!" -ForegroundColor Green
 
 # Step 5: Copy example deck
 Write-Host "Setting up example deck..." -ForegroundColor Yellow
-$deckSource = "sample-vocabulary-deck.json"
-$deckTarget = Join-Path $TargetPath "decks\sample-vocabulary-deck.json"
+$deckSource = "decks\example-deck-001.json"
+$deckTarget = Join-Path $TargetPath "decks\example-deck-001.json"
 
 if (Test-Path $deckSource) {
     Copy-Item -Path $deckSource -Destination $deckTarget -Force

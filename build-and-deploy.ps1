@@ -248,7 +248,7 @@ $exampleDeck = @"
 }
 "@
 
-$exampleDeckPath = Join-Path $decksDir "sample-vocabulary-deck.json"
+$exampleDeckPath = Join-Path $decksDir "example-deck-001.json"
 $exampleDeck | Out-File -FilePath $exampleDeckPath -Encoding UTF8
 Write-Host "Example deck created!" -ForegroundColor Green
 
