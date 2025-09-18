@@ -160,5 +160,30 @@ namespace FlashcardApp.Tests.Models
             // Assert
             flashcard.NextReviewDate.Should().Be(nextReview);
         }
+
+        [Theory]
+        [InlineData(0, 0, 0.0)] // No reviews
+        [InlineData(10, 8, 80.0)] // 80% success rate
+        [InlineData(5, 5, 100.0)] // 100% success rate
+        [InlineData(4, 0, 0.0)] // 0% success rate
+        [InlineData(3, 2, 66.67)] // ~66.67% success rate
+        public void SuccessRate_ShouldCalculateCorrectly(int totalReviews, int correctAnswers, double expectedRate)
+        {
+            // Arrange
+            var flashcard = new Flashcard
+            {
+                Statistics = new FlashcardStatistics
+                {
+                    TotalReviews = totalReviews,
+                    CorrectAnswers = correctAnswers
+                }
+            };
+
+            // Act
+            var successRate = flashcard.Statistics.SuccessRate;
+
+            // Assert
+            successRate.Should().BeApproximately(expectedRate, 0.01);
+        }
     }
 }

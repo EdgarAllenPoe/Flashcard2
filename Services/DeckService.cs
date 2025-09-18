@@ -187,6 +187,12 @@ namespace FlashcardApp.Services
         {
             try
             {
+                if (deck == null)
+                {
+                    Console.WriteLine("Error: Cannot export null deck");
+                    return false;
+                }
+
                 var extension = Path.GetExtension(exportPath).ToLower();
                 
                 switch (extension)
@@ -247,31 +253,44 @@ namespace FlashcardApp.Services
 
         private Deck? ImportFromJson(string importPath)
         {
-            string json = File.ReadAllText(importPath);
-            var deck = JsonConvert.DeserializeObject<Deck>(json);
-            
-            if (deck != null)
+            try
             {
-                // Generate new ID to avoid conflicts
-                deck.Id = Guid.NewGuid().ToString();
-                deck.CreatedDate = DateTime.Now;
-                deck.LastModified = DateTime.Now;
+                string json = File.ReadAllText(importPath);
+                var deck = JsonConvert.DeserializeObject<Deck>(json);
                 
-                // Ensure unique deck name
-                deck.Name = GetUniqueDeckName(deck.Name);
-                
-                // Reset all flashcard IDs and statistics
-                foreach (var flashcard in deck.Flashcards)
+                // Validate that this is actually a valid deck structure
+                if (deck != null && !string.IsNullOrEmpty(deck.Name))
                 {
-                    flashcard.Id = Guid.NewGuid().ToString();
-                    flashcard.Statistics = new FlashcardStatistics();
-                    flashcard.CurrentBox = 0;
-                    flashcard.LastReviewed = null;
-                    flashcard.NextReviewDate = null;
+                    // Generate new ID to avoid conflicts
+                    deck.Id = Guid.NewGuid().ToString();
+                    deck.CreatedDate = DateTime.Now;
+                    deck.LastModified = DateTime.Now;
+                    
+                    // Ensure unique deck name
+                    deck.Name = GetUniqueDeckName(deck.Name);
+                    
+                    // Reset all flashcard IDs and statistics
+                    foreach (var flashcard in deck.Flashcards)
+                    {
+                        flashcard.Id = Guid.NewGuid().ToString();
+                        flashcard.Statistics = new FlashcardStatistics();
+                        flashcard.CurrentBox = 0;
+                        flashcard.LastReviewed = null;
+                        flashcard.NextReviewDate = null;
+                    }
+                    
+                    return deck;
+                }
+                else
+                {
+                    return null; // Invalid deck structure
                 }
             }
-            
-            return deck;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error importing JSON: {ex.Message}");
+                return null;
+            }
         }
 
         private bool ExportToCsv(Deck deck, string exportPath)
@@ -306,7 +325,9 @@ namespace FlashcardApp.Services
 
         private Deck? ImportFromCsv(string importPath)
         {
-            var baseName = Path.GetFileNameWithoutExtension(importPath);
+            try
+            {
+                var baseName = Path.GetFileNameWithoutExtension(importPath);
             var deck = new Deck
             {
                 Id = Guid.NewGuid().ToString(),
@@ -337,6 +358,10 @@ namespace FlashcardApp.Services
                     var back = csv.GetField("Back") ?? "";
                     var tagsString = csv.GetField("Tags") ?? "";
                     
+                    // Skip empty rows
+                    if (string.IsNullOrWhiteSpace(front) && string.IsNullOrWhiteSpace(back))
+                        continue;
+                    
                     var tags = string.IsNullOrEmpty(tagsString) 
                         ? new List<string>() 
                         : tagsString.Split(';', StringSplitOptions.RemoveEmptyEntries)
@@ -359,6 +384,12 @@ namespace FlashcardApp.Services
             }
 
             return deck;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error importing CSV: {ex.Message}");
+                return null;
+            }
         }
 
         private bool ExportToXlsx(Deck deck, string exportPath)
@@ -510,6 +541,9 @@ namespace FlashcardApp.Services
 
         public List<Flashcard> SearchFlashcards(Deck deck, string searchTerm)
         {
+            if (deck == null)
+                return new List<Flashcard>();
+                
             return deck.Flashcards.Where(f =>
                 f.Front.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
                 f.Back.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||

@@ -242,5 +242,256 @@ namespace FlashcardApp.Tests.Services
             result[3].Should().Be(0); // 0 active cards in box 3
             result[4].Should().Be(0); // 0 active cards in box 4
         }
+
+        #region Box Statistics Tests
+
+        [Fact]
+        public void GetBoxStatistics_WithInactiveCards_ShouldOnlyCountActiveCards()
+        {
+            // Arrange
+            var deck = new Deck { Name = "Test Deck" };
+            var card1 = new Flashcard { CurrentBox = 0, IsActive = true };
+            var card2 = new Flashcard { CurrentBox = 1, IsActive = true };
+            var card3 = new Flashcard { CurrentBox = 1, IsActive = true };
+            var card4 = new Flashcard { CurrentBox = 2, IsActive = true };
+            var card5 = new Flashcard { CurrentBox = 0, IsActive = false }; // Inactive card
+            
+            deck.Flashcards.AddRange(new[] { card1, card2, card3, card4, card5 });
+
+            // Act
+            var statistics = _service.GetBoxStatistics(deck);
+
+            // Assert
+            statistics.Should().HaveCount(5); // Default config has 5 boxes
+            statistics[0].Should().Be(1); // Box 0 has 1 active card
+            statistics[1].Should().Be(2); // Box 1 has 2 active cards
+            statistics[2].Should().Be(1); // Box 2 has 1 active card
+            statistics[3].Should().Be(0); // Box 3 has 0 active cards
+            statistics[4].Should().Be(0); // Box 4 has 0 active cards
+        }
+
+        [Fact]
+        public void GetBoxStatistics_EmptyDeck_ShouldReturnEmptyDictionary()
+        {
+            // Arrange
+            var deck = new Deck { Name = "Empty Deck" };
+
+            // Act
+            var statistics = _service.GetBoxStatistics(deck);
+
+            // Assert
+            statistics.Should().HaveCount(5); // Default config has 5 boxes
+            statistics[0].Should().Be(0); // All boxes should have 0 cards
+            statistics[1].Should().Be(0);
+            statistics[2].Should().Be(0);
+            statistics[3].Should().Be(0);
+            statistics[4].Should().Be(0);
+        }
+
+        #endregion
+
+        #region Study Session Statistics Tests
+
+        [Fact]
+        public void CalculateStudySessionStatistics_ShouldCalculateCorrectly()
+        {
+            // Arrange
+            var studiedCards = new List<Flashcard>
+            {
+                new Flashcard { Statistics = new FlashcardStatistics { TotalReviews = 1, CorrectAnswers = 1, IncorrectAnswers = 0 } },
+                new Flashcard { Statistics = new FlashcardStatistics { TotalReviews = 1, CorrectAnswers = 0, IncorrectAnswers = 1 } },
+                new Flashcard { Statistics = new FlashcardStatistics { TotalReviews = 1, CorrectAnswers = 1, IncorrectAnswers = 0 } }
+            };
+            var sessionTime = TimeSpan.FromMinutes(5);
+
+            // Act
+            var statistics = _service.CalculateStudySessionStatistics(studiedCards, sessionTime);
+
+            // Assert
+            statistics.TotalCards.Should().Be(3);
+            statistics.TotalReviews.Should().Be(3); // All cards have TotalReviews > 0
+            statistics.CorrectAnswers.Should().Be(2); // 1 + 0 + 1
+            statistics.IncorrectAnswers.Should().Be(1); // 0 + 1 + 0
+            statistics.SuccessRate.Should().BeApproximately(66.67, 0.01);
+            statistics.SessionTime.Should().Be(sessionTime);
+        }
+
+        [Fact]
+        public void CalculateStudySessionStatistics_EmptyList_ShouldReturnZeroStatistics()
+        {
+            // Arrange
+            var studiedCards = new List<Flashcard>();
+            var sessionTime = TimeSpan.FromMinutes(5);
+
+            // Act
+            var statistics = _service.CalculateStudySessionStatistics(studiedCards, sessionTime);
+
+            // Assert
+            statistics.TotalCards.Should().Be(0);
+            statistics.CorrectAnswers.Should().Be(0);
+            statistics.IncorrectAnswers.Should().Be(0);
+            statistics.SuccessRate.Should().Be(0);
+            statistics.SessionTime.Should().Be(sessionTime);
+        }
+
+        #endregion
+
+        #region Flashcard Statistics Tests
+
+        [Fact]
+        public void UpdateFlashcardStatistics_ShouldUpdateCorrectly()
+        {
+            // Arrange
+            var flashcard = new Flashcard
+            {
+                Statistics = new FlashcardStatistics
+                {
+                    TotalReviews = 5,
+                    CorrectAnswers = 3,
+                    IncorrectAnswers = 2,
+                    AverageResponseTime = 2.0
+                }
+            };
+            var responseTime = TimeSpan.FromSeconds(3);
+            var isCorrect = true;
+
+            // Act
+            _service.UpdateFlashcardStatistics(flashcard, responseTime, isCorrect);
+
+            // Assert
+            flashcard.Statistics.TotalReviews.Should().Be(5); // Not incremented by this method
+            flashcard.Statistics.CorrectAnswers.Should().Be(3); // Not incremented by this method
+            flashcard.Statistics.IncorrectAnswers.Should().Be(2); // Not incremented by this method
+            flashcard.Statistics.AverageResponseTime.Should().BeApproximately(2.2, 0.01);
+        }
+
+        [Fact]
+        public void UpdateFlashcardStatistics_IncorrectAnswer_ShouldUpdateCorrectly()
+        {
+            // Arrange
+            var flashcard = new Flashcard
+            {
+                Statistics = new FlashcardStatistics
+                {
+                    TotalReviews = 5,
+                    CorrectAnswers = 3,
+                    IncorrectAnswers = 2,
+                    AverageResponseTime = 2.0
+                }
+            };
+            var responseTime = TimeSpan.FromSeconds(4);
+            var isCorrect = false;
+
+            // Act
+            _service.UpdateFlashcardStatistics(flashcard, responseTime, isCorrect);
+
+            // Assert
+            flashcard.Statistics.TotalReviews.Should().Be(5); // Not incremented by this method
+            flashcard.Statistics.CorrectAnswers.Should().Be(3); // Not incremented by this method
+            flashcard.Statistics.IncorrectAnswers.Should().Be(2); // Not incremented by this method
+            flashcard.Statistics.AverageResponseTime.Should().BeApproximately(2.4, 0.01);
+        }
+
+        #endregion
+
+        #region Review Date Tests
+
+        [Fact]
+        public void IsCardDueForReview_ShouldReturnTrueForDueCard()
+        {
+            // Arrange
+            var flashcard = new Flashcard
+            {
+                NextReviewDate = DateTime.Now.AddMinutes(-1) // Due 1 minute ago
+            };
+
+            // Act
+            var isDue = _service.IsCardDueForReview(flashcard);
+
+            // Assert
+            isDue.Should().BeTrue();
+        }
+
+        [Fact]
+        public void IsCardDueForReview_ShouldReturnFalseForNotDueCard()
+        {
+            // Arrange
+            var flashcard = new Flashcard
+            {
+                NextReviewDate = DateTime.Now.AddMinutes(1) // Due in 1 minute
+            };
+
+            // Act
+            var isDue = _service.IsCardDueForReview(flashcard);
+
+            // Assert
+            isDue.Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsCardDueForReview_NullNextReviewDate_ShouldReturnTrue()
+        {
+            // Arrange
+            var flashcard = new Flashcard
+            {
+                NextReviewDate = null
+            };
+
+            // Act
+            var isDue = _service.IsCardDueForReview(flashcard);
+
+            // Assert
+            isDue.Should().BeTrue();
+        }
+
+        [Fact]
+        public void GetDaysUntilNextReview_ShouldReturnCorrectDays()
+        {
+            // Arrange
+            var flashcard = new Flashcard
+            {
+                NextReviewDate = DateTime.Now.AddDays(3)
+            };
+
+            // Act
+            var days = _service.GetDaysUntilNextReview(flashcard);
+
+            // Assert
+            days.Should().BeInRange(2, 3); // Allow for timing differences
+        }
+
+        [Fact]
+        public void GetDaysUntilNextReview_NullNextReviewDate_ShouldReturnZero()
+        {
+            // Arrange
+            var flashcard = new Flashcard
+            {
+                NextReviewDate = null
+            };
+
+            // Act
+            var days = _service.GetDaysUntilNextReview(flashcard);
+
+            // Assert
+            days.Should().Be(0);
+        }
+
+        [Fact]
+        public void GetDaysUntilNextReview_PastDate_ShouldReturnZero()
+        {
+            // Arrange
+            var flashcard = new Flashcard
+            {
+                NextReviewDate = DateTime.Now.AddDays(-2)
+            };
+
+            // Act
+            var days = _service.GetDaysUntilNextReview(flashcard);
+
+            // Assert
+            days.Should().Be(0); // Math.Max(0, days) prevents negative values
+        }
+
+        #endregion
     }
 }

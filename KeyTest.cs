@@ -54,8 +54,11 @@ namespace FlashcardApp
             }
         }
         
-        private static bool IsValidKeyForAnswerReveal(ConsoleKeyInfo keyInfo, string quitKey)
+        public static bool IsValidKeyForAnswerReveal(ConsoleKeyInfo keyInfo, string quitKey)
         {
+            if (quitKey == null)
+                throw new ArgumentNullException(nameof(quitKey));
+
             // Check for escape key
             if (keyInfo.Key == ConsoleKey.Escape)
                 return false;

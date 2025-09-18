@@ -125,5 +125,71 @@ namespace FlashcardApp.Tests.Services
             var action = () => _service.UpdateConfiguration(null!);
             action.Should().Throw<ArgumentNullException>();
         }
+
+        [Fact]
+        public void SaveConfiguration_ShouldCreateConfigFile()
+        {
+            // Arrange
+            var config = _service.GetConfiguration();
+            config.LeitnerBoxes.NumberOfBoxes = 8;
+
+            // Act
+            _service.SaveConfiguration();
+
+            // Assert
+            File.Exists(_testConfigPath).Should().BeTrue();
+            var savedContent = File.ReadAllText(_testConfigPath);
+            savedContent.Should().Contain("\"numberOfBoxes\": 8");
+        }
+
+        [Fact]
+        public void LoadConfiguration_ShouldLoadFromFile()
+        {
+            // Arrange
+            var config = _service.GetConfiguration();
+            config.LeitnerBoxes.NumberOfBoxes = 6;
+            _service.SaveConfiguration();
+
+            // Create a new service instance
+            var newService = new ConfigurationService(_testConfigPath);
+
+            // Act
+            newService.LoadConfiguration();
+            var loadedConfig = newService.GetConfiguration();
+
+            // Assert
+            loadedConfig.LeitnerBoxes.NumberOfBoxes.Should().Be(6);
+        }
+
+        [Fact]
+        public void EnsureDirectoriesExist_ShouldCreateMultipleDirectories()
+        {
+            // Arrange
+            var config = _service.GetConfiguration();
+            var testDecksDir = Path.Combine(Path.GetTempPath(), $"test_decks_{Guid.NewGuid()}");
+            var testBackupDir = Path.Combine(Path.GetTempPath(), $"test_backups_{Guid.NewGuid()}");
+            var testExportDir = Path.Combine(Path.GetTempPath(), $"test_exports_{Guid.NewGuid()}");
+            
+            config.FilePaths.DecksDirectory = testDecksDir;
+            config.FilePaths.BackupDirectory = testBackupDir;
+            config.FilePaths.ExportDirectory = testExportDir;
+
+            try
+            {
+                // Act
+                _service.EnsureDirectoriesExist();
+
+                // Assert
+                Directory.Exists(testDecksDir).Should().BeTrue();
+                Directory.Exists(testBackupDir).Should().BeTrue();
+                Directory.Exists(testExportDir).Should().BeTrue();
+            }
+            finally
+            {
+                if (Directory.Exists(testDecksDir)) Directory.Delete(testDecksDir);
+                if (Directory.Exists(testBackupDir)) Directory.Delete(testBackupDir);
+                if (Directory.Exists(testExportDir)) Directory.Delete(testExportDir);
+            }
+        }
     }
 }

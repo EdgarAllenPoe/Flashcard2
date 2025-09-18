@@ -22,7 +22,8 @@ namespace FlashcardApp.Tests.Services
                 FilePaths = new FilePathConfiguration
                 {
                     DecksDirectory = _testDecksDirectory,
-                    DeckFileExtension = ".json"
+                    DeckFileExtension = ".json",
+                    BackupDirectory = _testDecksDirectory
                 }
             };
             
@@ -156,5 +157,205 @@ namespace FlashcardApp.Tests.Services
             deck.Statistics.Should().NotBeNull();
             deck.CreatedDate.Should().BeCloseTo(DateTime.Now, TimeSpan.FromSeconds(1));
         }
+
+        #region Backup Tests
+
+        [Fact]
+        public void BackupDeck_ShouldCreateBackupFile()
+        {
+            // Arrange
+            var deck = _service.CreateNewDeck("Test Deck", "Test Description");
+            var flashcard = new Flashcard { Front = "Test Question", Back = "Test Answer" };
+            _service.AddFlashcardToDeck(deck, flashcard);
+
+            // Act
+            var result = _service.BackupDeck(deck);
+
+            // Assert
+            result.Should().BeTrue();
+            
+            // Check if backup file exists
+            var backupFiles = Directory.GetFiles(_testDecksDirectory, "Test Deck_*.json");
+            backupFiles.Should().HaveCount(1);
+            
+            // Verify backup content
+            var backupContent = File.ReadAllText(backupFiles[0]);
+            backupContent.Should().Contain("Test Deck");
+            backupContent.Should().Contain("Test Question");
+        }
+
+        [Fact]
+        public void BackupDeck_NullDeck_ShouldReturnFalse()
+        {
+            // Act
+            var result = _service.BackupDeck(null!);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        #endregion
+
+        #region Search Tests
+
+        [Fact]
+        public void SearchDecks_ShouldFindMatchingDecks()
+        {
+            // Arrange
+            var deck1 = _service.CreateNewDeck("Math Deck", "Mathematics flashcards");
+            var deck2 = _service.CreateNewDeck("Science Deck", "Science flashcards");
+            var deck3 = _service.CreateNewDeck("History Deck", "History flashcards");
+            
+            // Save decks to disk so SearchDecks can find them
+            _service.SaveDeck(deck1);
+            _service.SaveDeck(deck2);
+            _service.SaveDeck(deck3);
+
+            // Act
+            var mathResults = _service.SearchDecks("Math");
+            var scienceResults = _service.SearchDecks("Science");
+            var allResults = _service.SearchDecks("Deck");
+
+            // Assert
+            mathResults.Should().HaveCount(1);
+            mathResults.First().Name.Should().Be("Math Deck");
+            
+            scienceResults.Should().HaveCount(1);
+            scienceResults.First().Name.Should().Be("Science Deck");
+            
+            allResults.Should().HaveCount(3);
+        }
+
+        [Fact]
+        public void SearchDecks_ShouldBeCaseInsensitive()
+        {
+            // Arrange
+            var deck = _service.CreateNewDeck("Math Deck", "Mathematics flashcards");
+            _service.SaveDeck(deck);
+
+            // Act
+            var results1 = _service.SearchDecks("math");
+            var results2 = _service.SearchDecks("MATH");
+            var results3 = _service.SearchDecks("Math");
+
+            // Assert
+            results1.Should().HaveCount(1);
+            results2.Should().HaveCount(1);
+            results3.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void SearchDecks_EmptySearchTerm_ShouldReturnAllDecks()
+        {
+            // Arrange
+            var deck1 = _service.CreateNewDeck("Math Deck", "Mathematics flashcards");
+            var deck2 = _service.CreateNewDeck("Science Deck", "Science flashcards");
+            _service.SaveDeck(deck1);
+            _service.SaveDeck(deck2);
+
+            // Act
+            var results = _service.SearchDecks("");
+
+            // Assert
+            results.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public void SearchFlashcards_ShouldFindMatchingFlashcards()
+        {
+            // Arrange
+            var deck = _service.CreateNewDeck("Test Deck", "Test Description");
+            var flashcard1 = new Flashcard { Front = "What is 2+2?", Back = "4" };
+            var flashcard2 = new Flashcard { Front = "What is the capital of France?", Back = "Paris" };
+            var flashcard3 = new Flashcard { Front = "What is photosynthesis?", Back = "Process by which plants make food" };
+            
+            _service.AddFlashcardToDeck(deck, flashcard1);
+            _service.AddFlashcardToDeck(deck, flashcard2);
+            _service.AddFlashcardToDeck(deck, flashcard3);
+
+            // Act
+            var mathResults = _service.SearchFlashcards(deck, "2+2");
+            var capitalResults = _service.SearchFlashcards(deck, "capital");
+            var whatResults = _service.SearchFlashcards(deck, "What");
+
+            // Assert
+            mathResults.Should().HaveCount(1);
+            mathResults.First().Front.Should().Be("What is 2+2?");
+            
+            capitalResults.Should().HaveCount(1);
+            capitalResults.First().Front.Should().Be("What is the capital of France?");
+            
+            whatResults.Should().HaveCount(3);
+        }
+
+        [Fact]
+        public void SearchFlashcards_ShouldSearchBothFrontAndBack()
+        {
+            // Arrange
+            var deck = _service.CreateNewDeck("Test Deck", "Test Description");
+            var flashcard1 = new Flashcard { Front = "Question about Paris", Back = "Answer about France" };
+            var flashcard2 = new Flashcard { Front = "Question about London", Back = "Answer about UK" };
+            
+            _service.AddFlashcardToDeck(deck, flashcard1);
+            _service.AddFlashcardToDeck(deck, flashcard2);
+
+            // Act
+            var parisResults = _service.SearchFlashcards(deck, "Paris");
+            var franceResults = _service.SearchFlashcards(deck, "France");
+
+            // Assert
+            parisResults.Should().HaveCount(1);
+            franceResults.Should().HaveCount(1);
+            parisResults.First().Should().Be(franceResults.First());
+        }
+
+        [Fact]
+        public void SearchFlashcards_ShouldBeCaseInsensitive()
+        {
+            // Arrange
+            var deck = _service.CreateNewDeck("Test Deck", "Test Description");
+            var flashcard = new Flashcard { Front = "What is the capital of France?", Back = "Paris" };
+            _service.AddFlashcardToDeck(deck, flashcard);
+
+            // Act
+            var results1 = _service.SearchFlashcards(deck, "france");
+            var results2 = _service.SearchFlashcards(deck, "FRANCE");
+            var results3 = _service.SearchFlashcards(deck, "France");
+
+            // Assert
+            results1.Should().HaveCount(1);
+            results2.Should().HaveCount(1);
+            results3.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void SearchFlashcards_NullDeck_ShouldReturnEmptyList()
+        {
+            // Act
+            var results = _service.SearchFlashcards(null!, "test");
+
+            // Assert
+            results.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void SearchFlashcards_EmptySearchTerm_ShouldReturnAllFlashcards()
+        {
+            // Arrange
+            var deck = _service.CreateNewDeck("Test Deck", "Test Description");
+            var flashcard1 = new Flashcard { Front = "Question 1", Back = "Answer 1" };
+            var flashcard2 = new Flashcard { Front = "Question 2", Back = "Answer 2" };
+            
+            _service.AddFlashcardToDeck(deck, flashcard1);
+            _service.AddFlashcardToDeck(deck, flashcard2);
+
+            // Act
+            var results = _service.SearchFlashcards(deck, "");
+
+            // Assert
+            results.Should().HaveCount(2);
+        }
+
+        #endregion
     }
 }
