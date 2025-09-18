@@ -30,7 +30,7 @@ namespace FlashcardApp.Services
 
             if (isResuming)
             {
-                Console.Clear();
+                try { Console.Clear(); } catch { /* Ignore console errors in test environment */ }
                 Console.WriteLine("Resuming previous study session...");
                 Console.WriteLine($"Progress: {sessionState.StudiedCards.Count} cards studied, {sessionState.IncorrectCards.Count} incorrect cards remaining");
                 Console.WriteLine("Press any key to continue or ESC to start fresh...");
@@ -80,7 +80,7 @@ namespace FlashcardApp.Services
             var sessionStats = sessionState.SessionStatistics;
             var studiedCards = new List<Flashcard>();
 
-            Console.Clear();
+            try { Console.Clear(); } catch { /* Ignore console errors in test environment */ }
             DisplaySessionHeader(deck, sessionState.CardsToStudy.Count, studyMode, isResuming);
 
             // Main study loop
@@ -361,7 +361,7 @@ namespace FlashcardApp.Services
         {
             var config = _configService.GetConfiguration();
             
-            Console.Clear();
+            try { Console.Clear(); } catch { /* Ignore console errors in test environment */ }
             
             // Beautiful card display with modern design
             if (config.UI.UseColors)
@@ -501,7 +501,7 @@ namespace FlashcardApp.Services
         {
             var config = _configService.GetConfiguration();
             
-            Console.Clear();
+            try { Console.Clear(); } catch { /* Ignore console errors in test environment */ }
             
             if (config.UI.UseColors)
             {

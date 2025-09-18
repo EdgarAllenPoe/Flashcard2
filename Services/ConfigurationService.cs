@@ -59,7 +59,13 @@ namespace FlashcardApp.Services
 
         public void UpdateConfiguration(Action<AppConfiguration> updateAction)
         {
-            updateAction(_configuration!);
+            if (updateAction == null)
+            {
+                throw new ArgumentNullException(nameof(updateAction));
+            }
+            
+            var config = GetConfiguration();
+            updateAction(config);
             SaveConfiguration();
         }
 

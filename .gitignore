@@ -376,6 +376,7 @@ copy-files-to-build.bat
 *.dll
 *.pdb
 
-# Test projects
+# Test projects (excluding our xUnit test project)
 Tests/
 *Tests/
+!FlashcardApp.Tests/
