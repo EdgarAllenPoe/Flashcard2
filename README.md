@@ -44,7 +44,7 @@ A beautiful, feature-rich console-based flashcard application with spaced repeti
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/FlashcardApp.git
+   git clone https://github.com/YOUR_USERNAME/FlashcardApp.git
    cd FlashcardApp
    ```
 
@@ -234,7 +234,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you encounter any issues or have questions:
 
-1. Check the [Issues](https://github.com/yourusername/FlashcardApp/issues) page
+1. Check the [Issues](https://github.com/YOUR_USERNAME/FlashcardApp/issues) page
 2. Create a new issue with detailed information
 3. Include your operating system and .NET version
 
