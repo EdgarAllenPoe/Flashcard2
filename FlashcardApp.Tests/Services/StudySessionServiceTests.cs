@@ -2,6 +2,7 @@ using FluentAssertions;
 using FlashcardApp.Models;
 using FlashcardApp.Services;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.Services
 {
@@ -17,9 +18,9 @@ namespace FlashcardApp.Tests.Services
             _testConfigPath = Path.Combine(Path.GetTempPath(), $"test_config_{Guid.NewGuid()}.json");
             _testDecksDirectory = Path.Combine(Path.GetTempPath(), $"test_decks_{Guid.NewGuid()}");
             _testSessionStatePath = Path.Combine(Path.GetTempPath(), $"test_session_{Guid.NewGuid()}.json");
-            
+
             Directory.CreateDirectory(_testDecksDirectory);
-            
+
             var config = new AppConfiguration
             {
                 FilePaths = new FilePathConfiguration
@@ -28,7 +29,7 @@ namespace FlashcardApp.Tests.Services
                     DeckFileExtension = ".json"
                 }
             };
-            
+
             File.WriteAllText(_testConfigPath, Newtonsoft.Json.JsonConvert.SerializeObject(config));
             var configService = new ConfigurationService(_testConfigPath);
             var leitnerBoxService = new LeitnerBoxService(configService);
@@ -56,7 +57,7 @@ namespace FlashcardApp.Tests.Services
             }
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ClearSessionState_ShouldDeleteSessionStateFileWhenExists()
         {
             // Arrange
@@ -80,7 +81,7 @@ namespace FlashcardApp.Tests.Services
             File.Exists("session_state.json").Should().BeFalse();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ClearSessionState_ShouldNotDeleteFileForDifferentDeck()
         {
             // Arrange
@@ -102,7 +103,7 @@ namespace FlashcardApp.Tests.Services
             File.Exists(_testSessionStatePath).Should().BeTrue();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ClearSessionState_ShouldNotThrowWhenFileDoesNotExist()
         {
             // Act & Assert

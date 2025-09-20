@@ -2,6 +2,7 @@ using FluentAssertions;
 using FlashcardApp.Models;
 using FlashcardApp.Services;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.Services
 {
@@ -24,7 +25,7 @@ namespace FlashcardApp.Tests.Services
             }
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void Constructor_ShouldCreateDefaultConfiguration()
         {
             // Act
@@ -40,7 +41,7 @@ namespace FlashcardApp.Tests.Services
             config.UI.Should().NotBeNull();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void GetConfiguration_ShouldReturnSameInstance()
         {
             // Act
@@ -51,7 +52,7 @@ namespace FlashcardApp.Tests.Services
             config1.Should().BeSameAs(config2);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void UpdateConfiguration_ShouldModifyConfiguration()
         {
             // Arrange
@@ -70,7 +71,7 @@ namespace FlashcardApp.Tests.Services
             updatedConfig.Should().BeSameAs(originalConfig);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void UpdateConfiguration_ShouldPersistChanges()
         {
             // Arrange
@@ -93,7 +94,7 @@ namespace FlashcardApp.Tests.Services
             loadedConfig.DailyLimits.MaxCardsPerDay.Should().Be(newMaxCards);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void EnsureDirectoriesExist_ShouldCreateDirectories()
         {
             // Arrange
@@ -118,7 +119,7 @@ namespace FlashcardApp.Tests.Services
             }
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void UpdateConfiguration_WithNullAction_ShouldThrowArgumentNullException()
         {
             // Act & Assert
@@ -126,7 +127,7 @@ namespace FlashcardApp.Tests.Services
             action.Should().Throw<ArgumentNullException>();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SaveConfiguration_ShouldCreateConfigFile()
         {
             // Arrange
@@ -142,7 +143,7 @@ namespace FlashcardApp.Tests.Services
             savedContent.Should().Contain("\"numberOfBoxes\": 8");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void LoadConfiguration_ShouldLoadFromFile()
         {
             // Arrange
@@ -161,7 +162,7 @@ namespace FlashcardApp.Tests.Services
             loadedConfig.LeitnerBoxes.NumberOfBoxes.Should().Be(6);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void EnsureDirectoriesExist_ShouldCreateMultipleDirectories()
         {
             // Arrange
@@ -169,7 +170,7 @@ namespace FlashcardApp.Tests.Services
             var testDecksDir = Path.Combine(Path.GetTempPath(), $"test_decks_{Guid.NewGuid()}");
             var testBackupDir = Path.Combine(Path.GetTempPath(), $"test_backups_{Guid.NewGuid()}");
             var testExportDir = Path.Combine(Path.GetTempPath(), $"test_exports_{Guid.NewGuid()}");
-            
+
             config.FilePaths.DecksDirectory = testDecksDir;
             config.FilePaths.BackupDirectory = testBackupDir;
             config.FilePaths.ExportDirectory = testExportDir;

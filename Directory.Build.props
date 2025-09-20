@@ -1,0 +1,44 @@
+<Project>
+  <!-- Quality and Analysis Configuration for Flashcard App -->
+  
+  <PropertyGroup>
+    <!-- Code Analysis -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
+    
+    <!-- Warnings as Errors -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <WarningsNotAsErrors />
+    
+    <!-- Nullable Reference Types -->
+    <Nullable>enable</Nullable>
+    
+    <!-- Implicit Usings -->
+    <ImplicitUsings>enable</ImplicitUsings>
+    
+    <!-- Performance -->
+    <MaxCpuCount>0</MaxCpuCount>
+    
+    <!-- Test Configuration -->
+    <ParallelizeTestCollections>true</ParallelizeTestCollections>
+    <ParallelizeAssembly>true</ParallelizeAssembly>
+  </PropertyGroup>
+
+  <!-- Package References for Quality Tools -->
+  <ItemGroup Condition="'$(IsTestProject)' == 'true'">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.6.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+  </ItemGroup>
+
+  <!-- Analyzer Packages -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

@@ -2,12 +2,13 @@ using FluentAssertions;
 using FlashcardApp.UI.Abstractions;
 using Moq;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.UI.Abstractions
 {
     public class UIOutputTests
     {
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void IUIOutput_ShouldHaveRequiredMethods()
         {
             // Arrange
@@ -116,7 +117,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockOutput.Verify(x => x.SetCursorVisible(visible), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void UIColor_ShouldHaveAllExpectedValues()
         {
             // Arrange & Act

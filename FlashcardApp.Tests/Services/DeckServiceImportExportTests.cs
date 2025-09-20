@@ -2,6 +2,7 @@ using FluentAssertions;
 using FlashcardApp.Models;
 using FlashcardApp.Services;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.Services
 {
@@ -16,7 +17,7 @@ namespace FlashcardApp.Tests.Services
         {
             _testDirectory = Path.Combine(Path.GetTempPath(), $"import_export_test_{Guid.NewGuid()}");
             Directory.CreateDirectory(_testDirectory);
-            
+
             _testConfigPath = Path.Combine(_testDirectory, "config.json");
             var config = new AppConfiguration
             {
@@ -26,7 +27,7 @@ namespace FlashcardApp.Tests.Services
                     DeckFileExtension = ".json"
                 }
             };
-            
+
             File.WriteAllText(_testConfigPath, Newtonsoft.Json.JsonConvert.SerializeObject(config));
             _configService = new ConfigurationService(_testConfigPath);
             _deckService = new DeckService(_configService);
@@ -86,7 +87,7 @@ namespace FlashcardApp.Tests.Services
 
         #region Export Tests
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ExportDeck_ToJson_ShouldCreateValidFile()
         {
             // Arrange
@@ -99,14 +100,14 @@ namespace FlashcardApp.Tests.Services
             // Assert
             result.Should().BeTrue();
             File.Exists(exportPath).Should().BeTrue();
-            
+
             var exportedContent = File.ReadAllText(exportPath);
             exportedContent.Should().Contain("Test Export Deck");
             exportedContent.Should().Contain("What is the capital of France?");
             exportedContent.Should().Contain("Paris");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ExportDeck_ToCsv_ShouldCreateValidFile()
         {
             // Arrange
@@ -119,14 +120,14 @@ namespace FlashcardApp.Tests.Services
             // Assert
             result.Should().BeTrue();
             File.Exists(exportPath).Should().BeTrue();
-            
+
             var exportedContent = File.ReadAllText(exportPath);
             exportedContent.Should().Contain("Front,Back,Tags");
             exportedContent.Should().Contain("What is the capital of France?");
             exportedContent.Should().Contain("Paris");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ExportDeck_ToXlsx_ShouldCreateValidFile()
         {
             // Arrange
@@ -139,13 +140,13 @@ namespace FlashcardApp.Tests.Services
             // Assert
             result.Should().BeTrue();
             File.Exists(exportPath).Should().BeTrue();
-            
+
             // Verify it's a valid Excel file by checking file size
             var fileInfo = new FileInfo(exportPath);
             fileInfo.Length.Should().BeGreaterThan(0);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ExportDeck_UnsupportedFormat_ShouldReturnFalse()
         {
             // Arrange
@@ -160,7 +161,7 @@ namespace FlashcardApp.Tests.Services
             File.Exists(exportPath).Should().BeFalse();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ExportDeck_InvalidPath_ShouldReturnFalse()
         {
             // Arrange
@@ -174,7 +175,7 @@ namespace FlashcardApp.Tests.Services
             result.Should().BeFalse();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ExportDeck_NullDeck_ShouldReturnFalse()
         {
             // Arrange
@@ -191,7 +192,7 @@ namespace FlashcardApp.Tests.Services
 
         #region Import Tests
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_FileNotFound_ShouldReturnNull()
         {
             // Arrange
@@ -204,7 +205,7 @@ namespace FlashcardApp.Tests.Services
             result.Should().BeNull();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_UnsupportedFormat_ShouldReturnNull()
         {
             // Arrange
@@ -218,7 +219,7 @@ namespace FlashcardApp.Tests.Services
             result.Should().BeNull();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_NullPath_ShouldReturnNull()
         {
             // Act
@@ -228,7 +229,7 @@ namespace FlashcardApp.Tests.Services
             result.Should().BeNull();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_FromJson_ShouldLoadCorrectly()
         {
             // Arrange
@@ -252,7 +253,7 @@ namespace FlashcardApp.Tests.Services
             importedDeck.Flashcards.Should().Contain(f => f.Back == "Paris");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_FromCsv_ShouldLoadCorrectly()
         {
             // Arrange
@@ -276,7 +277,7 @@ namespace FlashcardApp.Tests.Services
             importedDeck.Flashcards.Should().Contain(f => f.Back == "Paris");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_FromXlsx_ShouldLoadCorrectly()
         {
             // Arrange
@@ -300,7 +301,7 @@ namespace FlashcardApp.Tests.Services
             importedDeck.Flashcards.Should().Contain(f => f.Back == "Paris");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_CorruptedJsonFile_ShouldReturnNull()
         {
             // Arrange
@@ -314,7 +315,7 @@ namespace FlashcardApp.Tests.Services
             result.Should().BeNull();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_EmptyFile_ShouldReturnNull()
         {
             // Arrange
@@ -332,7 +333,7 @@ namespace FlashcardApp.Tests.Services
 
         #region Round-trip Tests
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ExportThenImport_Json_ShouldPreserveAllData()
         {
             // Arrange
@@ -346,23 +347,23 @@ namespace FlashcardApp.Tests.Services
             // Assert
             exportResult.Should().BeTrue();
             importedDeck.Should().NotBeNull();
-            
+
             // Verify deck structure
             importedDeck!.Name.Should().StartWith(originalDeck.Name);
             importedDeck.Description.Should().Be(originalDeck.Description);
             importedDeck.Flashcards.Should().HaveCount(originalDeck.Flashcards.Count);
-            
+
             // Verify flashcard content
             var originalCard1 = originalDeck.Flashcards.First(f => f.Front == "What is the capital of France?");
             var importedCard1 = importedDeck.Flashcards.First(f => f.Front == "What is the capital of France?");
-            
+
             importedCard1.Back.Should().Be(originalCard1.Back);
             importedCard1.Tags.Should().BeEquivalentTo(originalCard1.Tags);
             importedCard1.CurrentBox.Should().Be(0); // Reset during import
             importedCard1.Statistics.TotalReviews.Should().Be(0); // Reset during import
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ExportThenImport_Csv_ShouldPreserveFlashcardContent()
         {
             // Arrange
@@ -376,21 +377,21 @@ namespace FlashcardApp.Tests.Services
             // Assert
             exportResult.Should().BeTrue();
             importedDeck.Should().NotBeNull();
-            
+
             // Verify flashcard content is preserved
             importedDeck!.Flashcards.Should().HaveCount(originalDeck.Flashcards.Count);
             importedDeck.Flashcards.Should().Contain(f => f.Front == "What is the capital of France?");
             importedDeck.Flashcards.Should().Contain(f => f.Back == "Paris");
             importedDeck.Flashcards.Should().Contain(f => f.Front == "What is 2 + 2?");
             importedDeck.Flashcards.Should().Contain(f => f.Back == "4");
-            
+
             // Verify tags are preserved
             var geographyCard = importedDeck.Flashcards.First(f => f.Front == "What is the capital of France?");
             geographyCard.Tags.Should().Contain("geography");
             geographyCard.Tags.Should().Contain("capitals");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ExportThenImport_Xlsx_ShouldPreserveFlashcardContent()
         {
             // Arrange
@@ -404,7 +405,7 @@ namespace FlashcardApp.Tests.Services
             // Assert
             exportResult.Should().BeTrue();
             importedDeck.Should().NotBeNull();
-            
+
             // Verify flashcard content is preserved
             importedDeck!.Flashcards.Should().HaveCount(originalDeck.Flashcards.Count);
             importedDeck.Flashcards.Should().Contain(f => f.Front == "What is the capital of France?");
@@ -413,7 +414,7 @@ namespace FlashcardApp.Tests.Services
             importedDeck.Flashcards.Should().Contain(f => f.Back == "4");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ExportThenImport_ShouldResetStatisticsAndBoxes()
         {
             // Arrange
@@ -426,7 +427,7 @@ namespace FlashcardApp.Tests.Services
 
             // Assert
             importedDeck.Should().NotBeNull();
-            
+
             // All flashcards should be reset to initial state
             foreach (var card in importedDeck!.Flashcards)
             {
@@ -440,7 +441,7 @@ namespace FlashcardApp.Tests.Services
             }
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ExportThenImport_ShouldGenerateNewIds()
         {
             // Arrange
@@ -453,14 +454,14 @@ namespace FlashcardApp.Tests.Services
 
             // Assert
             importedDeck.Should().NotBeNull();
-            
+
             // Deck should have new ID
             importedDeck!.Id.Should().NotBe(originalDeck.Id);
-            
+
             // All flashcards should have new IDs
             var originalIds = originalDeck.Flashcards.Select(f => f.Id).ToHashSet();
             var importedIds = importedDeck.Flashcards.Select(f => f.Id).ToHashSet();
-            
+
             originalIds.Should().NotIntersectWith(importedIds);
         }
 
@@ -468,7 +469,7 @@ namespace FlashcardApp.Tests.Services
 
         #region Error Handling and Edge Cases
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ExportDeck_EmptyDeck_ShouldCreateValidFile()
         {
             // Arrange
@@ -485,13 +486,13 @@ namespace FlashcardApp.Tests.Services
             // Assert
             result.Should().BeTrue();
             File.Exists(exportPath).Should().BeTrue();
-            
+
             var importedDeck = _deckService.ImportDeck(exportPath);
             importedDeck.Should().NotBeNull();
             importedDeck!.Flashcards.Should().BeEmpty();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_CsvWithMissingColumns_ShouldReturnNull()
         {
             // Arrange
@@ -506,7 +507,7 @@ namespace FlashcardApp.Tests.Services
             result.Should().BeNull(); // Should fail when required columns are missing
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_CsvWithExtraColumns_ShouldIgnoreExtraColumns()
         {
             // Arrange
@@ -525,7 +526,7 @@ namespace FlashcardApp.Tests.Services
             result.Flashcards.First().Tags.Should().Contain("tag1");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_CsvWithEmptyRows_ShouldSkipEmptyRows()
         {
             // Arrange
@@ -543,7 +544,7 @@ namespace FlashcardApp.Tests.Services
             result.Flashcards.Should().Contain(f => f.Front == "Question2");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_JsonWithInvalidStructure_ShouldReturnNull()
         {
             // Arrange
@@ -558,7 +559,7 @@ namespace FlashcardApp.Tests.Services
             result.Should().BeNull();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ExportDeck_DeckWithSpecialCharacters_ShouldHandleCorrectly()
         {
             // Arrange
@@ -588,7 +589,7 @@ namespace FlashcardApp.Tests.Services
             importedDeck.Flashcards.First().Back.Should().Contain("émojis");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_FileWithVeryLongContent_ShouldHandleCorrectly()
         {
             // Arrange
@@ -616,7 +617,7 @@ namespace FlashcardApp.Tests.Services
             importedDeck!.Flashcards.First().Front.Should().Be(longContent);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_CsvWithCommasInContent_ShouldHandleCorrectly()
         {
             // Arrange
@@ -636,7 +637,7 @@ namespace FlashcardApp.Tests.Services
             result.Flashcards.First().Tags.Should().Contain("tag2");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ImportDeck_CsvWithQuotesInContent_ShouldHandleCorrectly()
         {
             // Arrange

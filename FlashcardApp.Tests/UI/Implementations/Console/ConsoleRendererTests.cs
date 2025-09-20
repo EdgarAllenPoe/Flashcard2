@@ -211,7 +211,7 @@ namespace FlashcardApp.Tests.UI.Implementations.Console
             _mockOutput.Verify(x => x.ResetColor(), Times.AtLeastOnce);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "Slow")]
         public async Task RenderExitMessageAsync_ShouldCallThemeAndOutputMethods()
         {
             // Arrange

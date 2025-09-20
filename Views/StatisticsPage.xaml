@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Page
+    x:Class="FlashcardApp.WinUI.Views.StatisticsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FlashcardApp.WinUI">
+    <Page.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--  Statistics Header  -->
+            <Border
+                Grid.Row="0"
+                Padding="20,15"
+                Background="{ThemeResource SystemAccentColor}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        Text="📊 Statistics &amp; Progress" />
+
+                    <Button
+                        x:Name="BackButton"
+                        Grid.Column="1"
+                        Padding="10,5"
+                        Background="Transparent"
+                        Click="BackButton_Click"
+                        Content="← Back"
+                        FontSize="14"
+                        Foreground="White"
+                        ToolTipService.ToolTip="Return to Main Menu" />
+                </Grid>
+            </Border>
+
+            <!--  Statistics Content  -->
+            <ScrollViewer Grid.Row="1" Padding="20">
+                <StackPanel>
+
+                    <!--  Overview Cards  -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  Total Study Time  -->
+                        <Border
+                            Grid.Column="0"
+                            Margin="0,0,10,0"
+                            Padding="15"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    FontSize="12"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="⏱️ Total Study Time" />
+                                <TextBlock
+                                    x:Name="TotalStudyTimeText"
+                                    FontSize="18"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    Text="2h 30m" />
+                            </StackPanel>
+                        </Border>
+
+                        <!--  Cards Studied  -->
+                        <Border
+                            Grid.Column="1"
+                            Margin="5,0"
+                            Padding="15"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    FontSize="12"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="📚 Cards Studied" />
+                                <TextBlock
+                                    x:Name="CardsStudiedText"
+                                    FontSize="18"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    Text="156" />
+                            </StackPanel>
+                        </Border>
+
+                        <!--  Accuracy  -->
+                        <Border
+                            Grid.Column="2"
+                            Margin="5,0"
+                            Padding="15"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    FontSize="12"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="🎯 Accuracy" />
+                                <TextBlock
+                                    x:Name="AccuracyText"
+                                    FontSize="18"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    Text="87%" />
+                            </StackPanel>
+                        </Border>
+
+                        <!--  Streak  -->
+                        <Border
+                            Grid.Column="3"
+                            Margin="10,0,0,0"
+                            Padding="15"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    FontSize="12"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="🔥 Current Streak" />
+                                <TextBlock
+                                    x:Name="StreakText"
+                                    FontSize="18"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    Text="7 days" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!--  Progress Charts Section  -->
+                    <Border
+                        Margin="0,20,0,0"
+                        Padding="20"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <StackPanel>
+                            <TextBlock
+                                Margin="0,0,0,15"
+                                FontSize="16"
+                                FontWeight="SemiBold"
+                                Text="📈 Progress Charts" />
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <!--  Study Time Chart  -->
+                                <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                                    <TextBlock
+                                        Margin="0,0,0,10"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Text="Study Time Chart" />
+                                    <Border
+                                        Height="100"
+                                        Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                        CornerRadius="4">
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Text="📊 Study time visualization will be displayed here" />
+                                    </Border>
+                                </StackPanel>
+
+                                <!--  Accuracy Trend  -->
+                                <StackPanel Grid.Row="1">
+                                    <TextBlock
+                                        Margin="0,0,0,10"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Text="Accuracy Trend" />
+                                    <Border
+                                        Height="100"
+                                        Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                        CornerRadius="4">
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Text="📈 Accuracy trend visualization will be displayed here" />
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!--  Deck Performance Section  -->
+                    <Border
+                        Margin="0,20,0,0"
+                        Padding="20"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <StackPanel>
+                            <TextBlock
+                                Margin="0,0,0,15"
+                                FontSize="16"
+                                FontWeight="SemiBold"
+                                Text="📊 Deck Performance" />
+
+                            <StackPanel x:Name="DeckPerformancePanel">
+                                <!--  Deck performance items will be dynamically added here  -->
+                                <Border
+                                    Margin="0,0,0,10"
+                                    Padding="15"
+                                    Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                    CornerRadius="6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock
+                                                FontSize="14"
+                                                FontWeight="SemiBold"
+                                                Text="Spanish Vocabulary" />
+                                            <TextBlock
+                                                FontSize="12"
+                                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                                Text="45 cards studied • 89% accuracy" />
+                                        </StackPanel>
+
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            Text="⭐⭐⭐⭐⭐" />
+                                    </Grid>
+                                </Border>
+
+                                <Border
+                                    Padding="15"
+                                    Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                    CornerRadius="6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock
+                                                FontSize="14"
+                                                FontWeight="SemiBold"
+                                                Text="Math Formulas" />
+                                            <TextBlock
+                                                FontSize="12"
+                                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                                Text="23 cards studied • 78% accuracy" />
+                                        </StackPanel>
+
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            Text="⭐⭐⭐⭐" />
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!--  Study Goals Section  -->
+                    <Border
+                        Margin="0,20,0,0"
+                        Padding="20"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <StackPanel>
+                            <TextBlock
+                                Margin="0,0,0,15"
+                                FontSize="16"
+                                FontWeight="SemiBold"
+                                Text="🎯 Study Goals" />
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <!--  Daily Goal  -->
+                                <StackPanel Grid.Row="0" Margin="0,0,0,15">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            VerticalAlignment="Center"
+                                            FontSize="14"
+                                            Text="Daily Goal: 20 cards" />
+
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Text="15/20" />
+                                    </Grid>
+
+                                    <ProgressBar
+                                        x:Name="DailyGoalProgress"
+                                        Height="8"
+                                        Margin="0,5,0,0"
+                                        Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                        Foreground="{ThemeResource SystemAccentColor}"
+                                        Maximum="100"
+                                        Value="75" />
+                                </StackPanel>
+
+                                <!--  Weekly Goal  -->
+                                <StackPanel Grid.Row="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            VerticalAlignment="Center"
+                                            FontSize="14"
+                                            Text="Weekly Goal: 100 cards" />
+
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Text="68/100" />
+                                    </Grid>
+
+                                    <ProgressBar
+                                        x:Name="WeeklyGoalProgress"
+                                        Height="8"
+                                        Margin="0,5,0,0"
+                                        Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                        Foreground="{ThemeResource SystemAccentColor}"
+                                        Maximum="100"
+                                        Value="68" />
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!--  Status Bar  -->
+            <Border
+                Grid.Row="2"
+                Padding="20,8"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="0,1,0,0">
+                <TextBlock
+                    x:Name="StatusText"
+                    FontSize="12"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Text="Statistics updated" />
+            </Border>
+        </Grid>
+    </Page.Content>
+</Page>

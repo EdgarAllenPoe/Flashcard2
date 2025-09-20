@@ -1,12 +1,13 @@
 using FluentAssertions;
 using FlashcardApp.Models;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.Models
 {
     public class SessionStateTests
     {
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void Constructor_ShouldInitializeWithDefaultValues()
         {
             // Act
@@ -20,7 +21,7 @@ namespace FlashcardApp.Tests.Models
             sessionState.SessionStatistics.Should().NotBeNull();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void Constructor_WithParameters_ShouldSetProperties()
         {
             // Arrange
@@ -42,7 +43,7 @@ namespace FlashcardApp.Tests.Models
             sessionState.SessionStartTime.Should().Be(startTime);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SessionStatistics_ShouldBeInitializedWithDefaultValues()
         {
             // Act
@@ -84,7 +85,7 @@ namespace FlashcardApp.Tests.Models
             successRate.Should().BeApproximately(expectedRate, 0.01);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void IsActive_WhenSetToTrue_ShouldBeActive()
         {
             // Arrange
@@ -97,7 +98,7 @@ namespace FlashcardApp.Tests.Models
             sessionState.IsActive.Should().BeTrue();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SessionStartTime_WhenSet_ShouldUpdateCorrectly()
         {
             // Arrange
@@ -111,7 +112,7 @@ namespace FlashcardApp.Tests.Models
             sessionState.SessionStartTime.Should().Be(startTime);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void LastSaveTime_WhenSet_ShouldUpdateCorrectly()
         {
             // Arrange

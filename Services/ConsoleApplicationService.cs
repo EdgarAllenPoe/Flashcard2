@@ -97,7 +97,7 @@ namespace FlashcardApp.Services
                 }
 
                 var deck = _deckService.CreateNewDeck(name, description, tags);
-                
+
                 if (_deckService.SaveDeck(deck))
                 {
                     return new DeckCreationResult
@@ -146,7 +146,7 @@ namespace FlashcardApp.Services
                 if (hasChanges)
                 {
                     deck.LastModified = DateTime.Now;
-                    
+
                     if (_deckService.SaveDeck(deck))
                     {
                         return new DeckUpdateResult
@@ -311,7 +311,7 @@ namespace FlashcardApp.Services
             return await Task.Run(() =>
             {
                 var decks = _deckService.LoadAllDecks();
-                
+
                 if (!decks.Any())
                 {
                     return new StatisticsResult
@@ -323,7 +323,7 @@ namespace FlashcardApp.Services
                 }
 
                 var overallStats = CalculateOverallStatistics(decks);
-                
+
                 return new StatisticsResult
                 {
                     Success = true,

@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlashcardApp.Tests", "Flash
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlashcardApp.Console", "FlashcardApp.Console\FlashcardApp.Console.csproj", "{C3D4E5F6-G7H8-9012-CDEF-345678901234}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlashcardApp.WinUI", "FlashcardApp.WinUI\FlashcardApp.WinUI.csproj", "{D4E5F6G7-H8I9-0123-DEFG-456789012345}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlashcardApp.WinUI", "FlashcardApp.WinUI.csproj", "{D4E5F6G7-H8I9-0123-DEFG-456789012345}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

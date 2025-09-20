@@ -1,12 +1,13 @@
 using FluentAssertions;
 using FlashcardApp.Models;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.Models
 {
     public class FlashcardTests
     {
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void Constructor_ShouldInitializeWithDefaultValues()
         {
             // Act
@@ -26,7 +27,7 @@ namespace FlashcardApp.Tests.Models
             flashcard.NextReviewDate.Should().BeNull();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void Constructor_WithParameters_ShouldSetProperties()
         {
             // Arrange
@@ -48,7 +49,7 @@ namespace FlashcardApp.Tests.Models
             flashcard.Tags.Should().BeEquivalentTo(tags);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void Id_ShouldBeUniqueForEachInstance()
         {
             // Act
@@ -76,7 +77,7 @@ namespace FlashcardApp.Tests.Models
             flashcard.CurrentBox.Should().Be(boxNumber);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void IsActive_WhenSetToFalse_ShouldBeInactive()
         {
             // Arrange
@@ -89,7 +90,7 @@ namespace FlashcardApp.Tests.Models
             flashcard.IsActive.Should().BeFalse();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void Statistics_ShouldBeInitializedWithDefaultValues()
         {
             // Act
@@ -107,7 +108,7 @@ namespace FlashcardApp.Tests.Models
             flashcard.Statistics.LongestStreak.Should().Be(0);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void Tags_ShouldAllowAddingAndRemovingTags()
         {
             // Arrange
@@ -133,7 +134,7 @@ namespace FlashcardApp.Tests.Models
             flashcard.Tags.Should().HaveCount(1);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void LastReviewed_WhenSet_ShouldUpdateCorrectly()
         {
             // Arrange
@@ -147,7 +148,7 @@ namespace FlashcardApp.Tests.Models
             flashcard.LastReviewed.Should().Be(reviewDate);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void NextReviewDate_WhenSet_ShouldUpdateCorrectly()
         {
             // Arrange

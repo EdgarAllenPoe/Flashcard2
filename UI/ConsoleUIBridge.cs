@@ -13,7 +13,7 @@ namespace FlashcardApp.UI
     {
         private readonly ConsoleUI _originalUI;
 
-        public ConsoleUIBridge(ConfigurationService configService, DeckService deckService, 
+        public ConsoleUIBridge(ConfigurationService configService, DeckService deckService,
                              StudySessionService studySessionService, LeitnerBoxService leitnerBoxService)
         {
             _originalUI = new ConsoleUI(configService, deckService, studySessionService, leitnerBoxService);

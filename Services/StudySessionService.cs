@@ -34,7 +34,7 @@ namespace FlashcardApp.Services
                 Console.WriteLine("Resuming previous study session...");
                 Console.WriteLine($"Progress: {sessionState.StudiedCards.Count} cards studied, {sessionState.IncorrectCards.Count} incorrect cards remaining");
                 Console.WriteLine("Press any key to continue or ESC to start fresh...");
-                
+
                 var key = Console.ReadKey(true);
                 if (key.Key == ConsoleKey.Escape)
                 {
@@ -46,7 +46,7 @@ namespace FlashcardApp.Services
             if (sessionState == null)
             {
                 var cardsToStudy = _leitnerBoxService.GetCardsForStudySession(deck, studyMode, maxCards);
-                
+
                 if (!cardsToStudy.Any())
                 {
                     return new StudySessionResult
@@ -114,21 +114,21 @@ namespace FlashcardApp.Services
                 }
 
                 var cardResult = StudyCard(currentCard, studyMode, cardNumber, totalCards);
-                
+
                 if (cardResult.WasStudied)
                 {
                     studiedCards.Add(currentCard);
                     sessionStats.CardsStudied++;
                     sessionStats.LastActivityTime = DateTime.Now;
-                    
+
                     if (cardResult.WasCorrect)
                     {
                         sessionStats.CorrectAnswers++;
                         _leitnerBoxService.ProcessCorrectAnswer(currentCard);
-                        
+
                         // Remove from incorrect cards if it was there
                         sessionState.IncorrectCards.Remove(currentCard.Id);
-                        
+
                         // Move to next card
                         if (sessionState.CurrentCardIndex < sessionState.CardsToStudy.Count)
                         {
@@ -140,13 +140,13 @@ namespace FlashcardApp.Services
                     {
                         sessionStats.IncorrectAnswers++;
                         _leitnerBoxService.ProcessIncorrectAnswer(currentCard);
-                        
+
                         // Add to incorrect cards if not already there
                         if (!sessionState.IncorrectCards.Contains(currentCard.Id))
                         {
                             sessionState.IncorrectCards.Add(currentCard.Id);
                         }
-                        
+
                         // Move to next card only if we're studying new cards
                         if (sessionState.CurrentCardIndex < sessionState.CardsToStudy.Count)
                         {
@@ -188,13 +188,13 @@ namespace FlashcardApp.Services
                     sessionState.IsActive = true;
                     sessionState.LastSaveTime = DateTime.Now;
                     SaveSessionState(sessionState);
-                    
+
                     // Save deck with updated statistics
                     _deckService.SaveDeck(deck);
-                    
+
                     stopwatch.Stop();
                     sessionStats.TotalStudyTime = stopwatch.Elapsed;
-                    
+
                     return new StudySessionResult
                     {
                         Success = true,
@@ -217,7 +217,7 @@ namespace FlashcardApp.Services
             sessionState.IsActive = false;
             sessionState.LastSaveTime = DateTime.Now;
             SaveSessionState(sessionState);
-            
+
             stopwatch.Stop();
             sessionStats.TotalStudyTime = stopwatch.Elapsed;
 
@@ -250,10 +250,10 @@ namespace FlashcardApp.Services
 
             // Display card
             DisplayCard(card, showFrontFirst, cardNumber, totalCards);
-            
+
             // Wait for user to show answer (any key except quit keys)
             var keyInfo = WaitForAnyKeyExceptQuit();
-            if (keyInfo.Key == ConsoleKey.Escape || 
+            if (keyInfo.Key == ConsoleKey.Escape ||
                 keyInfo.KeyChar.ToString().ToLower() == config.StudySession.KeyboardShortcuts.Quit.ToLower())
             {
                 result.ShouldQuit = true;
@@ -262,15 +262,15 @@ namespace FlashcardApp.Services
 
             // Show answer
             DisplayAnswer(card, showFrontFirst);
-            
+
             // Wait for user response
             keyInfo = WaitForKeyPress($"{config.StudySession.KeyboardShortcuts.CorrectAnswer}/{config.StudySession.KeyboardShortcuts.IncorrectAnswer}");
-            
+
             stopwatch.Stop();
             result.ResponseTime = stopwatch.Elapsed;
 
             // Check for special keys first
-            if (keyInfo.Key == ConsoleKey.Escape || 
+            if (keyInfo.Key == ConsoleKey.Escape ||
                 keyInfo.KeyChar.ToString().ToLower() == config.StudySession.KeyboardShortcuts.Quit.ToLower())
             {
                 result.ShouldQuit = true;
@@ -330,29 +330,29 @@ namespace FlashcardApp.Services
         private void DisplaySessionHeader(Deck deck, int cardCount, StudyMode studyMode, bool isResuming = false)
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
-            
+
             Console.WriteLine("==================================================================");
             Console.WriteLine("|                        STUDY SESSION                        |");
             Console.WriteLine("==================================================================");
-            
+
             Console.ResetColor();
             Console.WriteLine($"Deck: {deck.Name}");
             Console.WriteLine($"Cards to study: {cardCount}");
             Console.WriteLine($"Study mode: {studyMode}");
             Console.WriteLine($"Start time: {DateTime.Now:HH:mm:ss}");
-            
+
             if (isResuming)
             {
                 Console.WriteLine("Resuming previous session");
             }
-            
+
             Console.WriteLine();
-            
+
             DisplayKeyboardShortcuts();
             Console.WriteLine();
         }
@@ -360,110 +360,110 @@ namespace FlashcardApp.Services
         private void DisplayCard(Flashcard card, bool showFrontFirst, int cardNumber, int totalCards)
         {
             var config = _configService.GetConfiguration();
-            
+
             try { Console.Clear(); } catch { /* Ignore console errors in test environment */ }
-            
+
             // Beautiful card display with modern design
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Magenta;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("    FLASHCARD");
             Console.WriteLine();
-            
+
             Console.ResetColor();
             Console.WriteLine();
-            
+
             // Card info header
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
-            
+
             Console.WriteLine($"    Card {cardNumber} of {totalCards}");
             Console.ResetColor();
             Console.WriteLine();
-            
+
             // Display the question/answer with beautiful formatting
             var content = showFrontFirst ? card.Front : card.Back;
             var side = showFrontFirst ? "QUESTION" : "ANSWER";
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
-            
+
             Console.WriteLine($"    {side}:");
             Console.ResetColor();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            
+
             // Word wrap the text for better readability
             var wrappedText = WordWrap(content, 70);
             foreach (var line in wrappedText)
             {
                 Console.WriteLine($"    {line}");
             }
-            
+
             Console.ResetColor();
             Console.WriteLine();
-            
+
             // Beautiful prompt for revealing answer
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
             }
-            
+
             Console.WriteLine("    Press any key to reveal the answer...");
-            
+
             Console.ResetColor();
         }
 
         private void DisplayAnswer(Flashcard card, bool showedFrontFirst)
         {
             var config = _configService.GetConfiguration();
-            
+
             // Beautiful answer display
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
             }
-            
+
             Console.WriteLine("    ANSWER REVEALED!");
-            
+
             Console.ResetColor();
             Console.WriteLine();
-            
+
             var answerSide = showedFrontFirst ? "ANSWER" : "QUESTION";
             var answerContent = showedFrontFirst ? card.Back : card.Front;
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
-            
+
             Console.WriteLine($"    {answerSide}:");
             Console.ResetColor();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            
+
             // Word wrap the answer for better readability
             var wrappedText = WordWrap(answerContent, 70);
             foreach (var line in wrappedText)
             {
                 Console.WriteLine($"    {line}");
             }
-            
+
             Console.ResetColor();
-            
+
             // Beautiful keyboard shortcuts display
             DisplayKeyboardShortcuts();
         }
@@ -471,12 +471,12 @@ namespace FlashcardApp.Services
         private void DisplayFeedback(string message, ConsoleColor color)
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = color;
             }
-            
+
             Console.WriteLine($"\n{message}");
             Console.ResetColor();
         }
@@ -484,10 +484,10 @@ namespace FlashcardApp.Services
         private void DisplayCardStatistics(Flashcard card)
         {
             var config = _configService.GetConfiguration();
-            
+
             if (!config.UI.ShowDetailedStatistics)
                 return;
-                
+
             Console.WriteLine("\n" + "-".PadRight(40, '-'));
             Console.WriteLine("Card Statistics:");
             Console.WriteLine($"  Success Rate: {card.Statistics.SuccessRate:F1}%");
@@ -500,44 +500,44 @@ namespace FlashcardApp.Services
         private void EditCurrentCard(Flashcard flashcard, Deck deck)
         {
             var config = _configService.GetConfiguration();
-            
+
             try { Console.Clear(); } catch { /* Ignore console errors in test environment */ }
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("       EDIT CURRENT CARD");
             Console.WriteLine();
-            
+
             Console.ResetColor();
             Console.WriteLine();
-            
+
             Console.WriteLine($"Current front: {flashcard.Front}");
             ShowInputPrompt("Enter new front side (or press Enter to keep current)");
-            
+
             var newFront = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(newFront))
             {
                 flashcard.Front = newFront;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine($"Current back: {flashcard.Back}");
             ShowInputPrompt("Enter new back side (or press Enter to keep current)");
-            
+
             var newBack = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(newBack))
             {
                 flashcard.Back = newBack;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine($"Current tags: {string.Join(", ", flashcard.Tags)}");
             ShowInputPrompt("Enter new tags (comma-separated, or press Enter to keep current)");
-            
+
             var newTagsInput = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(newTagsInput))
             {
@@ -545,10 +545,10 @@ namespace FlashcardApp.Services
                                            .Select(t => t.Trim())
                                            .ToList();
             }
-            
+
             // Update the deck's last modified time
             deck.LastModified = DateTime.Now;
-            
+
             if (_deckService.SaveDeck(deck))
             {
                 Console.WriteLine();
@@ -569,7 +569,7 @@ namespace FlashcardApp.Services
                 Console.WriteLine("Failed to update card.");
                 Console.ResetColor();
             }
-            
+
             Console.WriteLine();
             ShowPressAnyKey();
         }
@@ -577,12 +577,12 @@ namespace FlashcardApp.Services
         private void ShowInputPrompt(string prompt)
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
-            
+
             Console.Write($"    {prompt}: ");
             Console.ResetColor();
         }
@@ -590,12 +590,12 @@ namespace FlashcardApp.Services
         private void ShowPressAnyKey()
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("    Press any key to continue...");
             Console.ResetColor();
@@ -606,61 +606,61 @@ namespace FlashcardApp.Services
         {
             var config = _configService.GetConfiguration();
             var shortcuts = config.StudySession.KeyboardShortcuts;
-            
+
             Console.WriteLine();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
-            
+
             Console.WriteLine("    KEYBOARD SHORTCUTS");
-            
+
             Console.ResetColor();
             Console.WriteLine();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
             }
-            
+
             Console.WriteLine($"    {shortcuts.CorrectAnswer} - Mark as CORRECT (move to higher box)");
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
             }
-            
+
             Console.WriteLine($"    {shortcuts.IncorrectAnswer} - Mark as INCORRECT (move to lower box)");
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
-            
+
             Console.WriteLine($"    {shortcuts.Skip} - SKIP card (no box change)");
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
-            
+
             Console.WriteLine($"    E - EDIT current card");
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Magenta;
             }
-            
+
             Console.WriteLine($"    {shortcuts.Quit} or ESC - QUIT session (saves progress)");
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
             }
-            
+
             Console.WriteLine($"    {shortcuts.Help} - Show HELP");
-            
+
             Console.ResetColor();
         }
 
@@ -670,25 +670,25 @@ namespace FlashcardApp.Services
             {
                 var keyInfo = Console.ReadKey(true);
                 var config = _configService.GetConfiguration();
-                
+
                 // Check for space key specifically
                 if (keyInfo.Key == ConsoleKey.Spacebar)
                 {
                     return keyInfo;
                 }
-                
+
                 // Check for other character keys
                 if (validKeys.Contains(keyInfo.KeyChar.ToString().ToLower()))
                 {
                     return keyInfo;
                 }
-                
+
                 // Check for special keys like Escape
                 if (keyInfo.Key == ConsoleKey.Escape)
                 {
                     return keyInfo;
                 }
-                
+
                 // Check for special study session keys
                 var keyChar = keyInfo.KeyChar.ToString().ToLower();
                 if (keyChar == config.StudySession.KeyboardShortcuts.Skip.ToLower() ||
@@ -707,13 +707,13 @@ namespace FlashcardApp.Services
             {
                 var keyInfo = Console.ReadKey(true);
                 var config = _configService.GetConfiguration();
-                
+
                 // Use the testable validation logic
                 if (IsValidKeyForAnswerReveal(keyInfo, config.StudySession.KeyboardShortcuts.Quit))
                 {
                     return keyInfo;
                 }
-                
+
                 // If it's a quit key, return it so the caller can handle it
                 return keyInfo;
             }
@@ -797,7 +797,7 @@ namespace FlashcardApp.Services
                 {
                     var json = File.ReadAllText(_sessionStatePath);
                     var sessionState = JsonConvert.DeserializeObject<SessionState>(json);
-                    
+
                     // Only return if it's for the same deck
                     if (sessionState?.DeckId == deckId)
                     {
@@ -809,7 +809,7 @@ namespace FlashcardApp.Services
             {
                 Console.WriteLine($"Error loading session state: {ex.Message}");
             }
-            
+
             return null;
         }
 
@@ -834,7 +834,7 @@ namespace FlashcardApp.Services
                 {
                     var json = File.ReadAllText(_sessionStatePath);
                     var sessionState = JsonConvert.DeserializeObject<SessionState>(json);
-                    
+
                     // Only clear if it's for the same deck
                     if (sessionState?.DeckId == deckId)
                     {

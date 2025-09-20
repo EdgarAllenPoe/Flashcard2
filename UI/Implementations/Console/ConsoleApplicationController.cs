@@ -280,7 +280,7 @@ namespace FlashcardApp.UI.Implementations.Console
             }
 
             var deck = _deckService.CreateNewDeck(request.DeckName, request.Description ?? "", request.Tags ?? new List<string>());
-            
+
             if (_deckService.SaveDeck(deck))
             {
                 return new ApplicationResult

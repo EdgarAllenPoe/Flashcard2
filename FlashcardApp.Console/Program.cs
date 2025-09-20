@@ -11,7 +11,7 @@ namespace FlashcardApp.Console
             {
                 // Configure console for Unicode/emoji support
                 ConfigureConsoleForUnicode();
-                
+
                 // Check if we should run tests
                 if (args.Length > 0 && args[0].ToLower() == "test")
                 {
@@ -49,7 +49,7 @@ namespace FlashcardApp.Console
                 // Set console output encoding to UTF-8
                 System.Console.OutputEncoding = System.Text.Encoding.UTF8;
                 System.Console.InputEncoding = System.Text.Encoding.UTF8;
-                
+
                 // For Windows, also try to set the console code page
                 if (OperatingSystem.IsWindows())
                 {

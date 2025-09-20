@@ -8,7 +8,7 @@ namespace FlashcardApp
         {
             Console.WriteLine("Testing Key Validation Logic");
             Console.WriteLine("============================");
-            
+
             // Test cases for key validation
             var testCases = new[]
             {
@@ -20,15 +20,15 @@ namespace FlashcardApp
                 new { Key = ConsoleKey.Q, KeyChar = 'q', QuitKey = "q", Expected = false, Description = "Quit key 'q' should be invalid" },
                 new { Key = ConsoleKey.Q, KeyChar = 'Q', QuitKey = "q", Expected = false, Description = "Quit key 'Q' should be invalid" },
             };
-            
+
             int passed = 0;
             int failed = 0;
-            
+
             foreach (var testCase in testCases)
             {
                 var keyInfo = new ConsoleKeyInfo(testCase.KeyChar, testCase.Key, false, false, false);
                 var result = IsValidKeyForAnswerReveal(keyInfo, testCase.QuitKey);
-                
+
                 if (result == testCase.Expected)
                 {
                     Console.WriteLine($"PASS: {testCase.Description}");
@@ -40,10 +40,10 @@ namespace FlashcardApp
                     failed++;
                 }
             }
-            
+
             Console.WriteLine();
             Console.WriteLine($"Results: {passed} passed, {failed} failed");
-            
+
             if (failed == 0)
             {
                 Console.WriteLine("All tests passed! The key validation logic is working correctly.");
@@ -53,7 +53,7 @@ namespace FlashcardApp
                 Console.WriteLine("Some tests failed. The key validation logic needs fixing.");
             }
         }
-        
+
         public static bool IsValidKeyForAnswerReveal(ConsoleKeyInfo keyInfo, string quitKey)
         {
             if (quitKey == null)

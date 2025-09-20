@@ -1,0 +1,215 @@
+﻿<Page
+    x:Class="FlashcardApp.WinUI.Views.StudySessionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FlashcardApp.WinUI"
+    IsTabStop="True"
+    KeyDown="OnKeyDown"
+    PreviewKeyDown="OnPreviewKeyDown">
+    <Page.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--  Study Session Header  -->
+            <Border
+                Grid.Row="0"
+                Padding="20,15"
+                Background="{ThemeResource SystemAccentColor}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        x:Name="SessionTitle"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        Text="📚 Study Session" />
+
+                    <TextBlock
+                        x:Name="ProgressText"
+                        Grid.Column="1"
+                        Margin="20,0,0,0"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Foreground="White"
+                        Text="Card 1 of 10" />
+
+                    <Button
+                        x:Name="BackButton"
+                        Grid.Column="2"
+                        Padding="10,5"
+                        Background="Transparent"
+                        Click="BackButton_Click"
+                        Content="← Back"
+                        Foreground="White"
+                        ToolTipService.ToolTip="Return to main menu (Esc)" />
+                </Grid>
+            </Border>
+
+            <!--  Study Session Content  -->
+            <Grid Grid.Row="1" Margin="30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!--  Progress Bar  -->
+                <ProgressBar
+                    x:Name="SessionProgressBar"
+                    Grid.Row="0"
+                    Height="8"
+                    Margin="0,0,0,20"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    Foreground="{ThemeResource SystemAccentColor}"
+                    Maximum="100"
+                    Value="10" />
+
+                <!--  Flashcard Display  -->
+                <Border
+                    Grid.Row="1"
+                    Margin="0,0,0,20"
+                    Padding="30"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!--  Card Type Indicator  -->
+                        <TextBlock
+                            x:Name="CardTypeIndicator"
+                            Grid.Row="0"
+                            Margin="0,0,0,10"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="Front" />
+
+                        <!--  Card Content  -->
+                        <ScrollViewer
+                            Grid.Row="1"
+                            HorizontalScrollMode="Disabled"
+                            VerticalScrollMode="Auto"
+                            ZoomMode="Disabled">
+                            <TextBlock
+                                x:Name="CardContent"
+                                FontSize="18"
+                                FontWeight="SemiBold"
+                                Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                LineHeight="28"
+                                Text="What is the capital of France?"
+                                TextWrapping="Wrap" />
+                        </ScrollViewer>
+
+                        <!--  Answer (Initially Hidden)  -->
+                        <Border
+                            x:Name="AnswerBorder"
+                            Grid.Row="2"
+                            Margin="0,20,0,0"
+                            Padding="20"
+                            Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Visibility="Collapsed">
+                            <TextBlock
+                                x:Name="AnswerContent"
+                                FontSize="16"
+                                Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                LineHeight="24"
+                                Text="Paris"
+                                TextWrapping="Wrap" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!--  Action Buttons  -->
+                <StackPanel
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="15">
+                    <Button
+                        x:Name="RevealAnswerButton"
+                        AutomationProperties.HelpText="Press Space key to reveal answer"
+                        AutomationProperties.Name="Reveal Answer"
+                        Click="RevealAnswerButton_Click"
+                        Content="Show Answer"
+                        Style="{StaticResource PrimaryAction}"
+                        ToolTipService.ToolTip="Reveal the answer to this card (Space)" />
+
+                    <Button
+                        x:Name="CorrectButton"
+                        Padding="20,10"
+                        AutomationProperties.HelpText="Press 1 key to mark correct"
+                        AutomationProperties.Name="Correct Answer"
+                        Background="Green"
+                        Click="CorrectButton_Click"
+                        Content="✓ Correct"
+                        CornerRadius="8"
+                        Foreground="White"
+                        ToolTipService.ToolTip="Mark this card as correct (1)"
+                        Visibility="Collapsed" />
+
+                    <Button
+                        x:Name="IncorrectButton"
+                        Padding="20,10"
+                        AutomationProperties.HelpText="Press 2 key to mark incorrect"
+                        AutomationProperties.Name="Incorrect Answer"
+                        Background="Red"
+                        Click="IncorrectButton_Click"
+                        Content="✗ Incorrect"
+                        CornerRadius="8"
+                        Foreground="White"
+                        ToolTipService.ToolTip="Mark this card as incorrect (2)"
+                        Visibility="Collapsed" />
+                </StackPanel>
+            </Grid>
+
+            <!--  Study Session Status  -->
+            <Border
+                Grid.Row="2"
+                Padding="20,8"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="0,1,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        x:Name="SessionStatusText"
+                        Grid.Column="0"
+                        FontSize="12"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Text="Ready to study" />
+
+                    <TextBlock
+                        x:Name="SessionStatsText"
+                        Grid.Column="1"
+                        FontSize="12"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Text="Correct: 0 | Incorrect: 0" />
+                </Grid>
+            </Border>
+        </Grid>
+    </Page.Content>
+</Page>
+

@@ -3,12 +3,13 @@ using FlashcardApp.UI.Abstractions;
 using FlashcardApp.Models;
 using Moq;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.UI.Abstractions
 {
     public class UIRendererTests
     {
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void IUIRenderer_ShouldHaveRequiredMethods()
         {
             // Arrange
@@ -48,7 +49,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockRenderer.Object.RenderExitMessageAsync();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task RenderMenuAsync_ShouldAcceptMenuDefinition()
         {
             // Arrange
@@ -70,7 +71,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockRenderer.Verify(x => x.RenderMenuAsync(menu), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task RenderMessageAsync_ShouldAcceptMessageDefinition()
         {
             // Arrange
@@ -88,7 +89,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockRenderer.Verify(x => x.RenderMessageAsync(message), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task RenderStatisticsAsync_ShouldAcceptStatisticsData()
         {
             // Arrange
@@ -110,7 +111,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockRenderer.Verify(x => x.RenderStatisticsAsync(stats), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task RenderDeckListAsync_ShouldAcceptDeckList()
         {
             // Arrange
@@ -128,7 +129,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockRenderer.Verify(x => x.RenderDeckListAsync(decks), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task RenderSessionResultsAsync_ShouldAcceptSessionResult()
         {
             // Arrange
@@ -163,7 +164,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockRenderer.Verify(x => x.RenderSectionHeaderAsync(title, sectionType), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task RenderDeckCardAsync_ShouldAcceptDeckAndNumber()
         {
             // Arrange
@@ -177,7 +178,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockRenderer.Verify(x => x.RenderDeckCardAsync(deck, 1), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task RenderPressAnyKeyAsync_ShouldComplete()
         {
             // Arrange
@@ -206,7 +207,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockRenderer.Verify(x => x.RenderInputPromptAsync(prompt), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task RenderWelcomeMessageAsync_ShouldComplete()
         {
             // Arrange
@@ -219,7 +220,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockRenderer.Verify(x => x.RenderWelcomeMessageAsync(), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task RenderExitMessageAsync_ShouldComplete()
         {
             // Arrange
@@ -232,7 +233,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockRenderer.Verify(x => x.RenderExitMessageAsync(), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void MenuDefinition_ShouldInitializeCorrectly()
         {
             // Arrange & Act
@@ -245,7 +246,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             menu.SectionType.Should().Be(SectionType.Default);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void MenuOption_ShouldInitializeCorrectly()
         {
             // Arrange & Act
@@ -257,7 +258,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             option.Description.Should().BeEmpty();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void MessageDefinition_ShouldInitializeCorrectly()
         {
             // Arrange & Act
@@ -268,7 +269,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             message.Type.Should().Be(MessageType.Default);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void StatisticsData_ShouldInitializeCorrectly()
         {
             // Arrange & Act
@@ -281,7 +282,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             stats.Decks.Should().BeEmpty();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SessionResult_ShouldInitializeCorrectly()
         {
             // Arrange & Act

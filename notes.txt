@@ -1,0 +1,5 @@
+Phase 1: Navigation and Layout (Foundation)
+Phase 2: Study Session Experience (Core Feature)
+Phase 3: Deck Management Interface (Content Creation)
+Phase 4: Statistics Dashboard (Analytics)
+Phase 5: Polish and Advanced Features (Enhancement)

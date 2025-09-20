@@ -22,7 +22,7 @@ namespace FlashcardApp.Services
                 // Increment correct streak
                 flashcard.Statistics.CorrectAnswers++;
                 flashcard.Statistics.Streak++;
-                
+
                 if (flashcard.Statistics.Streak > flashcard.Statistics.LongestStreak)
                 {
                     flashcard.Statistics.LongestStreak = flashcard.Statistics.Streak;
@@ -93,15 +93,15 @@ namespace FlashcardApp.Services
         public List<Flashcard> GetCardsDueForReview(Deck deck)
         {
             var now = DateTime.Now;
-            return deck.Flashcards.Where(f => 
-                f.IsActive && 
+            return deck.Flashcards.Where(f =>
+                f.IsActive &&
                 (f.NextReviewDate == null || f.NextReviewDate <= now)
             ).ToList();
         }
 
         public List<Flashcard> GetCardsInBox(Deck deck, int boxNumber)
         {
-            return deck.Flashcards.Where(f => 
+            return deck.Flashcards.Where(f =>
                 f.IsActive && f.CurrentBox == boxNumber
             ).ToList();
         }
@@ -109,9 +109,9 @@ namespace FlashcardApp.Services
         public List<Flashcard> GetNewCards(Deck deck, int maxNewCards = 20)
         {
             var config = _configService.GetConfiguration();
-            var newCards = deck.Flashcards.Where(f => 
-                f.IsActive && 
-                f.CurrentBox == 0 && 
+            var newCards = deck.Flashcards.Where(f =>
+                f.IsActive &&
+                f.CurrentBox == 0 &&
                 f.Statistics.TotalReviews == 0
             ).Take(maxNewCards).ToList();
 
@@ -198,8 +198,8 @@ namespace FlashcardApp.Services
             // Update average response time
             if (flashcard.Statistics.TotalReviews > 0)
             {
-                flashcard.Statistics.AverageResponseTime = 
-                    (flashcard.Statistics.AverageResponseTime * (flashcard.Statistics.TotalReviews - 1) + responseTime.TotalSeconds) 
+                flashcard.Statistics.AverageResponseTime =
+                    (flashcard.Statistics.AverageResponseTime * (flashcard.Statistics.TotalReviews - 1) + responseTime.TotalSeconds)
                     / flashcard.Statistics.TotalReviews;
             }
             else

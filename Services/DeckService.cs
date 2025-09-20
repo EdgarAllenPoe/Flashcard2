@@ -24,7 +24,7 @@ namespace FlashcardApp.Services
         public List<Deck> LoadAllDecks()
         {
             var decks = new List<Deck>();
-            
+
             if (!Directory.Exists(_decksDirectory))
             {
                 Directory.CreateDirectory(_decksDirectory);
@@ -32,7 +32,7 @@ namespace FlashcardApp.Services
             }
 
             var deckFiles = Directory.GetFiles(_decksDirectory, $"*{_configService.GetConfiguration().FilePaths.DeckFileExtension}");
-            
+
             foreach (var file in deckFiles)
             {
                 try
@@ -194,7 +194,7 @@ namespace FlashcardApp.Services
                 }
 
                 var extension = Path.GetExtension(exportPath).ToLower();
-                
+
                 switch (extension)
                 {
                     case ".csv":
@@ -223,7 +223,7 @@ namespace FlashcardApp.Services
                     return null;
 
                 var extension = Path.GetExtension(importPath).ToLower();
-                
+
                 switch (extension)
                 {
                     case ".csv":
@@ -257,7 +257,7 @@ namespace FlashcardApp.Services
             {
                 string json = File.ReadAllText(importPath);
                 var deck = JsonConvert.DeserializeObject<Deck>(json);
-                
+
                 // Validate that this is actually a valid deck structure
                 if (deck != null && !string.IsNullOrEmpty(deck.Name))
                 {
@@ -265,10 +265,10 @@ namespace FlashcardApp.Services
                     deck.Id = Guid.NewGuid().ToString();
                     deck.CreatedDate = DateTime.Now;
                     deck.LastModified = DateTime.Now;
-                    
+
                     // Ensure unique deck name
                     deck.Name = GetUniqueDeckName(deck.Name);
-                    
+
                     // Reset all flashcard IDs and statistics
                     foreach (var flashcard in deck.Flashcards)
                     {
@@ -278,7 +278,7 @@ namespace FlashcardApp.Services
                         flashcard.LastReviewed = null;
                         flashcard.NextReviewDate = null;
                     }
-                    
+
                     return deck;
                 }
                 else
@@ -328,62 +328,62 @@ namespace FlashcardApp.Services
             try
             {
                 var baseName = Path.GetFileNameWithoutExtension(importPath);
-            var deck = new Deck
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = GetUniqueDeckName(baseName),
-                Description = "Imported from CSV",
-                CreatedDate = DateTime.Now,
-                LastModified = DateTime.Now,
-                Flashcards = new List<Flashcard>()
-            };
-
-            using (var reader = new StreamReader(importPath))
-            using (var csv = new CsvReader(reader, new CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture)))
-            {
-                // Skip comment lines
-                while (reader.Peek() == '#')
+                var deck = new Deck
                 {
-                    reader.ReadLine();
-                }
+                    Id = Guid.NewGuid().ToString(),
+                    Name = GetUniqueDeckName(baseName),
+                    Description = "Imported from CSV",
+                    CreatedDate = DateTime.Now,
+                    LastModified = DateTime.Now,
+                    Flashcards = new List<Flashcard>()
+                };
 
-                // Read the header row
-                csv.Read();
-                csv.ReadHeader();
-
-                // Read data rows
-                while (csv.Read())
+                using (var reader = new StreamReader(importPath))
+                using (var csv = new CsvReader(reader, new CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture)))
                 {
-                    var front = csv.GetField("Front") ?? "";
-                    var back = csv.GetField("Back") ?? "";
-                    var tagsString = csv.GetField("Tags") ?? "";
-                    
-                    // Skip empty rows
-                    if (string.IsNullOrWhiteSpace(front) && string.IsNullOrWhiteSpace(back))
-                        continue;
-                    
-                    var tags = string.IsNullOrEmpty(tagsString) 
-                        ? new List<string>() 
-                        : tagsString.Split(';', StringSplitOptions.RemoveEmptyEntries)
-                                   .Select(t => t.Trim())
-                                   .ToList();
-
-                    var flashcard = new Flashcard
+                    // Skip comment lines
+                    while (reader.Peek() == '#')
                     {
-                        Id = Guid.NewGuid().ToString(),
-                        Front = front,
-                        Back = back,
-                        Tags = tags,
-                        Statistics = new FlashcardStatistics(),
-                        CurrentBox = 0,
-                        CreatedDate = DateTime.Now
-                    };
+                        reader.ReadLine();
+                    }
 
-                    deck.Flashcards.Add(flashcard);
+                    // Read the header row
+                    csv.Read();
+                    csv.ReadHeader();
+
+                    // Read data rows
+                    while (csv.Read())
+                    {
+                        var front = csv.GetField("Front") ?? "";
+                        var back = csv.GetField("Back") ?? "";
+                        var tagsString = csv.GetField("Tags") ?? "";
+
+                        // Skip empty rows
+                        if (string.IsNullOrWhiteSpace(front) && string.IsNullOrWhiteSpace(back))
+                            continue;
+
+                        var tags = string.IsNullOrEmpty(tagsString)
+                            ? new List<string>()
+                            : tagsString.Split(';', StringSplitOptions.RemoveEmptyEntries)
+                                       .Select(t => t.Trim())
+                                       .ToList();
+
+                        var flashcard = new Flashcard
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            Front = front,
+                            Back = back,
+                            Tags = tags,
+                            Statistics = new FlashcardStatistics(),
+                            CurrentBox = 0,
+                            CreatedDate = DateTime.Now
+                        };
+
+                        deck.Flashcards.Add(flashcard);
+                    }
                 }
-            }
 
-            return deck;
+                return deck;
             }
             catch (Exception ex)
             {
@@ -395,11 +395,11 @@ namespace FlashcardApp.Services
         private bool ExportToXlsx(Deck deck, string exportPath)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            
+
             using (var package = new ExcelPackage())
             {
                 var worksheet = package.Workbook.Worksheets.Add("Flashcards");
-                
+
                 // Write deck information
                 worksheet.Cells[1, 1].Value = "Deck Name:";
                 worksheet.Cells[1, 2].Value = deck.Name;
@@ -409,12 +409,12 @@ namespace FlashcardApp.Services
                 worksheet.Cells[3, 2].Value = deck.CreatedDate.ToString("yyyy-MM-dd");
                 worksheet.Cells[4, 1].Value = "Total Cards:";
                 worksheet.Cells[4, 2].Value = deck.Flashcards.Count;
-                
+
                 // Write headers
                 worksheet.Cells[6, 1].Value = "Front";
                 worksheet.Cells[6, 2].Value = "Back";
                 worksheet.Cells[6, 3].Value = "Tags";
-                
+
                 // Style headers
                 using (var range = worksheet.Cells[6, 1, 6, 3])
                 {
@@ -422,21 +422,21 @@ namespace FlashcardApp.Services
                     range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                     range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
                 }
-                
+
                 // Write flashcard data
                 for (int i = 0; i < deck.Flashcards.Count; i++)
                 {
                     var card = deck.Flashcards[i];
                     var row = i + 7; // Start from row 7 (after headers and deck info)
-                    
+
                     worksheet.Cells[row, 1].Value = card.Front;
                     worksheet.Cells[row, 2].Value = card.Back;
                     worksheet.Cells[row, 3].Value = string.Join("; ", card.Tags);
                 }
-                
+
                 // Auto-fit columns
                 worksheet.Cells.AutoFitColumns();
-                
+
                 package.SaveAs(new FileInfo(exportPath));
             }
             return true;
@@ -445,7 +445,7 @@ namespace FlashcardApp.Services
         private Deck? ImportFromXlsx(string importPath)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            
+
             var baseName = Path.GetFileNameWithoutExtension(importPath);
             var deck = new Deck
             {
@@ -461,7 +461,7 @@ namespace FlashcardApp.Services
             {
                 var worksheet = package.Workbook.Worksheets[0];
                 var rowCount = worksheet.Dimension?.Rows ?? 0;
-                
+
                 // Find the header row (look for "Front" in column A)
                 int headerRow = 1;
                 for (int row = 1; row <= rowCount; row++)
@@ -472,19 +472,19 @@ namespace FlashcardApp.Services
                         break;
                     }
                 }
-                
+
                 // Read data starting from the row after headers
                 for (int row = headerRow + 1; row <= rowCount; row++)
                 {
                     var front = worksheet.Cells[row, 1].Value?.ToString() ?? "";
                     var back = worksheet.Cells[row, 2].Value?.ToString() ?? "";
                     var tagsString = worksheet.Cells[row, 3].Value?.ToString() ?? "";
-                    
+
                     if (string.IsNullOrEmpty(front) && string.IsNullOrEmpty(back))
                         continue; // Skip empty rows
-                    
-                    var tags = string.IsNullOrEmpty(tagsString) 
-                        ? new List<string>() 
+
+                    var tags = string.IsNullOrEmpty(tagsString)
+                        ? new List<string>()
                         : tagsString.Split(';', StringSplitOptions.RemoveEmptyEntries)
                                    .Select(t => t.Trim())
                                    .ToList();
@@ -519,7 +519,7 @@ namespace FlashcardApp.Services
 
                 var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
                 var backupPath = Path.Combine(backupDir, $"{deck.Name}_{timestamp}.json");
-                
+
                 return ExportDeck(deck, backupPath);
             }
             catch (Exception ex)
@@ -532,7 +532,7 @@ namespace FlashcardApp.Services
         public List<Deck> SearchDecks(string searchTerm)
         {
             var allDecks = LoadAllDecks();
-            return allDecks.Where(d => 
+            return allDecks.Where(d =>
                 d.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
                 d.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
                 d.Tags.Any(t => t.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
@@ -543,7 +543,7 @@ namespace FlashcardApp.Services
         {
             if (deck == null)
                 return new List<Flashcard>();
-                
+
             return deck.Flashcards.Where(f =>
                 f.Front.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
                 f.Back.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||

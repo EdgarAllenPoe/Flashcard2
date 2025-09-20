@@ -1,12 +1,13 @@
 using FluentAssertions;
 using FlashcardApp.Models;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.Models
 {
     public class ConfigurationTests
     {
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void AppConfiguration_Constructor_ShouldInitializeWithDefaultValues()
         {
             // Act
@@ -21,7 +22,7 @@ namespace FlashcardApp.Tests.Models
             config.UI.Should().NotBeNull();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void LeitnerBoxConfiguration_Constructor_ShouldInitializeWithDefaultValues()
         {
             // Act
@@ -35,7 +36,7 @@ namespace FlashcardApp.Tests.Models
             config.DemotionRules.Should().HaveCount(4);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void PromotionRules_ShouldHaveCorrectDefaultValues()
         {
             // Act
@@ -44,21 +45,21 @@ namespace FlashcardApp.Tests.Models
             // Assert
             config.PromotionRules[0].BoxNumber.Should().Be(0);
             config.PromotionRules[0].CorrectAnswersNeeded.Should().Be(1);
-            
+
             config.PromotionRules[1].BoxNumber.Should().Be(1);
             config.PromotionRules[1].CorrectAnswersNeeded.Should().Be(2);
-            
+
             config.PromotionRules[2].BoxNumber.Should().Be(2);
             config.PromotionRules[2].CorrectAnswersNeeded.Should().Be(3);
-            
+
             config.PromotionRules[3].BoxNumber.Should().Be(3);
             config.PromotionRules[3].CorrectAnswersNeeded.Should().Be(4);
-            
+
             config.PromotionRules[4].BoxNumber.Should().Be(4);
             config.PromotionRules[4].CorrectAnswersNeeded.Should().Be(5);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void DemotionRules_ShouldHaveCorrectDefaultValues()
         {
             // Act
@@ -68,21 +69,21 @@ namespace FlashcardApp.Tests.Models
             config.DemotionRules[0].BoxNumber.Should().Be(1);
             config.DemotionRules[0].IncorrectAnswersNeeded.Should().Be(1);
             config.DemotionRules[0].DemoteToBox.Should().Be(0);
-            
+
             config.DemotionRules[1].BoxNumber.Should().Be(2);
             config.DemotionRules[1].IncorrectAnswersNeeded.Should().Be(1);
             config.DemotionRules[1].DemoteToBox.Should().Be(0);
-            
+
             config.DemotionRules[2].BoxNumber.Should().Be(3);
             config.DemotionRules[2].IncorrectAnswersNeeded.Should().Be(1);
             config.DemotionRules[2].DemoteToBox.Should().Be(1);
-            
+
             config.DemotionRules[3].BoxNumber.Should().Be(4);
             config.DemotionRules[3].IncorrectAnswersNeeded.Should().Be(1);
             config.DemotionRules[3].DemoteToBox.Should().Be(2);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void StudySessionConfiguration_Constructor_ShouldInitializeWithDefaultValues()
         {
             // Act
@@ -98,7 +99,7 @@ namespace FlashcardApp.Tests.Models
             config.KeyboardShortcuts.Should().NotBeNull();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void KeyboardShortcuts_ShouldHaveCorrectDefaultValues()
         {
             // Act
@@ -115,7 +116,7 @@ namespace FlashcardApp.Tests.Models
             config.KeyboardShortcuts.Help.Should().Be("h");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void FilePathConfiguration_Constructor_ShouldInitializeWithDefaultValues()
         {
             // Act
@@ -129,7 +130,7 @@ namespace FlashcardApp.Tests.Models
             config.ExportDirectory.Should().Be("exports");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ReviewSchedulingConfiguration_Constructor_ShouldInitializeWithDefaultValues()
         {
             // Act
@@ -142,7 +143,7 @@ namespace FlashcardApp.Tests.Models
             config.MaxNewCardsPerDay.Should().Be(20);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void BoxIntervals_ShouldHaveCorrectDefaultValues()
         {
             // Act
@@ -151,21 +152,21 @@ namespace FlashcardApp.Tests.Models
             // Assert
             config.BoxIntervals[0].BoxNumber.Should().Be(0);
             config.BoxIntervals[0].IntervalDays.Should().Be(1);
-            
+
             config.BoxIntervals[1].BoxNumber.Should().Be(1);
             config.BoxIntervals[1].IntervalDays.Should().Be(3);
-            
+
             config.BoxIntervals[2].BoxNumber.Should().Be(2);
             config.BoxIntervals[2].IntervalDays.Should().Be(7);
-            
+
             config.BoxIntervals[3].BoxNumber.Should().Be(3);
             config.BoxIntervals[3].IntervalDays.Should().Be(14);
-            
+
             config.BoxIntervals[4].BoxNumber.Should().Be(4);
             config.BoxIntervals[4].IntervalDays.Should().Be(30);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void DailyLimitsConfiguration_Constructor_ShouldInitializeWithDefaultValues()
         {
             // Act
@@ -178,7 +179,7 @@ namespace FlashcardApp.Tests.Models
             config.MinStudyTimePerDay.Should().Be(TimeSpan.FromMinutes(5));
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void UIConfiguration_Constructor_ShouldInitializeWithDefaultValues()
         {
             // Act

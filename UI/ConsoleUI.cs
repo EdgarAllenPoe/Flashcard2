@@ -11,7 +11,7 @@ namespace FlashcardApp.UI
         private readonly LeitnerBoxService _leitnerBoxService;
         private readonly bool _emojiSupport;
 
-        public ConsoleUI(ConfigurationService configService, DeckService deckService, 
+        public ConsoleUI(ConfigurationService configService, DeckService deckService,
                         StudySessionService studySessionService, LeitnerBoxService leitnerBoxService)
         {
             _configService = configService;
@@ -24,14 +24,14 @@ namespace FlashcardApp.UI
         private bool TestEmojiSupport()
         {
             // Always return false - we're using ASCII symbols instead of emojis
-                return false;
+            return false;
         }
 
 
         private void CheckEmojiDisplayAndOfferFallback()
         {
             var config = _configService.GetConfiguration();
-            
+
             // Only show this check once per session and only if emojis are enabled
             if (config.UI.UseIcons && _emojiSupport)
             {
@@ -45,11 +45,11 @@ namespace FlashcardApp.UI
         public void Run()
         {
             var config = _configService.GetConfiguration();
-            
+
             // Set console properties for better appearance
             Console.Title = "Flashcard App - Leitner Box System";
             Console.CursorVisible = true;
-            
+
             if (config.UI.ShowWelcomeMessage)
             {
                 ShowWelcomeMessage();
@@ -59,7 +59,7 @@ namespace FlashcardApp.UI
             {
                 ShowMainMenu();
                 var choice = GetImmediateChoice();
-                
+
                 if (config.UI.ClearScreenOnMenuChange)
                 {
                     Console.Clear();
@@ -103,15 +103,15 @@ namespace FlashcardApp.UI
         private void ShowWelcomeMessage()
         {
             var config = _configService.GetConfiguration();
-            
+
             Console.Clear();
-            
+
             // Beautiful welcome message with emojis but no ASCII boxes
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("    FLASHCARD APP v2.0");
             Console.WriteLine();
@@ -119,47 +119,47 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             Console.WriteLine("    Beautiful • Modern • Effective • Smart");
             Console.WriteLine();
-            
+
             Console.ResetColor();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("    Welcome to your personalized learning journey!");
             Console.WriteLine("    Master any subject with scientifically-proven spaced repetition");
             Console.WriteLine("    Enjoy a beautiful, intuitive interface designed for focus");
-            
+
             Console.ResetColor();
             Console.WriteLine();
-            
+
             // Check emoji display and offer fallback
             CheckEmojiDisplayAndOfferFallback();
-            
+
             ShowPressAnyKey();
         }
 
         private void ShowMainMenu()
         {
             var config = _configService.GetConfiguration();
-            
+
             Console.Clear();
-            
+
             // Beautiful main menu with modern design
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Magenta;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("    MAIN MENU");
             Console.WriteLine();
-            
+
             Console.ResetColor();
             Console.WriteLine();
-            
+
             // Menu options with clean text
             ShowMenuOption("1", "Start Study Session", "Begin your learning journey with spaced repetition");
             ShowMenuOption("2", "Manage Decks", "Create, edit, and organize your flashcard collections");
@@ -167,7 +167,7 @@ namespace FlashcardApp.UI
             ShowMenuOption("4", "Configuration", "Customize your learning experience");
             ShowMenuOption("5", "Help & Guide", "Learn how to use the app effectively");
             ShowMenuOption("ESC", "Exit", "Close the application");
-            
+
             Console.WriteLine();
             ShowInputPrompt("Enter your choice");
         }
@@ -175,26 +175,26 @@ namespace FlashcardApp.UI
         private void ShowMenuOption(string number, string title, string description)
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
-            
+
             Console.Write($"    {number}. ");
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            
+
             Console.Write(title);
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
             }
-            
+
             Console.WriteLine($" - {description}");
             Console.ResetColor();
         }
@@ -202,7 +202,7 @@ namespace FlashcardApp.UI
         private void StudySession()
         {
             var decks = _deckService.LoadAllDecks();
-            
+
             if (!decks.Any())
             {
                 ShowErrorMessage("No decks available. Please create a deck first.");
@@ -210,7 +210,7 @@ namespace FlashcardApp.UI
             }
 
             var selectedDeck = SelectDeck(decks, "Select a deck to study:");
-            if (selectedDeck == null) 
+            if (selectedDeck == null)
             {
                 ShowInfoMessage("Study session cancelled.");
                 return;
@@ -220,7 +220,7 @@ namespace FlashcardApp.UI
             var maxCards = GetMaxCardsForSession();
 
             var result = _studySessionService.StartStudySession(selectedDeck, studyMode, maxCards);
-            
+
             if (result.Success)
             {
                 ShowSessionResults(result);
@@ -277,7 +277,7 @@ namespace FlashcardApp.UI
         private void ViewStatistics()
         {
             var decks = _deckService.LoadAllDecks();
-            
+
             if (!decks.Any())
             {
                 ShowErrorMessage("No decks available.");
@@ -348,19 +348,19 @@ namespace FlashcardApp.UI
         private void ShowDeckManagementMenu()
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("    DECK MANAGEMENT");
             Console.WriteLine();
-            
+
             Console.ResetColor();
             Console.WriteLine();
-            
+
             ShowMenuOption("1", "Create New Deck", "Start a new flashcard collection");
             ShowMenuOption("2", "View All Decks", "Browse your existing decks");
             ShowMenuOption("3", "Edit Deck", "Modify deck properties and cards");
@@ -368,7 +368,7 @@ namespace FlashcardApp.UI
             ShowMenuOption("5", "Import Deck", "Load decks from external files");
             ShowMenuOption("6", "Export Deck", "Save decks to external files");
             ShowMenuOption("ESC", "Back to Main Menu", "Return to the main menu");
-            
+
             Console.WriteLine();
             ShowInputPrompt("Enter your choice");
         }
@@ -377,11 +377,11 @@ namespace FlashcardApp.UI
         {
             Console.Clear();
             ShowSectionHeader("CREATE NEW DECK", ConsoleColor.Green);
-            
+
             Console.WriteLine();
             ShowInputPrompt("Deck name");
             var name = Console.ReadLine();
-            
+
             if (string.IsNullOrWhiteSpace(name))
             {
                 ShowErrorMessage("Deck name cannot be empty.");
@@ -398,7 +398,7 @@ namespace FlashcardApp.UI
                 Console.WriteLine();
                 ShowInputPrompt("Use suggested name? (Y/n)");
                 var useUnique = Console.ReadLine()?.ToLower();
-                
+
                 if (useUnique == "y" || useUnique == "yes" || string.IsNullOrWhiteSpace(useUnique))
                 {
                     name = uniqueName;
@@ -421,7 +421,7 @@ namespace FlashcardApp.UI
                               .ToList();
 
             var deck = _deckService.CreateNewDeck(name, description, tags);
-            
+
             if (_deckService.SaveDeck(deck))
             {
                 ShowSuccessMessage($"Deck '{name}' created successfully!");
@@ -435,10 +435,10 @@ namespace FlashcardApp.UI
         private void ViewAllDecks()
         {
             var decks = _deckService.LoadAllDecks();
-            
+
             Console.Clear();
             ShowSectionHeader("ALL DECKS", ConsoleColor.Cyan);
-            
+
             if (!decks.Any())
             {
                 ShowInfoMessage("No decks found. Create your first deck to get started!");
@@ -456,27 +456,27 @@ namespace FlashcardApp.UI
         private void ShowDeckCard(Deck deck, int number)
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
-            
+
             Console.WriteLine($"    Deck #{number}: {deck.Name}");
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            
+
             if (!string.IsNullOrEmpty(deck.Description))
             {
                 Console.WriteLine($"    {deck.Description}");
             }
-            
+
             Console.WriteLine($"    Cards: {deck.ActiveCards}/{deck.TotalCards} | Created: {deck.CreatedDate:yyyy-MM-dd}");
             Console.WriteLine($"    Last Modified: {deck.LastModified:yyyy-MM-dd HH:mm}");
-            
+
             if (deck.Tags.Any())
             {
                 Console.WriteLine($"    Tags: {string.Join(", ", deck.Tags)}");
@@ -492,32 +492,32 @@ namespace FlashcardApp.UI
                 Console.Clear();
                 ShowSectionHeader("SELECT DECK", ConsoleColor.Magenta);
                 Console.WriteLine();
-                
+
                 for (int i = 0; i < decks.Count; i++)
                 {
                     var deck = decks[i];
                     Console.WriteLine($"    {i + 1}. {deck.Name} ({deck.ActiveCards} active cards)");
                 }
-                
+
                 Console.WriteLine();
                 Console.WriteLine("    ESC. Cancel");
                 Console.WriteLine();
                 ShowInputPrompt("Enter your choice");
-                
+
                 var keyInfo = Console.ReadKey(true);
                 if (keyInfo.Key == ConsoleKey.Escape)
                 {
                     return null; // ESC pressed - return null to indicate cancellation
                 }
-                
+
                 Console.Write(keyInfo.KeyChar);
                 var input = keyInfo.KeyChar + Console.ReadLine();
-                
+
                 if (int.TryParse(input, out int choice) && choice > 0 && choice <= decks.Count)
                 {
                     return decks[choice - 1];
                 }
-                
+
                 // Invalid selection - show error and loop again
                 ShowErrorMessage("Invalid selection. Please try again.");
                 Console.WriteLine("Press any key to continue...");
@@ -528,23 +528,23 @@ namespace FlashcardApp.UI
         private StudyMode SelectStudyMode()
         {
             var config = _configService.GetConfiguration();
-            
+
             Console.Clear();
             ShowSectionHeader("SELECT STUDY MODE", ConsoleColor.Blue);
             Console.WriteLine();
-            
+
             Console.WriteLine("    1. Front to Back (default) - Show question first, then answer");
             Console.WriteLine("    2. Back to Front - Show answer first, then question");
             Console.WriteLine("    3. Mixed - Randomly switch between modes");
             Console.WriteLine();
             ShowInputPrompt($"Enter your choice (default: {config.StudySession.DefaultStudyMode})");
-            
+
             var input = GetImmediateChoice();
             if (input == "ESC")
             {
                 return config.StudySession.DefaultStudyMode; // Return default on ESC
             }
-            
+
             return input switch
             {
                 "2" => StudyMode.BackToFront,
@@ -556,31 +556,31 @@ namespace FlashcardApp.UI
         private int GetMaxCardsForSession()
         {
             var config = _configService.GetConfiguration();
-            
+
             ShowInputPrompt($"Maximum cards for this session (default: {config.DailyLimits.MaxCardsPerDay})");
-            
+
             // Handle input properly for numeric input with Enter support
             var keyInfo = Console.ReadKey(true);
             if (keyInfo.Key == ConsoleKey.Escape)
             {
                 return config.DailyLimits.MaxCardsPerDay; // Return default on ESC
             }
-            
+
             // If Enter was pressed immediately, use default
             if (keyInfo.Key == ConsoleKey.Enter)
             {
                 return config.DailyLimits.MaxCardsPerDay;
             }
-            
+
             // Otherwise, read the full input line
             Console.Write(keyInfo.KeyChar);
             var input = keyInfo.KeyChar + Console.ReadLine();
-            
+
             if (int.TryParse(input, out int maxCards) && maxCards > 0)
             {
                 return Math.Min(maxCards, config.DailyLimits.MaxCardsPerDay);
             }
-            
+
             return config.DailyLimits.MaxCardsPerDay;
         }
 
@@ -588,21 +588,21 @@ namespace FlashcardApp.UI
         {
             var stats = result.SessionStatistics;
             var config = _configService.GetConfiguration();
-            
+
             Console.Clear();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("    SESSION COMPLETED!");
             Console.WriteLine();
-            
+
             Console.ResetColor();
             Console.WriteLine();
-            
+
             // Beautiful statistics display
             ShowStatCard("", "Session Time", $"{stats.SessionTime:mm\\:ss}");
             ShowStatCard("", "Cards Studied", stats.TotalCards.ToString());
@@ -610,14 +610,14 @@ namespace FlashcardApp.UI
             ShowStatCard("", "Correct Answers", stats.CorrectAnswers.ToString());
             ShowStatCard("", "Incorrect Answers", stats.IncorrectAnswers.ToString());
             ShowStatCard("", "Success Rate", $"{stats.SuccessRate:F1}%");
-            
+
             if (stats.TotalReviews > 0)
             {
                 ShowStatCard("", "Avg Response Time", $"{stats.AverageResponseTime:F1}s");
             }
-            
+
             Console.WriteLine();
-            
+
             // Motivational message based on performance
             if (stats.SuccessRate >= 80)
             {
@@ -636,12 +636,12 @@ namespace FlashcardApp.UI
         private void ShowStatCard(string icon, string label, string value)
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
-            
+
             Console.WriteLine($"    {icon} {label.PadRight(20)}: {value}");
             Console.ResetColor();
         }
@@ -649,28 +649,28 @@ namespace FlashcardApp.UI
         private void ShowSectionHeader(string title, ConsoleColor color)
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = color;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine($"    {title}");
             Console.WriteLine();
-            
+
             Console.ResetColor();
         }
 
         private void ShowSuccessMessage(string message)
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
             }
-            
+
             Console.WriteLine($"    {message}");
             Console.ResetColor();
         }
@@ -678,12 +678,12 @@ namespace FlashcardApp.UI
         private void ShowErrorMessage(string message)
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
             }
-            
+
             Console.WriteLine($"    {message}");
             Console.ResetColor();
         }
@@ -691,12 +691,12 @@ namespace FlashcardApp.UI
         private void ShowInfoMessage(string message)
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
-            
+
             Console.WriteLine($"    {message}");
             Console.ResetColor();
         }
@@ -709,21 +709,21 @@ namespace FlashcardApp.UI
         private void ShowExitMessage()
         {
             var config = _configService.GetConfiguration();
-            
+
             Console.Clear();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("    THANK YOU FOR LEARNING!");
             Console.WriteLine();
             Console.WriteLine("    Remember: Every study session brings you closer to mastery!");
             Console.WriteLine("    Keep up the great work and never stop learning!");
             Console.WriteLine();
-            
+
             Console.ResetColor();
             Console.WriteLine();
         }
@@ -731,12 +731,12 @@ namespace FlashcardApp.UI
         private void ShowPressAnyKey()
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("    Press any key to continue...");
             Console.ResetColor();
@@ -746,12 +746,12 @@ namespace FlashcardApp.UI
         private void ShowInputPrompt(string prompt)
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
-            
+
             Console.Write($"    {prompt}: ");
             Console.ResetColor();
         }
@@ -784,11 +784,11 @@ namespace FlashcardApp.UI
             Console.Clear();
             ShowSectionHeader("HELP & GUIDE", ConsoleColor.Cyan);
             Console.WriteLine();
-            
+
             Console.WriteLine("    This application uses the scientifically-proven Leitner Box system for");
             Console.WriteLine("    spaced repetition learning, helping you retain information long-term.");
             Console.WriteLine();
-            
+
             Console.WriteLine("    How the Leitner Box System Works:");
             Console.WriteLine("    • Cards start in Box 0 (review daily)");
             Console.WriteLine("    • Correct answers move cards to higher boxes");
@@ -796,7 +796,7 @@ namespace FlashcardApp.UI
             Console.WriteLine("    • Higher boxes have longer review intervals");
             Console.WriteLine("    • This optimizes your study time and retention");
             Console.WriteLine();
-            
+
             Console.WriteLine("    Study Session Controls:");
             Console.WriteLine("    • Any Key - Show answer (space, enter, letters, numbers)");
             Console.WriteLine("    • 1 - Mark as correct (move to higher box)");
@@ -805,7 +805,7 @@ namespace FlashcardApp.UI
             Console.WriteLine("    • Q or ESC - Quit session (saves progress)");
             Console.WriteLine("    • H - Show this help");
             Console.WriteLine();
-            
+
             Console.WriteLine("    Pro Tips:");
             Console.WriteLine("    • Study regularly for best results");
             Console.WriteLine("    • Don't worry about mistakes - they're part of learning!");
@@ -821,25 +821,25 @@ namespace FlashcardApp.UI
         private void ShowDeckStatistics(Deck deck)
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
-            
+
             Console.WriteLine($"    {deck.Name}");
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            
+
             Console.WriteLine($"    Total Cards: {deck.TotalCards} | Active: {deck.ActiveCards}");
             Console.WriteLine($"    Study Sessions: {deck.Statistics.TotalStudySessions}");
             Console.WriteLine($"    Total Study Time: {deck.Statistics.TotalStudyTime:hh\\:mm\\:ss}");
             Console.WriteLine($"    Overall Success Rate: {deck.Statistics.OverallSuccessRate:F1}%");
             Console.WriteLine($"    Study Streak: {deck.Statistics.StudyStreak} days");
-            
+
             // Show box distribution
             var boxStats = _leitnerBoxService.GetBoxStatistics(deck);
             Console.WriteLine("    Box Distribution:");
@@ -853,19 +853,19 @@ namespace FlashcardApp.UI
         private void ShowOverallStatistics(Dictionary<string, object> stats)
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("    T  OVERALL STATISTICS");
             Console.WriteLine();
-            
+
             Console.ResetColor();
             Console.WriteLine();
-            
+
             ShowStatCard("", "Total Decks", stats["TotalDecks"].ToString());
             ShowStatCard("", "Total Cards", stats["TotalCards"].ToString());
             ShowStatCard("", "Total Study Time", stats["TotalStudyTime"].ToString());
@@ -891,7 +891,7 @@ namespace FlashcardApp.UI
         private bool EditDeck()
         {
             var decks = _deckService.LoadAllDecks();
-            
+
             if (!decks.Any())
             {
                 ShowErrorMessage("No decks available to edit.");
@@ -901,9 +901,9 @@ namespace FlashcardApp.UI
             Console.Clear();
             ShowSectionHeader("EDIT DECK", ConsoleColor.Yellow);
             Console.WriteLine();
-            
+
             var selectedDeck = SelectDeck(decks, "Select a deck to edit:");
-            if (selectedDeck == null) 
+            if (selectedDeck == null)
             {
                 ShowInfoMessage("Edit cancelled.");
                 return false; // No pause needed for ESC
@@ -912,7 +912,7 @@ namespace FlashcardApp.UI
             Console.Clear();
             ShowSectionHeader($"EDITING: {selectedDeck.Name}", ConsoleColor.Yellow);
             Console.WriteLine();
-            
+
             Console.WriteLine("What would you like to edit?");
             Console.WriteLine("1. Deck Name");
             Console.WriteLine("2. Description");
@@ -924,7 +924,7 @@ namespace FlashcardApp.UI
             Console.WriteLine("ESC. Back");
             Console.WriteLine();
             ShowInputPrompt("Enter your choice");
-            
+
             var keyInfo = Console.ReadKey(true);
             string choice;
             if (keyInfo.Key == ConsoleKey.Escape)
@@ -965,13 +965,13 @@ namespace FlashcardApp.UI
                     ShowInvalidChoice();
                     break;
             }
-            
+
             return true; // Show pause for normal completion
         }
         private void DeleteDeck()
         {
             var decks = _deckService.LoadAllDecks();
-            
+
             if (!decks.Any())
             {
                 ShowErrorMessage("No decks available to delete.");
@@ -981,9 +981,9 @@ namespace FlashcardApp.UI
             Console.Clear();
             ShowSectionHeader("DELETE DECK", ConsoleColor.Red);
             Console.WriteLine();
-            
+
             var selectedDeck = SelectDeck(decks, "Select a deck to delete:");
-            if (selectedDeck == null) 
+            if (selectedDeck == null)
             {
                 ShowInfoMessage("Delete cancelled.");
                 return;
@@ -994,7 +994,7 @@ namespace FlashcardApp.UI
             Console.WriteLine($"   This will permanently remove {selectedDeck.TotalCards} cards and all statistics.");
             Console.WriteLine();
             ShowInputPrompt("Type 'DELETE' to confirm deletion (or anything else to cancel)");
-            
+
             var confirmation = Console.ReadLine();
             if (confirmation?.ToUpper() == "DELETE")
             {
@@ -1017,28 +1017,28 @@ namespace FlashcardApp.UI
             Console.Clear();
             ShowSectionHeader("IMPORT DECK", ConsoleColor.Green);
             Console.WriteLine();
-            
+
             Console.WriteLine("Import a deck from a CSV, XLSX, or JSON file.");
             Console.WriteLine("Supported formats: .csv, .xlsx, .json");
             Console.WriteLine();
             ShowInputPrompt("Enter the full path to the deck file (or press Enter to browse current directory)");
-            
+
             var input = GetUserChoice();
             if (input == "ESC")
             {
                 ShowInfoMessage("Import cancelled.");
                 return;
             }
-            
+
             var filePath = input;
-            
+
             if (string.IsNullOrWhiteSpace(filePath))
             {
                 // Show files in current directory
                 var currentDir = Directory.GetCurrentDirectory();
                 var supportedExtensions = new[] { "*.csv", "*.xlsx", "*.json" };
                 var files = new List<string>();
-                
+
                 foreach (var extension in supportedExtensions)
                 {
                     var foundFiles = Directory.GetFiles(currentDir, extension);
@@ -1049,13 +1049,13 @@ namespace FlashcardApp.UI
                     }
                     files.AddRange(foundFiles);
                 }
-                
+
                 if (!files.Any())
                 {
                     ShowErrorMessage("No supported files found in current directory.");
                     return;
                 }
-                
+
                 Console.WriteLine();
                 Console.WriteLine("Available files:");
                 for (int i = 0; i < files.Count; i++)
@@ -1066,14 +1066,14 @@ namespace FlashcardApp.UI
                 }
                 Console.WriteLine();
                 ShowInputPrompt("Enter the number of the file to import (or ESC to cancel)");
-                
+
                 var keyInfo = Console.ReadKey(true);
                 if (keyInfo.Key == ConsoleKey.Escape)
                 {
                     ShowInfoMessage("Import cancelled.");
                     return;
                 }
-                
+
                 var choice = keyInfo.KeyChar.ToString();
                 if (int.TryParse(choice, out int fileIndex) && fileIndex > 0 && fileIndex <= files.Count)
                 {
@@ -1085,13 +1085,13 @@ namespace FlashcardApp.UI
                     return;
                 }
             }
-            
+
             if (!File.Exists(filePath))
             {
                 ShowErrorMessage($"File not found: {filePath}");
                 return;
             }
-            
+
             try
             {
                 var importedDeck = _deckService.ImportDeck(filePath);
@@ -1121,7 +1121,7 @@ namespace FlashcardApp.UI
         private void ExportDeck()
         {
             var decks = _deckService.LoadAllDecks();
-            
+
             if (!decks.Any())
             {
                 ShowErrorMessage("No decks available to export.");
@@ -1131,9 +1131,9 @@ namespace FlashcardApp.UI
             Console.Clear();
             ShowSectionHeader("EXPORT DECK", ConsoleColor.Blue);
             Console.WriteLine();
-            
+
             var selectedDeck = SelectDeck(decks, "Select a deck to export:");
-            if (selectedDeck == null) 
+            if (selectedDeck == null)
             {
                 ShowInfoMessage("Export cancelled.");
                 return;
@@ -1146,14 +1146,14 @@ namespace FlashcardApp.UI
             Console.WriteLine("  L  .json - JSON format");
             Console.WriteLine();
             ShowInputPrompt("Enter the file path to save the deck (or press Enter for default JSON)");
-            
+
             var input = GetUserChoice();
             if (input == "ESC")
             {
                 ShowInfoMessage("Export cancelled.");
                 return;
             }
-            
+
             var filePath = input;
             if (string.IsNullOrWhiteSpace(filePath))
             {
@@ -1161,7 +1161,7 @@ namespace FlashcardApp.UI
                 var safeFileName = selectedDeck.Name.Replace(" ", "_").Replace(":", "").Replace("/", "").Replace("\\", "");
                 filePath = Path.Combine(currentDir, $"{safeFileName}_export.json");
             }
-            
+
             try
             {
                 if (_deckService.ExportDeck(selectedDeck, filePath))
@@ -1184,19 +1184,19 @@ namespace FlashcardApp.UI
         private void ShowConfigurationMenu()
         {
             var config = _configService.GetConfiguration();
-            
+
             if (config.UI.UseColors)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("    CONFIGURATION");
             Console.WriteLine();
-            
+
             Console.ResetColor();
             Console.WriteLine();
-            
+
             ShowMenuOption("1", "View Current Settings", "Display all current configuration settings");
             ShowMenuOption("2", "Leitner Box Settings", "Configure box promotion and demotion rules");
             ShowMenuOption("3", "Study Session Settings", "Customize study session behavior");
@@ -1204,7 +1204,7 @@ namespace FlashcardApp.UI
             ShowMenuOption("5", "UI Settings", "Customize colors, icons, and display options");
             ShowMenuOption("6", "Reset to Defaults", "Restore all settings to default values");
             ShowMenuOption("ESC", "Back to Main Menu", "Return to the main menu");
-            
+
             Console.WriteLine();
             ShowInputPrompt("Enter your choice");
         }
@@ -1213,15 +1213,15 @@ namespace FlashcardApp.UI
             Console.Clear();
             ShowSectionHeader("CURRENT CONFIGURATION", ConsoleColor.Cyan);
             Console.WriteLine();
-            
+
             var config = _configService.GetConfiguration();
-            
+
             Console.WriteLine("B  LEITNER BOX SETTINGS:");
             Console.WriteLine($"   Number of Boxes: {config.LeitnerBoxes.NumberOfBoxes}");
             Console.WriteLine($"   Promotion Rules: {config.LeitnerBoxes.PromotionRules.Count} rules");
             Console.WriteLine($"   Demotion Rules: {config.LeitnerBoxes.DemotionRules.Count} rules");
             Console.WriteLine();
-            
+
             Console.WriteLine("=  STUDY SESSION SETTINGS:");
             Console.WriteLine($"   Default Study Mode: {config.StudySession.DefaultStudyMode}");
             Console.WriteLine($"   Show Statistics: {config.StudySession.ShowStatistics}");
@@ -1229,14 +1229,14 @@ namespace FlashcardApp.UI
             Console.WriteLine($"   Shuffle Cards: {config.StudySession.ShuffleCards}");
             Console.WriteLine($"   Show Progress: {config.StudySession.ShowProgress}");
             Console.WriteLine();
-            
+
             Console.WriteLine("T  DAILY LIMITS:");
             Console.WriteLine($"   Max Cards Per Day: {config.DailyLimits.MaxCardsPerDay}");
             Console.WriteLine($"   Min Cards Per Day: {config.DailyLimits.MinCardsPerDay}");
             Console.WriteLine($"   Max Study Time: {config.DailyLimits.MaxStudyTimePerDay}");
             Console.WriteLine($"   Min Study Time: {config.DailyLimits.MinStudyTimePerDay}");
             Console.WriteLine();
-            
+
             Console.WriteLine("@  UI SETTINGS:");
             Console.WriteLine($"   Use Colors: {config.UI.UseColors}");
             Console.WriteLine($"   Use Icons: {config.UI.UseIcons}");
@@ -1244,7 +1244,7 @@ namespace FlashcardApp.UI
             Console.WriteLine($"   Clear Screen on Menu Change: {config.UI.ClearScreenOnMenuChange}");
             Console.WriteLine($"   Show Detailed Statistics: {config.UI.ShowDetailedStatistics}");
             Console.WriteLine();
-            
+
             Console.WriteLine("FILE PATHS:");
             Console.WriteLine($"   Decks Directory: {config.FilePaths.DecksDirectory}");
             Console.WriteLine($"   Config File: {config.FilePaths.ConfigFileName}");
@@ -1252,7 +1252,7 @@ namespace FlashcardApp.UI
             Console.WriteLine($"   Backup Directory: {config.FilePaths.BackupDirectory}");
             Console.WriteLine($"   Export Directory: {config.FilePaths.ExportDirectory}");
             Console.WriteLine();
-            
+
             ShowInputPrompt("Press Enter to continue or ESC to go back...");
             var input = GetUserChoice();
             return input != "ESC"; // Return false if ESC pressed (no pause needed)
@@ -1264,15 +1264,15 @@ namespace FlashcardApp.UI
                 Console.Clear();
                 ShowSectionHeader("LEITNER BOX SETTINGS", ConsoleColor.Yellow);
                 Console.WriteLine();
-                
+
                 var config = _configService.GetConfiguration();
-                
+
                 Console.WriteLine("Current Settings:");
                 Console.WriteLine($"   Number of Boxes: {config.LeitnerBoxes.NumberOfBoxes}");
                 Console.WriteLine($"   Promotion Rules: {config.LeitnerBoxes.PromotionRules.Count} rules");
                 Console.WriteLine($"   Demotion Rules: {config.LeitnerBoxes.DemotionRules.Count} rules");
                 Console.WriteLine();
-                
+
                 Console.WriteLine("B  PROMOTION RULES (Correct answers):");
                 for (int i = 0; i < config.LeitnerBoxes.PromotionRules.Count; i++)
                 {
@@ -1280,7 +1280,7 @@ namespace FlashcardApp.UI
                     Console.WriteLine($"   Box {i} → Box {i + 1}: {rule.CorrectAnswersNeeded} correct answers");
                 }
                 Console.WriteLine();
-                
+
                 Console.WriteLine("DEMOTION RULES (Incorrect answers):");
                 for (int i = 0; i < config.LeitnerBoxes.DemotionRules.Count; i++)
                 {
@@ -1288,17 +1288,17 @@ namespace FlashcardApp.UI
                     Console.WriteLine($"   Box {rule.BoxNumber} → Box {rule.DemoteToBox}: {rule.IncorrectAnswersNeeded} incorrect answers");
                 }
                 Console.WriteLine();
-                
+
                 Console.WriteLine("EDITING OPTIONS:");
                 Console.WriteLine("   1. T  Change Number of Boxes");
                 Console.WriteLine("   2. Edit Promotion Rules");
                 Console.WriteLine("   3. Edit Demotion Rules");
                 Console.WriteLine("   ESC. Back to Configuration Menu");
                 Console.WriteLine();
-                
+
                 ShowInputPrompt("Enter your choice");
                 var choice = GetImmediateChoice();
-                
+
                 switch (choice)
                 {
                     case "1":
@@ -1326,9 +1326,9 @@ namespace FlashcardApp.UI
                 Console.Clear();
                 ShowSectionHeader("STUDY SESSION SETTINGS", ConsoleColor.Yellow);
                 Console.WriteLine();
-                
+
                 var config = _configService.GetConfiguration();
-                
+
                 Console.WriteLine("    Current Settings:");
                 Console.WriteLine($"    Default Study Mode: {config.StudySession.DefaultStudyMode}");
                 Console.WriteLine($"    Show Statistics: {config.StudySession.ShowStatistics}");
@@ -1336,7 +1336,7 @@ namespace FlashcardApp.UI
                 Console.WriteLine($"    Shuffle Cards: {config.StudySession.ShuffleCards}");
                 Console.WriteLine($"    Show Progress: {config.StudySession.ShowProgress}");
                 Console.WriteLine();
-                
+
                 Console.WriteLine("    KEYBOARD SHORTCUTS:");
                 Console.WriteLine($"    Correct Answer: {config.StudySession.KeyboardShortcuts.CorrectAnswer}");
                 Console.WriteLine($"    Incorrect Answer: {config.StudySession.KeyboardShortcuts.IncorrectAnswer}");
@@ -1345,11 +1345,11 @@ namespace FlashcardApp.UI
                 Console.WriteLine($"    Help: {config.StudySession.KeyboardShortcuts.Help}");
                 Console.WriteLine($"    Quit: {config.StudySession.KeyboardShortcuts.Quit}");
                 Console.WriteLine();
-                
+
                 Console.WriteLine("    TIMING SETTINGS:");
                 Console.WriteLine($"    Auto Advance Delay: {config.StudySession.AutoAdvanceDelay} seconds");
                 Console.WriteLine();
-                
+
                 Console.WriteLine("    EDITING OPTIONS:");
                 Console.WriteLine("    1. Change Default Study Mode");
                 Console.WriteLine("    2. Toggle Show Statistics");
@@ -1360,10 +1360,10 @@ namespace FlashcardApp.UI
                 Console.WriteLine("    7. Edit Keyboard Shortcuts");
                 Console.WriteLine("    ESC. Back to Configuration Menu");
                 Console.WriteLine();
-                
+
                 ShowInputPrompt("Enter your choice");
                 var choice = GetImmediateChoice();
-                
+
                 switch (choice)
                 {
                     case "1":
@@ -1403,23 +1403,23 @@ namespace FlashcardApp.UI
                 Console.Clear();
                 ShowSectionHeader("DAILY LIMITS", ConsoleColor.Yellow);
                 Console.WriteLine();
-                
+
                 var config = _configService.GetConfiguration();
-                
+
                 Console.WriteLine("Current Daily Limits:");
                 Console.WriteLine($"   Max Cards Per Day: {config.DailyLimits.MaxCardsPerDay}");
                 Console.WriteLine($"   Min Cards Per Day: {config.DailyLimits.MinCardsPerDay}");
                 Console.WriteLine($"   Max Study Time: {config.DailyLimits.MaxStudyTimePerDay}");
                 Console.WriteLine($"   Min Study Time: {config.DailyLimits.MinStudyTimePerDay}");
                 Console.WriteLine();
-                
+
                 Console.WriteLine("T  LIMIT DESCRIPTIONS:");
                 Console.WriteLine("   • Max Cards Per Day: Maximum number of cards to study in one day");
                 Console.WriteLine("   • Min Cards Per Day: Minimum number of cards to study in one day");
                 Console.WriteLine("   • Max Study Time: Maximum time to spend studying per day");
                 Console.WriteLine("   • Min Study Time: Minimum time to spend studying per day");
                 Console.WriteLine();
-                
+
                 Console.WriteLine("EDITING OPTIONS:");
                 Console.WriteLine("   1. Change Max Cards Per Day");
                 Console.WriteLine("   2. Change Min Cards Per Day");
@@ -1427,10 +1427,10 @@ namespace FlashcardApp.UI
                 Console.WriteLine("   4. Change Min Study Time");
                 Console.WriteLine("   ESC. Back to Configuration Menu");
                 Console.WriteLine();
-                
+
                 ShowInputPrompt("Enter your choice");
                 var choice = GetImmediateChoice();
-                
+
                 switch (choice)
                 {
                     case "1":
@@ -1461,9 +1461,9 @@ namespace FlashcardApp.UI
                 Console.Clear();
                 ShowSectionHeader("UI SETTINGS", ConsoleColor.Yellow);
                 Console.WriteLine();
-                
+
                 var config = _configService.GetConfiguration();
-                
+
                 Console.WriteLine("Current UI Settings:");
                 Console.WriteLine($"   Use Colors: {config.UI.UseColors}");
                 Console.WriteLine($"   Use Icons: {config.UI.UseIcons}");
@@ -1471,7 +1471,7 @@ namespace FlashcardApp.UI
                 Console.WriteLine($"   Clear Screen on Menu Change: {config.UI.ClearScreenOnMenuChange}");
                 Console.WriteLine($"   Show Detailed Statistics: {config.UI.ShowDetailedStatistics}");
                 Console.WriteLine();
-                
+
                 Console.WriteLine("@  UI FEATURE DESCRIPTIONS:");
                 Console.WriteLine("   • Use Colors: Enable colored text and backgrounds");
                 Console.WriteLine("   • Use Icons: Display emoji icons in menus and messages");
@@ -1480,7 +1480,7 @@ namespace FlashcardApp.UI
                 Console.WriteLine("   • Clear Screen on Menu Change: Clear screen when switching menus");
                 Console.WriteLine("   • Show Detailed Statistics: Display comprehensive statistics");
                 Console.WriteLine();
-                
+
                 Console.WriteLine("EDITING OPTIONS:");
                 Console.WriteLine("   1. Toggle Use Colors");
                 Console.WriteLine("   2. Toggle Use Icons");
@@ -1489,10 +1489,10 @@ namespace FlashcardApp.UI
                 Console.WriteLine("   5. Toggle Show Detailed Statistics");
                 Console.WriteLine("   ESC. Back to Configuration Menu");
                 Console.WriteLine();
-                
+
                 ShowInputPrompt("Enter your choice");
                 var choice = GetImmediateChoice();
-                
+
                 switch (choice)
                 {
                     case "1":
@@ -1524,7 +1524,7 @@ namespace FlashcardApp.UI
             Console.Clear();
             ShowSectionHeader("RESET TO DEFAULTS", ConsoleColor.Red);
             Console.WriteLine();
-            
+
             Console.WriteLine("WARNING: This will reset ALL configuration settings to their default values!");
             Console.WriteLine();
             Console.WriteLine("This includes:");
@@ -1536,17 +1536,17 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             Console.WriteLine("Your flashcard decks and study progress will NOT be affected.");
             Console.WriteLine();
-            
+
             ShowInputPrompt("Are you sure you want to reset to defaults? (y/N)");
             var confirmation = Console.ReadLine()?.ToLower();
-            
+
             if (confirmation == "y" || confirmation == "yes")
             {
                 try
                 {
                     // Reset to defaults by creating a new default configuration
                     var defaultConfig = new AppConfiguration();
-                    _configService.UpdateConfiguration(config => 
+                    _configService.UpdateConfiguration(config =>
                     {
                         config.LeitnerBoxes = defaultConfig.LeitnerBoxes;
                         config.StudySession = defaultConfig.StudySession;
@@ -1566,7 +1566,7 @@ namespace FlashcardApp.UI
             {
                 ShowInfoMessage("Reset cancelled.");
             }
-            
+
             ShowInputPrompt("Press Enter to continue or ESC to go back...");
             var input = GetUserChoice();
             return input != "ESC"; // Return false if ESC pressed (no pause needed)
@@ -1579,11 +1579,11 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             Console.WriteLine($"Current number of boxes: {config.LeitnerBoxes.NumberOfBoxes}");
             ShowInputPrompt("Enter new number of boxes (3-10)");
-            
+
             var input = Console.ReadLine();
             if (int.TryParse(input, out int newCount) && newCount >= 3 && newCount <= 10)
             {
-                _configService.UpdateConfiguration(cfg => 
+                _configService.UpdateConfiguration(cfg =>
                 {
                     cfg.LeitnerBoxes.NumberOfBoxes = newCount;
                     // Regenerate rules for new box count
@@ -1596,7 +1596,7 @@ namespace FlashcardApp.UI
             {
                 ShowErrorMessage("Invalid input. Please enter a number between 3 and 10.");
             }
-            
+
             ShowPressAnyKey();
         }
 
@@ -1606,17 +1606,17 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             Console.WriteLine("PROMOTION RULES EDITOR");
             Console.WriteLine();
-            
+
             for (int i = 0; i < config.LeitnerBoxes.PromotionRules.Count; i++)
             {
                 var rule = config.LeitnerBoxes.PromotionRules[i];
                 Console.WriteLine($"Box {i} → Box {i + 1}: Currently requires {rule.CorrectAnswersNeeded} correct answers");
                 ShowInputPrompt($"Enter new number of correct answers needed (1-10) or press Enter to keep current");
-                
+
                 var input = Console.ReadLine();
                 if (!string.IsNullOrWhiteSpace(input) && int.TryParse(input, out int newCount) && newCount >= 1 && newCount <= 10)
                 {
-                    _configService.UpdateConfiguration(cfg => 
+                    _configService.UpdateConfiguration(cfg =>
                     {
                         cfg.LeitnerBoxes.PromotionRules[i].CorrectAnswersNeeded = newCount;
                     });
@@ -1631,7 +1631,7 @@ namespace FlashcardApp.UI
                     ShowErrorMessage("Invalid input. Keeping current value.");
                 }
             }
-            
+
             ShowPressAnyKey();
         }
 
@@ -1641,17 +1641,17 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             Console.WriteLine("DEMOTION RULES EDITOR");
             Console.WriteLine();
-            
+
             for (int i = 0; i < config.LeitnerBoxes.DemotionRules.Count; i++)
             {
                 var rule = config.LeitnerBoxes.DemotionRules[i];
                 Console.WriteLine($"Box {rule.BoxNumber}: Currently demotes to Box {rule.DemoteToBox} after {rule.IncorrectAnswersNeeded} incorrect answers");
                 ShowInputPrompt($"Enter new number of incorrect answers needed (1-5) or press Enter to keep current");
-                
+
                 var input = Console.ReadLine();
                 if (!string.IsNullOrWhiteSpace(input) && int.TryParse(input, out int newCount) && newCount >= 1 && newCount <= 5)
                 {
-                    _configService.UpdateConfiguration(cfg => 
+                    _configService.UpdateConfiguration(cfg =>
                     {
                         cfg.LeitnerBoxes.DemotionRules[i].IncorrectAnswersNeeded = newCount;
                     });
@@ -1666,7 +1666,7 @@ namespace FlashcardApp.UI
                     ShowErrorMessage("Invalid input. Keeping current value.");
                 }
             }
-            
+
             ShowPressAnyKey();
         }
 
@@ -1703,10 +1703,10 @@ namespace FlashcardApp.UI
             Console.WriteLine("   2. BackToFront - Show back side first");
             Console.WriteLine("   3. Mixed - Randomly choose which side to show first");
             Console.WriteLine();
-            
+
             ShowInputPrompt("Enter new study mode (1-3) or press Enter to keep current");
             var input = Console.ReadLine();
-            
+
             if (!string.IsNullOrWhiteSpace(input))
             {
                 StudyMode newMode = input switch
@@ -1716,7 +1716,7 @@ namespace FlashcardApp.UI
                     "3" => StudyMode.Mixed,
                     _ => config.StudySession.DefaultStudyMode
                 };
-                
+
                 if (newMode != config.StudySession.DefaultStudyMode)
                 {
                     _configService.UpdateConfiguration(cfg => cfg.StudySession.DefaultStudyMode = newMode);
@@ -1731,7 +1731,7 @@ namespace FlashcardApp.UI
             {
                 Console.WriteLine("   Keeping current value.");
             }
-            
+
             ShowPressAnyKey();
         }
 
@@ -1777,7 +1777,7 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             Console.WriteLine($"Current auto advance delay: {config.StudySession.AutoAdvanceDelay} seconds");
             ShowInputPrompt("Enter new delay in seconds (1-30) or press Enter to keep current");
-            
+
             var input = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(input) && int.TryParse(input, out int newDelay) && newDelay >= 1 && newDelay <= 30)
             {
@@ -1792,7 +1792,7 @@ namespace FlashcardApp.UI
             {
                 ShowErrorMessage("Invalid input. Please enter a number between 1 and 30.");
             }
-            
+
             ShowPressAnyKey();
         }
 
@@ -1802,9 +1802,9 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             Console.WriteLine("KEYBOARD SHORTCUTS EDITOR");
             Console.WriteLine();
-            
+
             var shortcuts = config.StudySession.KeyboardShortcuts;
-            
+
             // Edit each shortcut
             EditShortcut("Correct Answer", shortcuts.CorrectAnswer, (cfg, value) => cfg.StudySession.KeyboardShortcuts.CorrectAnswer = value);
             EditShortcut("Incorrect Answer", shortcuts.IncorrectAnswer, (cfg, value) => cfg.StudySession.KeyboardShortcuts.IncorrectAnswer = value);
@@ -1812,7 +1812,7 @@ namespace FlashcardApp.UI
             EditShortcut("Skip Card", shortcuts.Skip, (cfg, value) => cfg.StudySession.KeyboardShortcuts.Skip = value);
             EditShortcut("Help", shortcuts.Help, (cfg, value) => cfg.StudySession.KeyboardShortcuts.Help = value);
             EditShortcut("Quit", shortcuts.Quit, (cfg, value) => cfg.StudySession.KeyboardShortcuts.Quit = value);
-            
+
             ShowSuccessMessage("Keyboard shortcuts updated!");
             ShowPressAnyKey();
         }
@@ -1821,7 +1821,7 @@ namespace FlashcardApp.UI
         {
             Console.WriteLine($"{name}: Currently '{currentValue}'");
             ShowInputPrompt($"Enter new shortcut key or press Enter to keep current");
-            
+
             var input = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(input))
             {
@@ -1841,7 +1841,7 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             Console.WriteLine($"Current max cards per day: {config.DailyLimits.MaxCardsPerDay}");
             ShowInputPrompt("Enter new max cards per day (10-1000) or press Enter to keep current");
-            
+
             var input = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(input) && int.TryParse(input, out int newMax) && newMax >= 10 && newMax <= 1000)
             {
@@ -1856,7 +1856,7 @@ namespace FlashcardApp.UI
             {
                 ShowErrorMessage("Invalid input. Please enter a number between 10 and 1000.");
             }
-            
+
             ShowPressAnyKey();
         }
 
@@ -1866,7 +1866,7 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             Console.WriteLine($"Current min cards per day: {config.DailyLimits.MinCardsPerDay}");
             ShowInputPrompt("Enter new min cards per day (1-100) or press Enter to keep current");
-            
+
             var input = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(input) && int.TryParse(input, out int newMin) && newMin >= 1 && newMin <= 100)
             {
@@ -1881,7 +1881,7 @@ namespace FlashcardApp.UI
             {
                 ShowErrorMessage("Invalid input. Please enter a number between 1 and 100.");
             }
-            
+
             ShowPressAnyKey();
         }
 
@@ -1892,7 +1892,7 @@ namespace FlashcardApp.UI
             Console.WriteLine($"Current max study time: {config.DailyLimits.MaxStudyTimePerDay}");
             Console.WriteLine("Enter new max study time in format HH:MM:SS (e.g., 02:30:00) or press Enter to keep current");
             ShowInputPrompt("Max study time");
-            
+
             var input = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(input) && TimeSpan.TryParse(input, out TimeSpan newTime) && newTime.TotalHours <= 24)
             {
@@ -1907,7 +1907,7 @@ namespace FlashcardApp.UI
             {
                 ShowErrorMessage("Invalid input. Please enter time in HH:MM:SS format (max 24 hours).");
             }
-            
+
             ShowPressAnyKey();
         }
 
@@ -1918,7 +1918,7 @@ namespace FlashcardApp.UI
             Console.WriteLine($"Current min study time: {config.DailyLimits.MinStudyTimePerDay}");
             Console.WriteLine("Enter new min study time in format HH:MM:SS (e.g., 00:05:00) or press Enter to keep current");
             ShowInputPrompt("Min study time");
-            
+
             var input = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(input) && TimeSpan.TryParse(input, out TimeSpan newTime) && newTime.TotalHours <= 24)
             {
@@ -1933,7 +1933,7 @@ namespace FlashcardApp.UI
             {
                 ShowErrorMessage("nvalid input. Please enter time in HH:MM:SS format (max 24 hours).");
             }
-            
+
             ShowPressAnyKey();
         }
 
@@ -1989,7 +1989,7 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             Console.WriteLine($"Current name: {deck.Name}");
             ShowInputPrompt("Enter new deck name (or press Enter to keep current)");
-            
+
             var newName = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(newName))
             {
@@ -2010,10 +2010,10 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             Console.WriteLine($"Current description: {deck.Description ?? "None"}");
             ShowInputPrompt("Enter new description (or press Enter to keep current)");
-            
+
             var newDescription = Console.ReadLine();
             deck.Description = newDescription ?? "";
-            
+
             if (_deckService.SaveDeck(deck))
             {
                 ShowSuccessMessage("Deck description updated successfully!");
@@ -2029,7 +2029,7 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             Console.WriteLine($"Current tags: {string.Join(", ", deck.Tags) ?? "None"}");
             ShowInputPrompt("Enter new tags (comma-separated, or press Enter to keep current)");
-            
+
             var newTagsInput = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(newTagsInput))
             {
@@ -2037,7 +2037,7 @@ namespace FlashcardApp.UI
                                       .Select(t => t.Trim())
                                       .ToList();
             }
-            
+
             if (_deckService.SaveDeck(deck))
             {
                 ShowSuccessMessage("Deck tags updated successfully!");
@@ -2053,32 +2053,32 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             ShowSectionHeader("ADD FLASHCARD", ConsoleColor.Green);
             Console.WriteLine();
-            
+
             ShowInputPrompt("Enter the front side of the card (question)");
             var front = Console.ReadLine();
-            
+
             if (string.IsNullOrWhiteSpace(front))
             {
                 ShowErrorMessage("Front side cannot be empty.");
                 return;
             }
-            
+
             ShowInputPrompt("Enter the back side of the card (answer)");
             var back = Console.ReadLine();
-            
+
             if (string.IsNullOrWhiteSpace(back))
             {
                 ShowErrorMessage("Back side cannot be empty.");
                 return;
             }
-            
+
             ShowInputPrompt("Enter tags (comma-separated, optional)");
             var tagsInput = Console.ReadLine() ?? "";
             var tags = tagsInput.Split(',', StringSplitOptions.RemoveEmptyEntries)
                               .Select(t => t.Trim())
                               .ToList();
-            
-            var flashcard = new Flashcard 
+
+            var flashcard = new Flashcard
             {
                 Id = Guid.NewGuid().ToString(),
                 Front = front,
@@ -2088,7 +2088,7 @@ namespace FlashcardApp.UI
                 CurrentBox = 0,
                 Statistics = new FlashcardStatistics()
             };
-            
+
             if (_deckService.AddFlashcardToDeck(deck, flashcard))
             {
                 ShowSuccessMessage("Flashcard added successfully!");
@@ -2106,7 +2106,7 @@ namespace FlashcardApp.UI
                 ShowErrorMessage("No flashcards in this deck to edit.");
                 return;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("Select a flashcard to edit:");
             for (int i = 0; i < deck.Flashcards.Count; i++)
@@ -2116,7 +2116,7 @@ namespace FlashcardApp.UI
             }
             Console.WriteLine();
             ShowInputPrompt("Enter the number of the flashcard to edit");
-            
+
             var choice = Console.ReadLine();
             if (int.TryParse(choice, out int cardIndex) && cardIndex > 0 && cardIndex <= deck.Flashcards.Count)
             {
@@ -2134,27 +2134,27 @@ namespace FlashcardApp.UI
             Console.WriteLine();
             Console.WriteLine($"Current front: {flashcard.Front}");
             ShowInputPrompt("Enter new front side (or press Enter to keep current)");
-            
+
             var newFront = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(newFront))
             {
                 flashcard.Front = newFront;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine($"Current back: {flashcard.Back}");
             ShowInputPrompt("Enter new back side (or press Enter to keep current)");
-            
+
             var newBack = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(newBack))
             {
                 flashcard.Back = newBack;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine($"Current tags: {string.Join(", ", flashcard.Tags)}");
             ShowInputPrompt("Enter new tags (comma-separated, or press Enter to keep current)");
-            
+
             var newTagsInput = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(newTagsInput))
             {
@@ -2162,10 +2162,10 @@ namespace FlashcardApp.UI
                                            .Select(t => t.Trim())
                                            .ToList();
             }
-            
+
             // Update the deck's last modified time instead
             deck.LastModified = DateTime.Now;
-            
+
             if (_deckService.SaveDeck(deck))
             {
                 ShowSuccessMessage("Flashcard updated successfully!");
@@ -2183,7 +2183,7 @@ namespace FlashcardApp.UI
                 ShowErrorMessage("No flashcards in this deck to delete.");
                 return;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("Select a flashcard to delete:");
             for (int i = 0; i < deck.Flashcards.Count; i++)
@@ -2193,7 +2193,7 @@ namespace FlashcardApp.UI
             }
             Console.WriteLine();
             ShowInputPrompt("Enter the number of the flashcard to delete");
-            
+
             var choice = Console.ReadLine();
             if (int.TryParse(choice, out int cardIndex) && cardIndex > 0 && cardIndex <= deck.Flashcards.Count)
             {
@@ -2204,7 +2204,7 @@ namespace FlashcardApp.UI
                 Console.WriteLine($"   Back: {flashcard.Back}");
                 Console.WriteLine();
                 ShowInputPrompt("Type 'DELETE' to confirm (or anything else to cancel)");
-                
+
                 var confirmation = Console.ReadLine();
                 if (confirmation?.ToUpper() == "DELETE")
                 {
@@ -2235,7 +2235,7 @@ namespace FlashcardApp.UI
                 ShowErrorMessage("No flashcards in this deck to reset.");
                 return;
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("    RESET STUDY DATES");
             Console.WriteLine();
@@ -2243,13 +2243,13 @@ namespace FlashcardApp.UI
             Console.WriteLine("This means all cards will be available for study immediately.");
             Console.WriteLine();
             ShowInputPrompt("Type 'RESET' to confirm (or anything else to cancel)");
-            
+
             var confirmation = Console.ReadLine();
             if (confirmation?.ToUpper() == "RESET")
             {
                 var today = DateTime.Today;
                 var resetCount = 0;
-                
+
                 foreach (var flashcard in deck.Flashcards)
                 {
                     flashcard.LastReviewed = today.AddDays(-1); // Set to yesterday
@@ -2265,14 +2265,14 @@ namespace FlashcardApp.UI
                     flashcard.Statistics.LastStudySession = null;
                     resetCount++;
                 }
-                
+
                 deck.LastModified = DateTime.Now;
-                
+
                 if (_deckService.SaveDeck(deck))
                 {
                     // Clear any existing session state for this deck
                     _studySessionService.ClearSessionState(deck.Id);
-                    
+
                     ShowSuccessMessage($"Study dates and statistics reset for {resetCount} cards!");
                     Console.WriteLine("   All cards are now available for study today.");
                     Console.WriteLine("   Statistics have been cleared for a fresh start.");

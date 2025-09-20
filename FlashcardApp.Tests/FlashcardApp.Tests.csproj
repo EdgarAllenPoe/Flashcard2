@@ -7,9 +7,15 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    
+    <!-- Performance optimizations -->
+    <MaxCpuCount>0</MaxCpuCount>
+    <ParallelizeTestCollections>true</ParallelizeTestCollections>
+    <ParallelizeAssembly>true</ParallelizeAssembly>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="FluentAssertions" Version="8.6.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />

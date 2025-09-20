@@ -2,6 +2,7 @@ using FluentAssertions;
 using FlashcardApp.Models;
 using FlashcardApp.Services;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.EdgeCases
 {
@@ -17,13 +18,13 @@ namespace FlashcardApp.Tests.EdgeCases
         {
             _testDirectory = Path.Combine(Path.GetTempPath(), $"edge_case_test_{Guid.NewGuid()}");
             Directory.CreateDirectory(_testDirectory);
-            
+
             var configPath = Path.Combine(_testDirectory, "config.json");
             _configService = new ConfigurationService(configPath);
             _deckService = new DeckService(_configService);
             _leitnerBoxService = new LeitnerBoxService(_configService);
             _studySessionService = new StudySessionService(_configService, _leitnerBoxService, _deckService);
-            
+
             _configService.EnsureDirectoriesExist();
         }
 
@@ -35,7 +36,7 @@ namespace FlashcardApp.Tests.EdgeCases
             }
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void EmptyDeck_ShouldHandleGracefully()
         {
             // Arrange
@@ -49,16 +50,16 @@ namespace FlashcardApp.Tests.EdgeCases
             studyResult.Message.Should().Be("No cards available for study at this time.");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void DeckWithOnlyInactiveCards_ShouldHandleGracefully()
         {
             // Arrange
             var deck = _deckService.CreateNewDeck("Inactive Cards Deck");
-            var flashcard = new Flashcard 
-            { 
-                Front = "Test Question", 
-                Back = "Test Answer", 
-                IsActive = false 
+            var flashcard = new Flashcard
+            {
+                Front = "Test Question",
+                Back = "Test Answer",
+                IsActive = false
             };
             _deckService.AddFlashcardToDeck(deck, flashcard);
 
@@ -70,7 +71,7 @@ namespace FlashcardApp.Tests.EdgeCases
             studyResult.Message.Should().Be("No cards available for study at this time.");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void VeryLongDeckName_ShouldBeHandled()
         {
             // Arrange
@@ -84,16 +85,16 @@ namespace FlashcardApp.Tests.EdgeCases
             _deckService.SaveDeck(deck).Should().BeTrue();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void VeryLongFlashcardContent_ShouldBeHandled()
         {
             // Arrange
             var deck = _deckService.CreateNewDeck("Long Content Deck");
             var veryLongContent = new string('X', 10000);
-            var flashcard = new Flashcard 
-            { 
-                Front = veryLongContent, 
-                Back = veryLongContent 
+            var flashcard = new Flashcard
+            {
+                Front = veryLongContent,
+                Back = veryLongContent
             };
 
             // Act
@@ -106,16 +107,16 @@ namespace FlashcardApp.Tests.EdgeCases
             loadedDeck.Flashcards[0].Back.Should().Be(veryLongContent);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SpecialCharactersInContent_ShouldBeHandled()
         {
             // Arrange
             var deck = _deckService.CreateNewDeck("Special Characters Deck");
             var specialContent = "Special chars: !@#$%^&*()_+-=[]{}|;':\",./<>?`~";
-            var flashcard = new Flashcard 
-            { 
-                Front = specialContent, 
-                Back = specialContent 
+            var flashcard = new Flashcard
+            {
+                Front = specialContent,
+                Back = specialContent
             };
 
             // Act
@@ -128,16 +129,16 @@ namespace FlashcardApp.Tests.EdgeCases
             loadedDeck.Flashcards[0].Back.Should().Be(specialContent);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void UnicodeCharacters_ShouldBeHandled()
         {
             // Arrange
             var deck = _deckService.CreateNewDeck("Unicode Deck");
             var unicodeContent = "Unicode: 你好世界 🌍 émojis 🎉";
-            var flashcard = new Flashcard 
-            { 
-                Front = unicodeContent, 
-                Back = unicodeContent 
+            var flashcard = new Flashcard
+            {
+                Front = unicodeContent,
+                Back = unicodeContent
             };
 
             // Act
@@ -150,15 +151,15 @@ namespace FlashcardApp.Tests.EdgeCases
             loadedDeck.Flashcards[0].Back.Should().Be(unicodeContent);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void StudySessionWithZeroMaxCards_ShouldBeHandled()
         {
             // Arrange
             var deck = _deckService.CreateNewDeck("Zero Max Cards Study Deck");
-            var flashcard = new Flashcard 
-            { 
-                Front = "Test Question", 
-                Back = "Test Answer" 
+            var flashcard = new Flashcard
+            {
+                Front = "Test Question",
+                Back = "Test Answer"
             };
             _deckService.AddFlashcardToDeck(deck, flashcard);
 
@@ -170,15 +171,15 @@ namespace FlashcardApp.Tests.EdgeCases
             studyResult.Message.Should().Be("No cards available for study at this time.");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void StudySessionWithNegativeMaxCards_ShouldBeHandled()
         {
             // Arrange
             var deck = _deckService.CreateNewDeck("Negative Max Cards Study Deck");
-            var flashcard = new Flashcard 
-            { 
-                Front = "Test Question", 
-                Back = "Test Answer" 
+            var flashcard = new Flashcard
+            {
+                Front = "Test Question",
+                Back = "Test Answer"
             };
             _deckService.AddFlashcardToDeck(deck, flashcard);
 

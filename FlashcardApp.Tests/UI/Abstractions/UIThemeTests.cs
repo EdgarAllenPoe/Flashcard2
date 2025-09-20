@@ -2,12 +2,13 @@ using FluentAssertions;
 using FlashcardApp.UI.Abstractions;
 using Moq;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.UI.Abstractions
 {
     public class UIThemeTests
     {
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void IUITheme_ShouldHaveRequiredProperties()
         {
             // Arrange
@@ -21,7 +22,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockTheme.Object.UseIcons.Should().BeFalse();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void IUITheme_ShouldHaveRequiredMethods()
         {
             // Arrange
@@ -142,7 +143,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockTheme.Verify(x => x.GetIconForSection(sectionType), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void GetMenuOptionColor_ShouldReturnUIColor()
         {
             // Arrange
@@ -158,7 +159,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockTheme.Verify(x => x.GetMenuOptionColor(), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void GetMenuDescriptionColor_ShouldReturnUIColor()
         {
             // Arrange
@@ -174,7 +175,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockTheme.Verify(x => x.GetMenuDescriptionColor(), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void GetInputPromptColor_ShouldReturnUIColor()
         {
             // Arrange
@@ -190,7 +191,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockTheme.Verify(x => x.GetInputPromptColor(), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void GetStatisticsColor_ShouldReturnUIColor()
         {
             // Arrange
@@ -206,7 +207,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockTheme.Verify(x => x.GetStatisticsColor(), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void MessageType_ShouldHaveAllExpectedValues()
         {
             // Arrange & Act
@@ -220,7 +221,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             messageTypes.Should().Contain(MessageType.Default);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SectionType_ShouldHaveAllExpectedValues()
         {
             // Arrange & Act

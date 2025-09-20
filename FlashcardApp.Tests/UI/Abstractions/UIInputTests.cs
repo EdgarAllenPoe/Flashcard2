@@ -2,12 +2,13 @@ using FluentAssertions;
 using FlashcardApp.UI.Abstractions;
 using Moq;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.UI.Abstractions
 {
     public class UIInputTests
     {
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task IUIInput_ShouldHaveRequiredMethods()
         {
             // Arrange
@@ -33,7 +34,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             result4.Should().Be("test");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task ReadLineAsync_ShouldReturnString()
         {
             // Arrange
@@ -49,7 +50,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockInput.Verify(x => x.ReadLineAsync(), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task ReadKeyAsync_ShouldReturnUIKeyInfo()
         {
             // Arrange
@@ -83,7 +84,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockInput.Verify(x => x.ReadKeyAsync(intercept), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task GetImmediateChoiceAsync_ShouldReturnString()
         {
             // Arrange
@@ -99,7 +100,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockInput.Verify(x => x.GetImmediateChoiceAsync(), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task GetUserChoiceAsync_ShouldReturnString()
         {
             // Arrange
@@ -115,7 +116,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockInput.Verify(x => x.GetUserChoiceAsync(), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task WaitForAnyKeyAsync_ShouldComplete()
         {
             // Arrange
@@ -129,7 +130,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             mockInput.Verify(x => x.WaitForAnyKeyAsync(), Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void UIKeyInfo_ShouldInitializeCorrectly()
         {
             // Arrange & Act
@@ -141,7 +142,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             keyInfo.HasKeyChar.Should().BeTrue();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void UIKeyInfo_ShouldHandleNoKeyChar()
         {
             // Arrange & Act
@@ -153,7 +154,7 @@ namespace FlashcardApp.Tests.UI.Abstractions
             keyInfo.HasKeyChar.Should().BeFalse();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void UIKey_ShouldHaveAllExpectedValues()
         {
             // Arrange & Act

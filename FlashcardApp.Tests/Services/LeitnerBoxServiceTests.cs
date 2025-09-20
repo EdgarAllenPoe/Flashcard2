@@ -2,6 +2,7 @@ using FluentAssertions;
 using FlashcardApp.Models;
 using FlashcardApp.Services;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.Services
 {
@@ -15,7 +16,7 @@ namespace FlashcardApp.Tests.Services
         {
             _testConfigPath = Path.Combine(Path.GetTempPath(), $"test_config_{Guid.NewGuid()}.json");
             _config = CreateDefaultConfiguration();
-            
+
             File.WriteAllText(_testConfigPath, Newtonsoft.Json.JsonConvert.SerializeObject(_config));
             var configService = new ConfigurationService(_testConfigPath);
             _service = new LeitnerBoxService(configService);
@@ -58,7 +59,7 @@ namespace FlashcardApp.Tests.Services
             };
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ProcessCorrectAnswer_ShouldIncrementCorrectAnswers()
         {
             // Arrange
@@ -74,7 +75,7 @@ namespace FlashcardApp.Tests.Services
             flashcard.CurrentBox.Should().Be(1); // Should remain in box 1
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ProcessCorrectAnswer_ShouldPromoteCardWhenStreakReachesRequired()
         {
             // Arrange
@@ -88,7 +89,7 @@ namespace FlashcardApp.Tests.Services
             flashcard.Statistics.Streak.Should().Be(0); // Reset after promotion
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ProcessIncorrectAnswer_ShouldIncrementIncorrectAnswers()
         {
             // Arrange
@@ -103,7 +104,7 @@ namespace FlashcardApp.Tests.Services
             flashcard.Statistics.Streak.Should().Be(0);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ProcessIncorrectAnswer_ShouldDemoteCardAccordingToRule()
         {
             // Arrange
@@ -116,7 +117,7 @@ namespace FlashcardApp.Tests.Services
             flashcard.CurrentBox.Should().Be(0); // Should demote to box 0
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ProcessIncorrectAnswer_ShouldNotDemoteFromBox0()
         {
             // Arrange
@@ -129,7 +130,7 @@ namespace FlashcardApp.Tests.Services
             flashcard.CurrentBox.Should().Be(0); // Should stay in box 0
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void UpdateNextReviewDate_ShouldSetCorrectInterval()
         {
             // Arrange
@@ -144,24 +145,24 @@ namespace FlashcardApp.Tests.Services
             flashcard.NextReviewDate.Should().BeCloseTo(expectedDate, TimeSpan.FromMinutes(1));
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void GetCardsDueForReview_ShouldReturnOnlyDueCards()
         {
             // Arrange
             var deck = new Deck();
-            var dueCard = new Flashcard 
-            { 
-                IsActive = true, 
+            var dueCard = new Flashcard
+            {
+                IsActive = true,
                 NextReviewDate = DateTime.Now.AddDays(-1) // Due yesterday
             };
-            var notDueCard = new Flashcard 
-            { 
-                IsActive = true, 
+            var notDueCard = new Flashcard
+            {
+                IsActive = true,
                 NextReviewDate = DateTime.Now.AddDays(1) // Due tomorrow
             };
-            var inactiveCard = new Flashcard 
-            { 
-                IsActive = false, 
+            var inactiveCard = new Flashcard
+            {
+                IsActive = false,
                 NextReviewDate = DateTime.Now.AddDays(-1) // Due but inactive
             };
 
@@ -179,27 +180,27 @@ namespace FlashcardApp.Tests.Services
             result.Should().HaveCount(1);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void GetNewCards_ShouldReturnOnlyNewCards()
         {
             // Arrange
             var deck = new Deck();
-            var newCard = new Flashcard 
-            { 
-                IsActive = true, 
-                CurrentBox = 0, 
+            var newCard = new Flashcard
+            {
+                IsActive = true,
+                CurrentBox = 0,
                 Statistics = new FlashcardStatistics { TotalReviews = 0 }
             };
-            var reviewedCard = new Flashcard 
-            { 
-                IsActive = true, 
-                CurrentBox = 0, 
+            var reviewedCard = new Flashcard
+            {
+                IsActive = true,
+                CurrentBox = 0,
                 Statistics = new FlashcardStatistics { TotalReviews = 1 }
             };
-            var inactiveCard = new Flashcard 
-            { 
-                IsActive = false, 
-                CurrentBox = 0, 
+            var inactiveCard = new Flashcard
+            {
+                IsActive = false,
+                CurrentBox = 0,
                 Statistics = new FlashcardStatistics { TotalReviews = 0 }
             };
 
@@ -217,7 +218,7 @@ namespace FlashcardApp.Tests.Services
             result.Should().HaveCount(1);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void GetBoxStatistics_ShouldReturnCorrectCounts()
         {
             // Arrange
@@ -245,7 +246,7 @@ namespace FlashcardApp.Tests.Services
 
         #region Box Statistics Tests
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void GetBoxStatistics_WithInactiveCards_ShouldOnlyCountActiveCards()
         {
             // Arrange
@@ -255,7 +256,7 @@ namespace FlashcardApp.Tests.Services
             var card3 = new Flashcard { CurrentBox = 1, IsActive = true };
             var card4 = new Flashcard { CurrentBox = 2, IsActive = true };
             var card5 = new Flashcard { CurrentBox = 0, IsActive = false }; // Inactive card
-            
+
             deck.Flashcards.AddRange(new[] { card1, card2, card3, card4, card5 });
 
             // Act
@@ -270,7 +271,7 @@ namespace FlashcardApp.Tests.Services
             statistics[4].Should().Be(0); // Box 4 has 0 active cards
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void GetBoxStatistics_EmptyDeck_ShouldReturnEmptyDictionary()
         {
             // Arrange
@@ -292,7 +293,7 @@ namespace FlashcardApp.Tests.Services
 
         #region Study Session Statistics Tests
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void CalculateStudySessionStatistics_ShouldCalculateCorrectly()
         {
             // Arrange
@@ -316,7 +317,7 @@ namespace FlashcardApp.Tests.Services
             statistics.SessionTime.Should().Be(sessionTime);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void CalculateStudySessionStatistics_EmptyList_ShouldReturnZeroStatistics()
         {
             // Arrange
@@ -338,7 +339,7 @@ namespace FlashcardApp.Tests.Services
 
         #region Flashcard Statistics Tests
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void UpdateFlashcardStatistics_ShouldUpdateCorrectly()
         {
             // Arrange
@@ -365,7 +366,7 @@ namespace FlashcardApp.Tests.Services
             flashcard.Statistics.AverageResponseTime.Should().BeApproximately(2.2, 0.01);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void UpdateFlashcardStatistics_IncorrectAnswer_ShouldUpdateCorrectly()
         {
             // Arrange
@@ -396,7 +397,7 @@ namespace FlashcardApp.Tests.Services
 
         #region Review Date Tests
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void IsCardDueForReview_ShouldReturnTrueForDueCard()
         {
             // Arrange
@@ -412,7 +413,7 @@ namespace FlashcardApp.Tests.Services
             isDue.Should().BeTrue();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void IsCardDueForReview_ShouldReturnFalseForNotDueCard()
         {
             // Arrange
@@ -428,7 +429,7 @@ namespace FlashcardApp.Tests.Services
             isDue.Should().BeFalse();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void IsCardDueForReview_NullNextReviewDate_ShouldReturnTrue()
         {
             // Arrange
@@ -444,7 +445,7 @@ namespace FlashcardApp.Tests.Services
             isDue.Should().BeTrue();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void GetDaysUntilNextReview_ShouldReturnCorrectDays()
         {
             // Arrange
@@ -460,7 +461,7 @@ namespace FlashcardApp.Tests.Services
             days.Should().BeInRange(2, 3); // Allow for timing differences
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void GetDaysUntilNextReview_NullNextReviewDate_ShouldReturnZero()
         {
             // Arrange
@@ -476,7 +477,7 @@ namespace FlashcardApp.Tests.Services
             days.Should().Be(0);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void GetDaysUntilNextReview_PastDate_ShouldReturnZero()
         {
             // Arrange

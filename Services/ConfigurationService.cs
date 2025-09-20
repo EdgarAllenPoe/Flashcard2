@@ -63,13 +63,13 @@ namespace FlashcardApp.Services
             {
                 throw new ArgumentNullException(nameof(updateAction));
             }
-            
+
             var config = GetConfiguration();
             updateAction(config);
             SaveConfiguration();
         }
 
-        private AppConfiguration CreateDefaultConfiguration()
+        public AppConfiguration CreateDefaultConfiguration()
         {
             return new AppConfiguration
             {
@@ -169,5 +169,210 @@ namespace FlashcardApp.Services
                 }
             }
         }
+
+        /// <summary>
+        /// Validates the configuration and returns true if valid
+        /// </summary>
+        public bool ValidateConfiguration(AppConfiguration? config)
+        {
+            if (config == null)
+                return false;
+
+            // Validate Leitner boxes
+            if (config.LeitnerBoxes.NumberOfBoxes <= 0)
+                return false;
+
+            // Validate daily limits
+            if (config.DailyLimits.MaxCardsPerDay < 0)
+                return false;
+
+            // Validate study session settings
+            if (config.StudySession.AutoAdvanceDelay < 0)
+                return false;
+
+            // Validate file paths
+            if (string.IsNullOrWhiteSpace(config.FilePaths.DecksDirectory))
+                return false;
+
+            // Validate box intervals
+            if (config.ReviewScheduling.BoxIntervals.Any(interval => interval.IntervalDays <= 0))
+                return false;
+
+            // Validate promotion rules
+            if (config.LeitnerBoxes.PromotionRules.Any(rule => rule.CorrectAnswersNeeded <= 0))
+                return false;
+
+            // Validate demotion rules
+            if (config.LeitnerBoxes.DemotionRules.Any(rule => rule.IncorrectAnswersNeeded <= 0))
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Gets validation errors for the configuration
+        /// </summary>
+        public List<string> GetValidationErrors(AppConfiguration? config)
+        {
+            var errors = new List<string>();
+
+            if (config == null)
+            {
+                errors.Add("Configuration cannot be null");
+                return errors;
+            }
+
+            // Validate Leitner boxes
+            if (config.LeitnerBoxes.NumberOfBoxes <= 0)
+                errors.Add("NumberOfBoxes must be greater than 0");
+
+            // Validate daily limits
+            if (config.DailyLimits.MaxCardsPerDay < 0)
+                errors.Add("MaxCardsPerDay must be greater than or equal to 0");
+
+            // Validate study session settings
+            if (config.StudySession.AutoAdvanceDelay < 0)
+                errors.Add("AutoAdvanceDelay must be greater than or equal to 0");
+
+            // Validate file paths
+            if (string.IsNullOrWhiteSpace(config.FilePaths.DecksDirectory))
+                errors.Add("DecksDirectory cannot be empty");
+
+            // Validate box intervals
+            var invalidIntervals = config.ReviewScheduling.BoxIntervals.Where(interval => interval.IntervalDays <= 0).ToList();
+            if (invalidIntervals.Any())
+                errors.Add($"BoxIntervals must have IntervalDays greater than 0");
+
+            // Validate promotion rules
+            var invalidPromotionRules = config.LeitnerBoxes.PromotionRules.Where(rule => rule.CorrectAnswersNeeded <= 0).ToList();
+            if (invalidPromotionRules.Any())
+                errors.Add("PromotionRules must have CorrectAnswersNeeded greater than 0");
+
+            // Validate demotion rules
+            var invalidDemotionRules = config.LeitnerBoxes.DemotionRules.Where(rule => rule.IncorrectAnswersNeeded <= 0).ToList();
+            if (invalidDemotionRules.Any())
+                errors.Add("DemotionRules must have IncorrectAnswersNeeded greater than 0");
+
+            return errors;
+        }
+
+        /// <summary>
+        /// Validates and fixes configuration by setting invalid values to defaults
+        /// </summary>
+        public AppConfiguration ValidateAndFixConfiguration(AppConfiguration config)
+        {
+            if (config == null)
+                return CreateDefaultConfiguration();
+
+            // Fix Leitner boxes
+            if (config.LeitnerBoxes.NumberOfBoxes <= 0)
+                config.LeitnerBoxes.NumberOfBoxes = 5;
+
+            // Fix daily limits
+            if (config.DailyLimits.MaxCardsPerDay < 0)
+                config.DailyLimits.MaxCardsPerDay = 100;
+
+            // Fix study session settings
+            if (config.StudySession.AutoAdvanceDelay < 0)
+                config.StudySession.AutoAdvanceDelay = 3;
+
+            // Fix file paths
+            if (string.IsNullOrWhiteSpace(config.FilePaths.DecksDirectory))
+                config.FilePaths.DecksDirectory = "decks";
+
+            // Fix box intervals
+            foreach (var interval in config.ReviewScheduling.BoxIntervals)
+            {
+                if (interval.IntervalDays <= 0)
+                    interval.IntervalDays = 1;
+            }
+
+            // Fix promotion rules
+            foreach (var rule in config.LeitnerBoxes.PromotionRules)
+            {
+                if (rule.CorrectAnswersNeeded <= 0)
+                    rule.CorrectAnswersNeeded = 1;
+            }
+
+            // Fix demotion rules
+            foreach (var rule in config.LeitnerBoxes.DemotionRules)
+            {
+                if (rule.IncorrectAnswersNeeded <= 0)
+                    rule.IncorrectAnswersNeeded = 1;
+            }
+
+            return config;
+        }
+
+        /// <summary>
+        /// Exports configuration to a file
+        /// </summary>
+        public void ExportConfiguration(string filePath, AppConfiguration? config = null, bool createBackup = false, string? backupPath = null)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                throw new ArgumentException("File path cannot be null or empty", nameof(filePath));
+
+            // Use current configuration if none provided
+            if (config == null)
+                config = GetConfiguration();
+
+            try
+            {
+                // Create backup if requested
+                if (createBackup && !string.IsNullOrWhiteSpace(backupPath))
+                {
+                    var backupConfig = GetConfiguration();
+                    string backupJson = JsonConvert.SerializeObject(backupConfig, Formatting.Indented);
+                    File.WriteAllText(backupPath, backupJson);
+                }
+
+                // Export configuration
+                string json = JsonConvert.SerializeObject(config, Formatting.Indented);
+                File.WriteAllText(filePath, json);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Error exporting configuration: {ex.Message}", ex);
+            }
+        }
+
+        /// <summary>
+        /// Imports configuration from a file
+        /// </summary>
+        public AppConfiguration ImportConfiguration(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                throw new ArgumentException("File path cannot be null or empty", nameof(filePath));
+
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException($"Configuration file not found: {filePath}");
+
+            try
+            {
+                string json = File.ReadAllText(filePath);
+
+                if (string.IsNullOrWhiteSpace(json))
+                    throw new InvalidOperationException("Configuration file is empty");
+
+                var importedConfig = JsonConvert.DeserializeObject<AppConfiguration>(json);
+
+                if (importedConfig == null)
+                    throw new InvalidOperationException("Failed to deserialize configuration");
+
+                // Validate and fix the imported configuration
+                importedConfig = ValidateAndFixConfiguration(importedConfig);
+
+                return importedConfig;
+            }
+            catch (JsonException ex)
+            {
+                throw new JsonException($"Invalid JSON in configuration file: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Error importing configuration: {ex.Message}", ex);
+            }
+        }
+
     }
 }

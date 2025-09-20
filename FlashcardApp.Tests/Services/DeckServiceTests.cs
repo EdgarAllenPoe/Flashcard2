@@ -2,6 +2,7 @@ using FluentAssertions;
 using FlashcardApp.Models;
 using FlashcardApp.Services;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.Services
 {
@@ -15,7 +16,7 @@ namespace FlashcardApp.Tests.Services
         {
             _testDecksDirectory = Path.Combine(Path.GetTempPath(), $"test_decks_{Guid.NewGuid()}");
             Directory.CreateDirectory(_testDecksDirectory);
-            
+
             var testConfigPath = Path.Combine(Path.GetTempPath(), $"test_config_{Guid.NewGuid()}.json");
             _config = new AppConfiguration
             {
@@ -26,7 +27,7 @@ namespace FlashcardApp.Tests.Services
                     BackupDirectory = _testDecksDirectory
                 }
             };
-            
+
             File.WriteAllText(testConfigPath, Newtonsoft.Json.JsonConvert.SerializeObject(_config));
             var configService = new ConfigurationService(testConfigPath);
             _service = new DeckService(configService);
@@ -40,7 +41,7 @@ namespace FlashcardApp.Tests.Services
             }
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void LoadAllDecks_ShouldReturnEmptyListWhenDirectoryDoesNotExist()
         {
             // Act
@@ -51,7 +52,7 @@ namespace FlashcardApp.Tests.Services
             Directory.Exists(_testDecksDirectory).Should().BeTrue(); // Should create directory
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void LoadAllDecks_ShouldReturnEmptyListWhenNoFilesExist()
         {
             // Arrange
@@ -64,7 +65,7 @@ namespace FlashcardApp.Tests.Services
             result.Should().BeEmpty();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void LoadAllDecks_ShouldLoadValidDeckFiles()
         {
             // Arrange
@@ -90,7 +91,7 @@ namespace FlashcardApp.Tests.Services
             result[0].Name.Should().Be("Test Deck");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SaveDeck_ShouldCreateFileWithCorrectName()
         {
             // Arrange
@@ -109,7 +110,7 @@ namespace FlashcardApp.Tests.Services
             File.Exists(expectedPath).Should().BeTrue();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SaveDeck_ShouldUpdateLastModified()
         {
             // Arrange
@@ -130,7 +131,7 @@ namespace FlashcardApp.Tests.Services
             deck.LastModified.Should().BeAfter(originalModified);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void CreateNewDeck_ShouldCreateDeckWithUniqueId()
         {
             // Act
@@ -143,7 +144,7 @@ namespace FlashcardApp.Tests.Services
             deck2.Name.Should().Be("Deck 2");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void CreateNewDeck_ShouldSetDefaultValues()
         {
             // Act
@@ -160,7 +161,7 @@ namespace FlashcardApp.Tests.Services
 
         #region Backup Tests
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void BackupDeck_ShouldCreateBackupFile()
         {
             // Arrange
@@ -173,18 +174,18 @@ namespace FlashcardApp.Tests.Services
 
             // Assert
             result.Should().BeTrue();
-            
+
             // Check if backup file exists
             var backupFiles = Directory.GetFiles(_testDecksDirectory, "Test Deck_*.json");
             backupFiles.Should().HaveCount(1);
-            
+
             // Verify backup content
             var backupContent = File.ReadAllText(backupFiles[0]);
             backupContent.Should().Contain("Test Deck");
             backupContent.Should().Contain("Test Question");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void BackupDeck_NullDeck_ShouldReturnFalse()
         {
             // Act
@@ -198,14 +199,14 @@ namespace FlashcardApp.Tests.Services
 
         #region Search Tests
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SearchDecks_ShouldFindMatchingDecks()
         {
             // Arrange
             var deck1 = _service.CreateNewDeck("Math Deck", "Mathematics flashcards");
             var deck2 = _service.CreateNewDeck("Science Deck", "Science flashcards");
             var deck3 = _service.CreateNewDeck("History Deck", "History flashcards");
-            
+
             // Save decks to disk so SearchDecks can find them
             _service.SaveDeck(deck1);
             _service.SaveDeck(deck2);
@@ -219,14 +220,14 @@ namespace FlashcardApp.Tests.Services
             // Assert
             mathResults.Should().HaveCount(1);
             mathResults.First().Name.Should().Be("Math Deck");
-            
+
             scienceResults.Should().HaveCount(1);
             scienceResults.First().Name.Should().Be("Science Deck");
-            
+
             allResults.Should().HaveCount(3);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SearchDecks_ShouldBeCaseInsensitive()
         {
             // Arrange
@@ -244,7 +245,7 @@ namespace FlashcardApp.Tests.Services
             results3.Should().HaveCount(1);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SearchDecks_EmptySearchTerm_ShouldReturnAllDecks()
         {
             // Arrange
@@ -260,7 +261,7 @@ namespace FlashcardApp.Tests.Services
             results.Should().HaveCount(2);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SearchFlashcards_ShouldFindMatchingFlashcards()
         {
             // Arrange
@@ -268,7 +269,7 @@ namespace FlashcardApp.Tests.Services
             var flashcard1 = new Flashcard { Front = "What is 2+2?", Back = "4" };
             var flashcard2 = new Flashcard { Front = "What is the capital of France?", Back = "Paris" };
             var flashcard3 = new Flashcard { Front = "What is photosynthesis?", Back = "Process by which plants make food" };
-            
+
             _service.AddFlashcardToDeck(deck, flashcard1);
             _service.AddFlashcardToDeck(deck, flashcard2);
             _service.AddFlashcardToDeck(deck, flashcard3);
@@ -281,21 +282,21 @@ namespace FlashcardApp.Tests.Services
             // Assert
             mathResults.Should().HaveCount(1);
             mathResults.First().Front.Should().Be("What is 2+2?");
-            
+
             capitalResults.Should().HaveCount(1);
             capitalResults.First().Front.Should().Be("What is the capital of France?");
-            
+
             whatResults.Should().HaveCount(3);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SearchFlashcards_ShouldSearchBothFrontAndBack()
         {
             // Arrange
             var deck = _service.CreateNewDeck("Test Deck", "Test Description");
             var flashcard1 = new Flashcard { Front = "Question about Paris", Back = "Answer about France" };
             var flashcard2 = new Flashcard { Front = "Question about London", Back = "Answer about UK" };
-            
+
             _service.AddFlashcardToDeck(deck, flashcard1);
             _service.AddFlashcardToDeck(deck, flashcard2);
 
@@ -309,7 +310,7 @@ namespace FlashcardApp.Tests.Services
             parisResults.First().Should().Be(franceResults.First());
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SearchFlashcards_ShouldBeCaseInsensitive()
         {
             // Arrange
@@ -328,7 +329,7 @@ namespace FlashcardApp.Tests.Services
             results3.Should().HaveCount(1);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SearchFlashcards_NullDeck_ShouldReturnEmptyList()
         {
             // Act
@@ -338,14 +339,14 @@ namespace FlashcardApp.Tests.Services
             results.Should().BeEmpty();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void SearchFlashcards_EmptySearchTerm_ShouldReturnAllFlashcards()
         {
             // Arrange
             var deck = _service.CreateNewDeck("Test Deck", "Test Description");
             var flashcard1 = new Flashcard { Front = "Question 1", Back = "Answer 1" };
             var flashcard2 = new Flashcard { Front = "Question 2", Back = "Answer 2" };
-            
+
             _service.AddFlashcardToDeck(deck, flashcard1);
             _service.AddFlashcardToDeck(deck, flashcard2);
 

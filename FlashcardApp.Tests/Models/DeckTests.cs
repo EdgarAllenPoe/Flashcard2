@@ -1,12 +1,13 @@
 using FluentAssertions;
 using FlashcardApp.Models;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.Models
 {
     public class DeckTests
     {
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void Constructor_ShouldInitializeWithDefaultValues()
         {
             // Act
@@ -25,7 +26,7 @@ namespace FlashcardApp.Tests.Models
             deck.LastModified.Should().BeCloseTo(DateTime.Now, TimeSpan.FromSeconds(1));
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void Constructor_WithParameters_ShouldSetProperties()
         {
             // Arrange
@@ -47,7 +48,7 @@ namespace FlashcardApp.Tests.Models
             deck.Tags.Should().BeEquivalentTo(tags);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void Id_ShouldBeUniqueForEachInstance()
         {
             // Act
@@ -58,7 +59,7 @@ namespace FlashcardApp.Tests.Models
             deck1.Id.Should().NotBe(deck2.Id);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void TotalCards_ShouldReturnCorrectCount()
         {
             // Arrange
@@ -76,7 +77,7 @@ namespace FlashcardApp.Tests.Models
             deck.TotalCards.Should().Be(3);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void ActiveCards_ShouldReturnOnlyActiveCards()
         {
             // Arrange
@@ -120,7 +121,7 @@ namespace FlashcardApp.Tests.Models
             result.Should().Be(expectedCount);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void LastModified_ShouldUpdateWhenFlashcardsAreAdded()
         {
             // Arrange
@@ -139,7 +140,7 @@ namespace FlashcardApp.Tests.Models
             deck.LastModified.Should().BeAfter(originalModified);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void Statistics_ShouldBeInitializedWithDefaultValues()
         {
             // Act
@@ -157,7 +158,7 @@ namespace FlashcardApp.Tests.Models
             deck.Statistics.LongestStudyStreak.Should().Be(0);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void Tags_ShouldAllowAddingAndRemovingTags()
         {
             // Arrange
@@ -183,7 +184,7 @@ namespace FlashcardApp.Tests.Models
             deck.Tags.Should().HaveCount(1);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void Flashcards_ShouldAllowAddingAndRemovingCards()
         {
             // Arrange

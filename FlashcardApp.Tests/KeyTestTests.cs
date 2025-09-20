@@ -1,6 +1,7 @@
 using FluentAssertions;
 using FlashcardApp;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests
 {
@@ -19,10 +20,10 @@ namespace FlashcardApp.Tests
         [InlineData(ConsoleKey.X, 'x', "x", false, "Letter X should be invalid when quit key is 'x'")]
         [InlineData(ConsoleKey.X, 'X', "x", false, "Letter X (uppercase) should be invalid when quit key is 'x'")]
         public void IsValidKeyForAnswerReveal_ShouldValidateCorrectly(
-            ConsoleKey key, 
-            char keyChar, 
-            string quitKey, 
-            bool expected, 
+            ConsoleKey key,
+            char keyChar,
+            string quitKey,
+            bool expected,
             string description)
         {
             // Arrange
@@ -35,7 +36,7 @@ namespace FlashcardApp.Tests
             result.Should().Be(expected, description);
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void IsValidKeyForAnswerReveal_WithNullQuitKey_ShouldThrowArgumentNullException()
         {
             // Arrange
@@ -46,7 +47,7 @@ namespace FlashcardApp.Tests
             action.Should().Throw<ArgumentNullException>();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public void IsValidKeyForAnswerReveal_WithEmptyQuitKey_ShouldAllowAllKeys()
         {
             // Arrange
@@ -68,10 +69,10 @@ namespace FlashcardApp.Tests
         [InlineData(ConsoleKey.LeftArrow, '\0', "q", true, "Left arrow key should be valid")]
         [InlineData(ConsoleKey.RightArrow, '\0', "q", true, "Right arrow key should be valid")]
         public void IsValidKeyForAnswerReveal_WithSpecialKeys_ShouldValidateCorrectly(
-            ConsoleKey key, 
-            char keyChar, 
-            string quitKey, 
-            bool expected, 
+            ConsoleKey key,
+            char keyChar,
+            string quitKey,
+            bool expected,
             string description)
         {
             // Arrange
@@ -92,10 +93,10 @@ namespace FlashcardApp.Tests
         [InlineData(ConsoleKey.PageUp, '\0', "q", true, "Page Up key should be valid")]
         [InlineData(ConsoleKey.PageDown, '\0', "q", true, "Page Down key should be valid")]
         public void IsValidKeyForAnswerReveal_WithNavigationKeys_ShouldValidateCorrectly(
-            ConsoleKey key, 
-            char keyChar, 
-            string quitKey, 
-            bool expected, 
+            ConsoleKey key,
+            char keyChar,
+            string quitKey,
+            bool expected,
             string description)
         {
             // Arrange

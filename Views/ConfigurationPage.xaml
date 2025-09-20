@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Page
+    x:Class="FlashcardApp.WinUI.Views.ConfigurationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FlashcardApp.WinUI">
+    <Page.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--  Configuration Header  -->
+            <Border
+                Grid.Row="0"
+                Padding="20,15"
+                Background="{ThemeResource SystemAccentColor}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        Text="⚙️ Configuration" />
+
+                    <Button
+                        x:Name="BackButton"
+                        Grid.Column="1"
+                        Padding="10,5"
+                        Background="Transparent"
+                        Click="BackButton_Click"
+                        Content="← Back"
+                        FontSize="14"
+                        Foreground="White"
+                        ToolTipService.ToolTip="Return to Main Menu" />
+                </Grid>
+            </Border>
+
+            <!--  Configuration Content  -->
+            <ScrollViewer Grid.Row="1" Padding="20">
+                <StackPanel Spacing="20">
+
+                    <!--  Study Session Settings  -->
+                    <Border Style="{StaticResource CardBorderStyle}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Style="{StaticResource SubHeaderTextStyle}" Text="📚 Study Session Settings" />
+                            <ComboBox
+                                x:Name="StudyModeComboBox"
+                                AutomationProperties.HelpText="Choose the default study mode for flashcard sessions"
+                                AutomationProperties.Name="Study Mode Selection"
+                                Header="Default Study Mode">
+                                <ComboBoxItem Content="Front to Back" />
+                                <ComboBoxItem Content="Back to Front" />
+                                <ComboBoxItem Content="Mixed" />
+                            </ComboBox>
+                            <CheckBox
+                                x:Name="ShowStatisticsCheckBox"
+                                AutomationProperties.HelpText="Display statistics after completing a study session"
+                                AutomationProperties.Name="Show Statistics"
+                                Content="Show Statistics After Session" />
+                            <CheckBox
+                                x:Name="AutoAdvanceCheckBox"
+                                AutomationProperties.HelpText="Automatically advance to the next card after a delay"
+                                AutomationProperties.Name="Auto Advance"
+                                Content="Auto Advance Cards" />
+                            <Slider
+                                x:Name="AutoAdvanceDelaySlider"
+                                AutomationProperties.HelpText="Set the delay in seconds before automatically advancing to the next card"
+                                AutomationProperties.Name="Auto Advance Delay"
+                                Header="Auto Advance Delay (seconds)"
+                                Maximum="10"
+                                Minimum="1"
+                                StepFrequency="1"
+                                Value="3" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--  Leitner Box Settings  -->
+                    <Border Style="{StaticResource CardBorderStyle}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Style="{StaticResource SubHeaderTextStyle}" Text="📦 Leitner Box Settings" />
+                            <Slider
+                                x:Name="NumberOfBoxesSlider"
+                                AutomationProperties.HelpText="Set the number of Leitner boxes for spaced repetition learning"
+                                AutomationProperties.Name="Number of Leitner Boxes"
+                                Header="Number of Leitner Boxes"
+                                Maximum="7"
+                                Minimum="3"
+                                StepFrequency="1"
+                                Value="5" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--  File Paths  -->
+                    <Border Style="{StaticResource CardBorderStyle}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Style="{StaticResource SubHeaderTextStyle}" Text="📁 File Paths" />
+                            <TextBox
+                                x:Name="DecksDirectoryTextBox"
+                                AutomationProperties.HelpText="Set the directory where flashcard decks are stored"
+                                AutomationProperties.Name="Decks Directory"
+                                Header="Decks Directory" />
+                            <TextBox
+                                x:Name="BackupDirectoryTextBox"
+                                AutomationProperties.HelpText="Set the directory for backup files"
+                                AutomationProperties.Name="Backup Directory"
+                                Header="Backup Directory" />
+                            <TextBox
+                                x:Name="ExportDirectoryTextBox"
+                                AutomationProperties.HelpText="Set the default directory for exported files"
+                                AutomationProperties.Name="Export Directory"
+                                Header="Export Directory" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--  Daily Limits  -->
+                    <Border Style="{StaticResource CardBorderStyle}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Style="{StaticResource SubHeaderTextStyle}" Text="⏱️ Daily Limits" />
+                            <Slider
+                                x:Name="MaxCardsPerDaySlider"
+                                AutomationProperties.HelpText="Set the maximum number of cards to study per day"
+                                AutomationProperties.Name="Max Cards Per Day"
+                                Header="Max Cards Per Day"
+                                Maximum="200"
+                                Minimum="10"
+                                StepFrequency="10"
+                                Value="100" />
+                            <Slider
+                                x:Name="MinCardsPerDaySlider"
+                                AutomationProperties.HelpText="Set the minimum number of cards to study per day"
+                                AutomationProperties.Name="Min Cards Per Day"
+                                Header="Min Cards Per Day"
+                                Maximum="50"
+                                Minimum="1"
+                                StepFrequency="1"
+                                Value="5" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--  UI Settings  -->
+                    <Border Style="{StaticResource CardBorderStyle}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Style="{StaticResource SubHeaderTextStyle}" Text="🎨 UI Settings" />
+                            <CheckBox
+                                x:Name="UseColorsCheckBox"
+                                AutomationProperties.HelpText="Enable colorful UI elements and themes"
+                                AutomationProperties.Name="Use Colors"
+                                Content="Use Colors in UI" />
+                            <CheckBox
+                                x:Name="UseIconsCheckBox"
+                                AutomationProperties.HelpText="Display icons throughout the user interface"
+                                AutomationProperties.Name="Use Icons"
+                                Content="Use Icons in UI" />
+                            <CheckBox
+                                x:Name="ShowWelcomeMessageCheckBox"
+                                AutomationProperties.HelpText="Display a welcome message when the application starts"
+                                AutomationProperties.Name="Show Welcome Message"
+                                Content="Show Welcome Message on Startup" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--  Action Buttons  -->
+                    <StackPanel
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                        <Button
+                            x:Name="ImportButton"
+                            AutomationProperties.HelpText="Import configuration settings from a file"
+                            AutomationProperties.Name="Import Configuration"
+                            Click="ImportButton_Click"
+                            Content="📥 Import"
+                            Style="{StaticResource SecondaryAction}" />
+                        <Button
+                            x:Name="ExportButton"
+                            AutomationProperties.HelpText="Export current configuration settings to a file"
+                            AutomationProperties.Name="Export Configuration"
+                            Click="ExportButton_Click"
+                            Content="📤 Export"
+                            Style="{StaticResource SecondaryAction}" />
+                        <Button
+                            x:Name="ResetButton"
+                            AutomationProperties.HelpText="Reset all configuration settings to their default values"
+                            AutomationProperties.Name="Reset to Defaults"
+                            Click="ResetButton_Click"
+                            Content="↩️ Reset to Defaults"
+                            Style="{StaticResource SecondaryAction}" />
+                        <Button
+                            x:Name="SaveButton"
+                            AutomationProperties.HelpText="Save the current configuration settings"
+                            AutomationProperties.Name="Save Configuration"
+                            Click="SaveButton_Click"
+                            Content="💾 Save Changes"
+                            Style="{StaticResource PrimaryAction}" />
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!--  Status Bar  -->
+            <Border
+                Grid.Row="2"
+                Padding="20,8"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="0,1,0,0">
+                <TextBlock
+                    x:Name="StatusText"
+                    FontSize="12"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Text="Ready" />
+            </Border>
+        </Grid>
+    </Page.Content>
+    <Page.Resources>
+        <Style x:Key="CardBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+            <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="20" />
+        </Style>
+        <Style x:Key="SubHeaderTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,0,10" />
+        </Style>
+        <Style x:Key="PrimaryAction" TargetType="Button">
+            <Setter Property="Background" Value="{ThemeResource SystemAccentColor}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="15,8" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        <Style x:Key="SecondaryAction" TargetType="Button">
+            <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorSecondaryBrush}" />
+            <Setter Property="Foreground" Value="{ThemeResource TextFillColorPrimaryBrush}" />
+            <Setter Property="Padding" Value="15,8" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+    </Page.Resources>
+</Page>

@@ -17,13 +17,13 @@ namespace FlashcardApp.Tests.Integration
         {
             _testDirectory = Path.Combine(Path.GetTempPath(), $"flashcard_test_{Guid.NewGuid()}");
             Directory.CreateDirectory(_testDirectory);
-            
+
             var configPath = Path.Combine(_testDirectory, "config.json");
             _configService = new ConfigurationService(configPath);
             _deckService = new DeckService(_configService);
             _leitnerBoxService = new LeitnerBoxService(_configService);
             _studySessionService = new StudySessionService(_configService, _leitnerBoxService, _deckService);
-            
+
             _configService.EnsureDirectoriesExist();
         }
 
@@ -35,19 +35,19 @@ namespace FlashcardApp.Tests.Integration
             }
         }
 
-        [Fact]
+        [Fact, Trait("Category", "Integration")]
         public void CompleteWorkflow_CreateDeck_AddCards_ShouldWork()
         {
             // Arrange
             var deck = _deckService.CreateNewDeck("Integration Test Deck", "A deck for integration testing");
-            
+
             var flashcard1 = new Flashcard
             {
                 Front = "What is the capital of France?",
                 Back = "Paris",
                 Tags = new List<string> { "geography", "capitals" }
             };
-            
+
             var flashcard2 = new Flashcard
             {
                 Front = "What is 2 + 2?",
@@ -70,7 +70,7 @@ namespace FlashcardApp.Tests.Integration
             // Interactive study sessions are not suitable for automated testing
         }
 
-        [Fact]
+        [Fact, Trait("Category", "Integration")]
         public void LeitnerBoxSystem_ShouldPromoteAndDemoteCardsCorrectly()
         {
             // Arrange
@@ -125,7 +125,7 @@ namespace FlashcardApp.Tests.Integration
             var loadedDeck = _deckService.LoadDeckById(deck.Id);
             var loadedCard = loadedDeck!.Flashcards.First();
             loadedCard.NextReviewDate.Should().NotBeNull();
-            
+
             var expectedDate = DateTime.Now.AddDays(1); // Box 0 has 1-day interval
             loadedCard.NextReviewDate.Should().BeCloseTo(expectedDate, TimeSpan.FromMinutes(1));
         }
@@ -160,7 +160,7 @@ namespace FlashcardApp.Tests.Integration
             // Arrange
             var deck1 = _deckService.CreateNewDeck("Deck 1");
             var deck2 = _deckService.CreateNewDeck("Deck 2");
-            
+
             var card1 = new Flashcard { Front = "Question 1", Back = "Answer 1" };
             var card2 = new Flashcard { Front = "Question 2", Back = "Answer 2" };
 

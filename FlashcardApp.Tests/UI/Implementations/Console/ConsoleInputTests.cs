@@ -2,12 +2,13 @@ using FluentAssertions;
 using FlashcardApp.UI.Abstractions;
 using FlashcardApp.UI.Implementations.Console;
 using Xunit;
+using FlashcardApp.Tests;
 
 namespace FlashcardApp.Tests.UI.Implementations.Console
 {
     public class ConsoleInputTests
     {
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Slow)]
         public void ConsoleInput_ShouldImplementIUIInput()
         {
             // Arrange & Act
@@ -29,7 +30,7 @@ namespace FlashcardApp.Tests.UI.Implementations.Console
             // Assert
             task.Should().NotBeNull();
             task.Should().BeAssignableTo<Task<string>>();
-            
+
             // Note: We can't easily test the actual input without mocking or complex setup
             // This test verifies the method signature and return type
         }

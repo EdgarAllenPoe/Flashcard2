@@ -23,6 +23,17 @@
     <Compile Remove="FlashcardApp.Console\**" />
     <EmbeddedResource Remove="FlashcardApp.Console\**" />
     <None Remove="FlashcardApp.Console\**" />
+    <!-- Exclude WinUI files from root directory -->
+    <Compile Remove="App.xaml.cs" />
+    <Compile Remove="Imports.cs" />
+    <Compile Remove="Views\**" />
+    <EmbeddedResource Remove="App.xaml" />
+    <EmbeddedResource Remove="Views\**" />
+    <None Remove="FlashcardApp.WinUI.csproj" />
+    <None Remove="FlashcardApp.WinUI.sln" />
+    <None Remove="Package.appxmanifest" />
+    <None Remove="app.manifest" />
+    <None Remove="Assets\**" />
   </ItemGroup>
 
 </Project>
