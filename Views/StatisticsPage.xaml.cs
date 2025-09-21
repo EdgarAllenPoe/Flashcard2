@@ -48,7 +48,7 @@ namespace FlashcardApp.WinUI.Views
             };
 
             DeckPerformancePanel.Children.Clear();
-            
+
             foreach (var deck in deckPerformances)
             {
                 var deckBorder = new Border
@@ -64,7 +64,7 @@ namespace FlashcardApp.WinUI.Views
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
                 var stackPanel = new StackPanel();
-                
+
                 var nameText = new TextBlock
                 {
                     Text = deck.Name,

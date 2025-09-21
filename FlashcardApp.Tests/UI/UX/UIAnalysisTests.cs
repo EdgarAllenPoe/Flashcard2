@@ -62,7 +62,7 @@ namespace FlashcardApp.Tests.UI.UX
             prioritizedIssues.Should().NotBeNull();
             prioritizedIssues.Should().NotBeEmpty();
             prioritizedIssues.Should().BeInDescendingOrder(issue => issue.ImpactScore);
-            
+
             // High impact issues should be at the top
             prioritizedIssues.First().ImpactScore.Should().BeGreaterThan(7);
         }

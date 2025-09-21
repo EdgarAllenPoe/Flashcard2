@@ -24,7 +24,7 @@ namespace FlashcardApp.Services
         /// <summary>
         /// Get overall statistics for all decks
         /// </summary>
-        public async Task<StatisticsData> GetOverallStatisticsAsync()
+        public Task<StatisticsData> GetOverallStatisticsAsync()
         {
             var decks = _deckService.LoadAllDecks();
             var statistics = new Dictionary<string, object>
@@ -35,29 +35,29 @@ namespace FlashcardApp.Services
                 ["OverallSuccessRate"] = 85.5 // Mock data for now
             };
 
-            return new StatisticsData
+            return Task.FromResult(new StatisticsData
             {
                 Statistics = statistics,
                 Decks = decks
-            };
+            });
         }
 
         /// <summary>
         /// Get statistics for a specific deck
         /// </summary>
-        public async Task<SessionResult> GetDeckStatisticsAsync(string deckId)
+        public Task<SessionResult> GetDeckStatisticsAsync(string deckId)
         {
             try
             {
                 var deck = _deckService.LoadDeckById(deckId);
                 if (deck == null)
                 {
-                    return new SessionResult
+                    return Task.FromResult(new SessionResult
                     {
                         Success = false,
                         Message = "Deck not found",
                         SessionStatistics = null
-                    };
+                    });
                 }
 
                 // Mock statistics for now
@@ -69,28 +69,28 @@ namespace FlashcardApp.Services
                     IncorrectAnswers = (int)(deck.Flashcards.Count * 0.15)
                 };
 
-                return new SessionResult
+                return Task.FromResult(new SessionResult
                 {
                     Success = true,
                     Message = "Deck statistics retrieved successfully",
                     SessionStatistics = sessionStats
-                };
+                });
             }
             catch (Exception ex)
             {
-                return new SessionResult
+                return Task.FromResult(new SessionResult
                 {
                     Success = false,
                     Message = $"Error retrieving deck statistics: {ex.Message}",
                     SessionStatistics = null
-                };
+                });
             }
         }
 
         /// <summary>
         /// Get progress tracking data
         /// </summary>
-        public async Task<Dictionary<string, object>> GetProgressTrackingAsync()
+        public Task<Dictionary<string, object>> GetProgressTrackingAsync()
         {
             var decks = _deckService.LoadAllDecks();
             var progressData = new Dictionary<string, object>
@@ -100,13 +100,13 @@ namespace FlashcardApp.Services
                 ["CompletionRate"] = decks.Count > 0 ? Math.Round((double)decks.Count(d => d.Flashcards.Count > 0) / decks.Count * 100, 2) : 0.0
             };
 
-            return progressData;
+            return Task.FromResult(progressData);
         }
 
         /// <summary>
         /// Get study time analytics
         /// </summary>
-        public async Task<Dictionary<string, object>> GetStudyTimeAnalyticsAsync()
+        public Task<Dictionary<string, object>> GetStudyTimeAnalyticsAsync()
         {
             // Mock data for now
             var analytics = new Dictionary<string, object>
@@ -117,7 +117,7 @@ namespace FlashcardApp.Services
                 ["StudyStreak"] = 7
             };
 
-            return analytics;
+            return Task.FromResult(analytics);
         }
     }
 }

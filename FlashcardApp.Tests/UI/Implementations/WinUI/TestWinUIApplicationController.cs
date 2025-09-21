@@ -6,24 +6,24 @@ using FlashcardApp.Models;
 using FlashcardApp.Services;
 using FlashcardApp.UI.Abstractions;
 
-namespace FlashcardApp.WinUI.UI.Implementations.WinUI
+namespace FlashcardApp.Tests.UI.Implementations.WinUI
 {
     /// <summary>
-    /// WinUI-specific implementation of IApplicationController
-    /// This provides the same functionality as ConsoleApplicationController but for WinUI applications
+    /// Test-friendly version of WinUIApplicationController that uses TestStudySessionService
+    /// This prevents integration tests from hanging on console operations
     /// </summary>
-    public class WinUIApplicationController : IApplicationController
+    public class TestWinUIApplicationController : IApplicationController
     {
         private readonly ConfigurationService _configService;
         private readonly DeckService _deckService;
-        private readonly StudySessionService _studySessionService;
+        private readonly TestStudySessionService _studySessionService;
         private readonly LeitnerBoxService _leitnerBoxService;
         private readonly IUserInteractionService _userInteractionService;
 
-        public WinUIApplicationController(
+        public TestWinUIApplicationController(
             ConfigurationService configService,
             DeckService deckService,
-            StudySessionService studySessionService,
+            TestStudySessionService studySessionService,
             LeitnerBoxService leitnerBoxService,
             IUserInteractionService userInteractionService)
         {
@@ -50,6 +50,7 @@ namespace FlashcardApp.WinUI.UI.Implementations.WinUI
                         };
                     }
 
+                    // Use the test service which bypasses console operations
                     var result = _studySessionService.StartStudySession(
                         request.SelectedDeck,
                         request.StudyMode,

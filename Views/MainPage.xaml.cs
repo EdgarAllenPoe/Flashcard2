@@ -78,7 +78,16 @@ namespace FlashcardApp.WinUI.Views
         private void Configuration_Click(object sender, RoutedEventArgs e)
         {
             // Navigate to configuration page
-            this.Frame.Navigate(typeof(ConfigurationPage));
+            if (this.Frame != null)
+            {
+                this.Frame.Navigate(typeof(ConfigurationPage));
+            }
+            else
+            {
+                // Fallback to content display if navigation is not available
+                OutputTextBlock.Text = _contentCache["config"];
+                StatusText.Text = "Configuration selected";
+            }
         }
 
         private void Help_Click(object sender, RoutedEventArgs e)
@@ -92,13 +101,13 @@ namespace FlashcardApp.WinUI.Views
         {
             // Toggle between light and dark theme
             _isDarkTheme = !_isDarkTheme;
-            
+
             // Apply theme to the root element efficiently
             if (this.Content is FrameworkElement rootElement)
             {
                 rootElement.RequestedTheme = _isDarkTheme ? ElementTheme.Dark : ElementTheme.Light;
             }
-            
+
             UpdateThemeButton();
             StatusText.Text = _isDarkTheme ? "Dark theme applied" : "Light theme applied";
         }

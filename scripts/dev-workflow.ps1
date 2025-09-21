@@ -124,7 +124,24 @@ function Test-Code {
 function Build-Solution {
     Write-Status "Starting build..." "INFO"
     
-    if (Invoke-Command "dotnet build FlashcardApp.sln --configuration Release" "Building solution") {
+    $success = $true
+    
+    # Build main library project
+    if (-not (Invoke-Command "dotnet build FlashcardApp.csproj --configuration Release" "Building main library" -ContinueOnError)) {
+        $success = $false
+    }
+    
+    # Build console project
+    if (-not (Invoke-Command "dotnet build FlashcardApp.Console/FlashcardApp.Console.csproj --configuration Release" "Building console application" -ContinueOnError)) {
+        $success = $false
+    }
+    
+    # Build test project
+    if (-not (Invoke-Command "dotnet build FlashcardApp.Tests/FlashcardApp.Tests.csproj --configuration Release" "Building test project" -ContinueOnError)) {
+        $success = $false
+    }
+    
+    if ($success) {
         Write-Status "Build completed successfully" "SUCCESS"
     } else {
         Write-Status "Build failed" "ERROR"
@@ -175,7 +192,24 @@ function Test-Quality {
     }
     
     # Build check
-    if (-not (Invoke-Command "dotnet build FlashcardApp.sln --configuration Release --no-restore" "Checking build" -ContinueOnError)) {
+    $buildCheckSuccess = $true
+    
+    # Check main library project
+    if (-not (Invoke-Command "dotnet build FlashcardApp.csproj --configuration Release --no-restore" "Checking main library build" -ContinueOnError)) {
+        $buildCheckSuccess = $false
+    }
+    
+    # Check console project
+    if (-not (Invoke-Command "dotnet build FlashcardApp.Console/FlashcardApp.Console.csproj --configuration Release --no-restore" "Checking console build" -ContinueOnError)) {
+        $buildCheckSuccess = $false
+    }
+    
+    # Check test project
+    if (-not (Invoke-Command "dotnet build FlashcardApp.Tests/FlashcardApp.Tests.csproj --configuration Release --no-restore" "Checking test build" -ContinueOnError)) {
+        $buildCheckSuccess = $false
+    }
+    
+    if (-not $buildCheckSuccess) {
         $success = $false
     }
     
@@ -225,7 +259,24 @@ function Initialize-Environment {
     }
     
     # Build solution
-    if (Invoke-Command "dotnet build FlashcardApp.sln --configuration Release" "Building solution") {
+    $buildSuccess = $true
+    
+    # Build main library project
+    if (-not (Invoke-Command "dotnet build FlashcardApp.csproj --configuration Release" "Building main library" -ContinueOnError)) {
+        $buildSuccess = $false
+    }
+    
+    # Build console project
+    if (-not (Invoke-Command "dotnet build FlashcardApp.Console/FlashcardApp.Console.csproj --configuration Release" "Building console application" -ContinueOnError)) {
+        $buildSuccess = $false
+    }
+    
+    # Build test project
+    if (-not (Invoke-Command "dotnet build FlashcardApp.Tests/FlashcardApp.Tests.csproj --configuration Release" "Building test project" -ContinueOnError)) {
+        $buildSuccess = $false
+    }
+    
+    if ($buildSuccess) {
         Write-Status "Solution built successfully" "SUCCESS"
     } else {
         Write-Status "Solution build failed" "ERROR"

@@ -45,7 +45,7 @@ namespace FlashcardApp.Tests.UI.Implementations.WinUI
         public void WinUIApp_ShouldHaveValidExecutable_WhenBuilt()
         {
             // Arrange
-            var executablePath = Path.Combine("..", "..", "..", "..", "bin", "Debug", "net8.0-windows10.0.19041.0", "FlashcardApp.WinUI.exe");
+            var executablePath = Path.Combine("..", "..", "..", "..", "bin", "Debug", "net8.0-windows10.0.19041.0", "win-x64", "FlashcardApp.WinUI.exe");
 
             // Act
             var executableExists = File.Exists(executablePath);

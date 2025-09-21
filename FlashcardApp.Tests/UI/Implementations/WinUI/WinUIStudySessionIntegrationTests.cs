@@ -1,7 +1,6 @@
 using FlashcardApp.Models;
 using FlashcardApp.Services;
 using FlashcardApp.UI.Abstractions;
-using FlashcardApp.UI.Implementations.WinUI;
 using FlashcardApp.WinUI.UI.Implementations.WinUI;
 using FluentAssertions;
 using System;
@@ -18,13 +17,13 @@ namespace FlashcardApp.Tests.UI.Implementations.WinUI
     /// </summary>
     public class WinUIStudySessionIntegrationTests
     {
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Slow)]
         public async Task WinUIStudySession_ShouldStartStudySession_WhenValidDeckSelected()
         {
             // Arrange
             var services = CreateTestServices();
             var userInteraction = CreateTestUserInteractionService();
-            var applicationController = new WinUIApplicationController(
+            var applicationController = new TestWinUIApplicationController(
                 services.configService,
                 services.deckService,
                 services.studySessionService,
@@ -48,19 +47,19 @@ namespace FlashcardApp.Tests.UI.Implementations.WinUI
             // This test verifies that the Application Controller can handle the request
             // and that the error is properly handled
             result.Message.Should().NotBeNullOrEmpty();
-            
+
             // The result should contain information about what happened
             // Even if it failed, it should be a proper ApplicationResult
             result.Should().BeOfType<ApplicationResult>();
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task WinUIStudySession_ShouldHandleNoCardsAvailable_WhenDeckIsEmpty()
         {
             // Arrange
             var services = CreateTestServices();
             var userInteraction = CreateTestUserInteractionService();
-            var applicationController = new WinUIApplicationController(
+            var applicationController = new TestWinUIApplicationController(
                 services.configService,
                 services.deckService,
                 services.studySessionService,
@@ -84,13 +83,13 @@ namespace FlashcardApp.Tests.UI.Implementations.WinUI
             result.Message.Should().Contain("No cards available");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Fast)]
         public async Task WinUIStudySession_ShouldHandleInvalidRequest_WhenDeckIsNull()
         {
             // Arrange
             var services = CreateTestServices();
             var userInteraction = CreateTestUserInteractionService();
-            var applicationController = new WinUIApplicationController(
+            var applicationController = new TestWinUIApplicationController(
                 services.configService,
                 services.deckService,
                 services.studySessionService,
@@ -113,13 +112,13 @@ namespace FlashcardApp.Tests.UI.Implementations.WinUI
             result.Message.Should().Contain("deck");
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Slow)]
         public async Task WinUIStudySession_ShouldSupportAllStudyModes()
         {
             // Arrange
             var services = CreateTestServices();
             var userInteraction = CreateTestUserInteractionService();
-            var applicationController = new WinUIApplicationController(
+            var applicationController = new TestWinUIApplicationController(
                 services.configService,
                 services.deckService,
                 services.studySessionService,
@@ -150,13 +149,13 @@ namespace FlashcardApp.Tests.UI.Implementations.WinUI
             }
         }
 
-        [Fact]
+        [Fact, Trait("Category", TestCategories.Slow)]
         public async Task WinUIStudySession_ShouldRespectMaxCardsLimit()
         {
             // Arrange
             var services = CreateTestServices();
             var userInteraction = CreateTestUserInteractionService();
-            var applicationController = new WinUIApplicationController(
+            var applicationController = new TestWinUIApplicationController(
                 services.configService,
                 services.deckService,
                 services.studySessionService,
@@ -183,12 +182,13 @@ namespace FlashcardApp.Tests.UI.Implementations.WinUI
             result.Should().BeOfType<ApplicationResult>();
         }
 
-        private (ConfigurationService configService, DeckService deckService, StudySessionService studySessionService, LeitnerBoxService leitnerBoxService) CreateTestServices()
+        private (ConfigurationService configService, DeckService deckService, TestStudySessionService studySessionService, LeitnerBoxService leitnerBoxService) CreateTestServices()
         {
             var configService = new ConfigurationService();
             var deckService = new DeckService(configService);
             var leitnerBoxService = new LeitnerBoxService(configService);
-            var studySessionService = new StudySessionService(configService, leitnerBoxService, deckService);
+            // Use test-specific service that bypasses console operations
+            var studySessionService = new TestStudySessionService(configService, leitnerBoxService, deckService);
 
             return (configService, deckService, studySessionService, leitnerBoxService);
         }

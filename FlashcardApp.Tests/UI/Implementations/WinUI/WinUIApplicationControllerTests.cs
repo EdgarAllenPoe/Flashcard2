@@ -1,7 +1,6 @@
 using FlashcardApp.Models;
 using FlashcardApp.Services;
 using FlashcardApp.UI.Abstractions;
-using FlashcardApp.UI.Implementations.WinUI;
 using FlashcardApp.WinUI.UI.Implementations.WinUI;
 using FluentAssertions;
 using System;

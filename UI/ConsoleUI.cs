@@ -866,9 +866,9 @@ namespace FlashcardApp.UI
             Console.ResetColor();
             Console.WriteLine();
 
-            ShowStatCard("", "Total Decks", stats["TotalDecks"].ToString());
-            ShowStatCard("", "Total Cards", stats["TotalCards"].ToString());
-            ShowStatCard("", "Total Study Time", stats["TotalStudyTime"].ToString());
+            ShowStatCard("", "Total Decks", stats["TotalDecks"]?.ToString() ?? "0");
+            ShowStatCard("", "Total Cards", stats["TotalCards"]?.ToString() ?? "0");
+            ShowStatCard("", "Total Study Time", stats["TotalStudyTime"]?.ToString() ?? "0 minutes");
             ShowStatCard("", "Average Success Rate", $"{stats["AverageSuccessRate"]}%");
         }
 

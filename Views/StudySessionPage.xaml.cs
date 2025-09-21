@@ -41,7 +41,7 @@ namespace FlashcardApp.WinUI.Views
         protected override void OnNavigatedTo(Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            
+
             // Get the deck data passed from navigation
             if (e.Parameter is FlashcardDeck deck)
             {
@@ -58,7 +58,7 @@ namespace FlashcardApp.WinUI.Views
         private void InitializeStudySession()
         {
             _studyCards.Clear();
-            
+
             if (_studyDeck != null && _studyDeck.Cards.Count > 0)
             {
                 // Use the selected deck's cards
@@ -93,16 +93,16 @@ namespace FlashcardApp.WinUI.Views
                 CardContent.Text = currentCard.Front;
                 AnswerContent.Text = currentCard.Back;
                 CardTypeIndicator.Text = "Front";
-                
+
                 // Reset answer visibility
                 AnswerBorder.Visibility = Visibility.Collapsed;
                 _answerRevealed = false;
-                
+
                 // Reset button visibility
                 RevealAnswerButton.Visibility = Visibility.Visible;
                 CorrectButton.Visibility = Visibility.Collapsed;
                 IncorrectButton.Visibility = Visibility.Collapsed;
-                
+
                 SessionStatusText.Text = "Study the question above";
             }
         }
@@ -129,12 +129,12 @@ namespace FlashcardApp.WinUI.Views
                 AnswerBorder.Visibility = Visibility.Visible;
                 CardTypeIndicator.Text = "Answer";
                 _answerRevealed = true;
-                
+
                 // Show scoring buttons
                 RevealAnswerButton.Visibility = Visibility.Collapsed;
                 CorrectButton.Visibility = Visibility.Visible;
                 IncorrectButton.Visibility = Visibility.Visible;
-                
+
                 SessionStatusText.Text = "How did you do?";
             }
         }
@@ -155,10 +155,10 @@ namespace FlashcardApp.WinUI.Views
         {
             // Update stats
             UpdateStats();
-            
+
             // Move to next card or end session
             _currentCardIndex++;
-            
+
             if (_currentCardIndex < _studyCards.Count)
             {
                 DisplayCurrentCard();
@@ -175,18 +175,18 @@ namespace FlashcardApp.WinUI.Views
         private void EndStudySession()
         {
             var successRate = _studyCards.Count > 0 ? (double)_correctCount / _studyCards.Count * 100 : 0;
-            
+
             CardContent.Text = $"🎉 Study Session Complete!\n\n" +
                               $"Cards Studied: {_studyCards.Count}\n" +
                               $"Correct: {_correctCount}\n" +
                               $"Incorrect: {_incorrectCount}\n" +
                               $"Success Rate: {successRate:F1}%";
-            
+
             AnswerBorder.Visibility = Visibility.Collapsed;
             RevealAnswerButton.Visibility = Visibility.Collapsed;
             CorrectButton.Visibility = Visibility.Collapsed;
             IncorrectButton.Visibility = Visibility.Collapsed;
-            
+
             SessionProgressBar.Value = 100;
             ProgressText.Text = "Complete";
             SessionStatusText.Text = "Study session finished";

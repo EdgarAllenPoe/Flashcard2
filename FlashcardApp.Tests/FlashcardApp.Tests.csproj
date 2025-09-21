@@ -16,21 +16,23 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
-    <PackageReference Include="coverlet.collector" Version="6.0.0" />
-    <PackageReference Include="FluentAssertions" Version="8.6.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="Moq" Version="4.20.72" />
-    <PackageReference Include="xunit" Version="2.5.3" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <!-- Other test packages are defined in Directory.Build.props -->
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <!-- WinUI tests are now included -->
+  
+  <!-- Exclude tests that depend on main project classes not available in WinUI -->
   <ItemGroup>
-    <ProjectReference Include="..\FlashcardApp.csproj" />
-    <ProjectReference Include="..\FlashcardApp.WinUI\FlashcardApp.WinUI.csproj" />
+    <Compile Remove="KeyTestTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FlashcardApp.WinUI.csproj" />
   </ItemGroup>
 
 </Project>

@@ -486,8 +486,8 @@ namespace FlashcardApp.UI.Configuration
                     {
                         SettingName = "LogLevel",
                         RuleType = "Enum",
-                        MinValue = null,
-                        MaxValue = null,
+                        MinValue = string.Empty,
+                        MaxValue = string.Empty,
                         AllowedValues = new List<string> { "Debug", "Info", "Warning", "Error" },
                         ErrorMessage = "Log level must be one of: Debug, Info, Warning, Error"
                     }

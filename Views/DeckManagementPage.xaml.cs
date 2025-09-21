@@ -30,10 +30,10 @@ namespace FlashcardApp.WinUI.Views
             // Initialize with sample decks
             _decks.AddRange(new[]
             {
-                new FlashcardDeck 
-                { 
-                    Id = 1, 
-                    Name = "Spanish Vocabulary", 
+                new FlashcardDeck
+                {
+                    Id = 1,
+                    Name = "Spanish Vocabulary",
                     Description = "Basic Spanish words and phrases",
                     Cards = new List<Flashcard>
                     {
@@ -42,10 +42,10 @@ namespace FlashcardApp.WinUI.Views
                         new Flashcard { Front = "Thank you", Back = "Gracias" }
                     }
                 },
-                new FlashcardDeck 
-                { 
-                    Id = 2, 
-                    Name = "Math Formulas", 
+                new FlashcardDeck
+                {
+                    Id = 2,
+                    Name = "Math Formulas",
                     Description = "Essential mathematical formulas",
                     Cards = new List<Flashcard>
                     {
@@ -63,7 +63,7 @@ namespace FlashcardApp.WinUI.Views
         private void UpdateDeckList()
         {
             DeckListPanel.Children.Clear();
-            
+
             foreach (var deck in _decks)
             {
                 var deckButton = new Button
@@ -193,7 +193,7 @@ namespace FlashcardApp.WinUI.Views
         private void UpdateButtonStates()
         {
             bool hasSelectedDeck = _selectedDeck != null;
-            
+
             EditDeckButton.IsEnabled = hasSelectedDeck;
             DeleteDeckButton.IsEnabled = hasSelectedDeck;
             AddCardButton.IsEnabled = hasSelectedDeck;
@@ -223,7 +223,7 @@ namespace FlashcardApp.WinUI.Views
                 Description = "A new flashcard deck",
                 Cards = new List<Flashcard>()
             };
-            
+
             _decks.Add(newDeck);
             UpdateDeckList();
             UpdateButtonStates();
@@ -271,13 +271,13 @@ namespace FlashcardApp.WinUI.Views
                 {
                     var newName = nameTextBox.Text.Trim();
                     var newDescription = descriptionTextBox.Text.Trim();
-                    
+
                     if (string.IsNullOrEmpty(newName))
                     {
                         UpdateStatus("Deck name cannot be empty");
                         return;
                     }
-                    
+
                     _selectedDeck.Name = newName;
                     _selectedDeck.Description = newDescription;
                     UpdateDeckList();
@@ -307,13 +307,13 @@ namespace FlashcardApp.WinUI.Views
 
                 var result = await dialog.ShowAsync();
                 if (result == ContentDialogResult.Primary)
-            {
-                _decks.Remove(_selectedDeck);
-                _selectedDeck = null;
-                UpdateDeckList();
-                UpdateDeckDetails();
+                {
+                    _decks.Remove(_selectedDeck);
+                    _selectedDeck = null;
+                    UpdateDeckList();
+                    UpdateDeckDetails();
                     UpdateButtonStates();
-                UpdateStatus("Deck deleted successfully");
+                    UpdateStatus("Deck deleted successfully");
                 }
             }
             else
@@ -329,10 +329,10 @@ namespace FlashcardApp.WinUI.Views
                 var newCard = await ShowCardEditDialog(null);
                 if (newCard != null)
                 {
-                _selectedDeck.Cards.Add(newCard);
-                UpdateDeckDetails();
-                UpdateDeckList();
-                UpdateStatus($"Added new card to {_selectedDeck.Name}");
+                    _selectedDeck.Cards.Add(newCard);
+                    UpdateDeckDetails();
+                    UpdateDeckList();
+                    UpdateStatus($"Added new card to {_selectedDeck.Name}");
                 }
             }
             else
@@ -394,7 +394,7 @@ namespace FlashcardApp.WinUI.Views
             {
                 var front = frontTextBox.Text.Trim();
                 var back = backTextBox.Text.Trim();
-                
+
                 if (!string.IsNullOrEmpty(front) && !string.IsNullOrEmpty(back))
                 {
                     if (existingCard != null)
@@ -409,7 +409,7 @@ namespace FlashcardApp.WinUI.Views
                     }
                 }
             }
-            
+
             return null;
         }
 
@@ -427,7 +427,7 @@ namespace FlashcardApp.WinUI.Views
                 if (this.Frame != null)
                 {
                     UpdateStatus($"Starting study session for '{_selectedDeck.Name}' with {_selectedDeck.Cards.Count} cards");
-                    
+
                     // Navigate to StudySessionPage with deck data
                     this.Frame.Navigate(typeof(StudySessionPage), _selectedDeck);
                 }
@@ -443,14 +443,14 @@ namespace FlashcardApp.WinUI.Views
             try
             {
                 UpdateStatus("Starting import process...");
-                
+
                 var picker = new FileOpenPicker();
                 picker.ViewMode = PickerViewMode.List;
                 picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
                 picker.FileTypeFilter.Add(".json");
-                
+
                 UpdateStatus("File picker created, initializing window handle...");
-                
+
                 // Initialize the picker with the window handle
                 var window = App.MainWindow;
                 if (window != null)
@@ -474,7 +474,7 @@ namespace FlashcardApp.WinUI.Views
                     UpdateStatus($"File selected: {file.Name}");
                     var content = await FileIO.ReadTextAsync(file);
                     var importedDeck = System.Text.Json.JsonSerializer.Deserialize<FlashcardDeck>(content);
-                    
+
                     if (importedDeck != null)
                     {
                         // Validate imported deck
@@ -482,12 +482,12 @@ namespace FlashcardApp.WinUI.Views
                         {
                             importedDeck.Name = "Imported Deck";
                         }
-                        
+
                         if (importedDeck.Cards == null)
                         {
                             importedDeck.Cards = new List<Flashcard>();
                         }
-                        
+
                         importedDeck.Id = _decks.Count > 0 ? _decks.Max(d => d.Id) + 1 : 1;
                         _decks.Add(importedDeck);
                         UpdateDeckList();
@@ -524,14 +524,14 @@ namespace FlashcardApp.WinUI.Views
             try
             {
                 UpdateStatus("Starting export process...");
-                
+
                 var picker = new FileSavePicker();
                 picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
                 picker.FileTypeChoices.Add("JSON files", new List<string>() { ".json" });
                 picker.SuggestedFileName = "flashcard_decks_export";
-                
+
                 UpdateStatus("File save picker created, initializing window handle...");
-                
+
                 // Initialize the picker with the window handle
                 var window = App.MainWindow;
                 if (window != null)

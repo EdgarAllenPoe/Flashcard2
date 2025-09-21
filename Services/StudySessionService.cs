@@ -32,7 +32,7 @@ namespace FlashcardApp.Services
             {
                 try { Console.Clear(); } catch { /* Ignore console errors in test environment */ }
                 Console.WriteLine("Resuming previous study session...");
-                Console.WriteLine($"Progress: {sessionState.StudiedCards.Count} cards studied, {sessionState.IncorrectCards.Count} incorrect cards remaining");
+                Console.WriteLine($"Progress: {sessionState.StudiedCards?.Count ?? 0} cards studied, {sessionState.IncorrectCards?.Count ?? 0} incorrect cards remaining");
                 Console.WriteLine("Press any key to continue or ESC to start fresh...");
 
                 var key = Console.ReadKey(true);
@@ -84,7 +84,7 @@ namespace FlashcardApp.Services
             DisplaySessionHeader(deck, sessionState.CardsToStudy.Count, studyMode, isResuming);
 
             // Main study loop
-            while (sessionState.CurrentCardIndex < sessionState.CardsToStudy.Count || sessionState.IncorrectCards.Any())
+            while (sessionState.CurrentCardIndex < sessionState.CardsToStudy.Count || (sessionState.IncorrectCards?.Any() ?? false))
             {
                 Flashcard? currentCard = null;
                 int cardNumber = 0;
@@ -99,13 +99,13 @@ namespace FlashcardApp.Services
                     cardNumber = sessionState.CurrentCardIndex + 1;
                     totalCards = sessionState.CardsToStudy.Count;
                 }
-                else if (sessionState.IncorrectCards.Any())
+                else if (sessionState.IncorrectCards?.Any() ?? false)
                 {
                     // Study incorrect cards
-                    var cardId = sessionState.IncorrectCards[0];
+                    var cardId = sessionState.IncorrectCards?[0] ?? string.Empty;
                     currentCard = deck.Flashcards.FirstOrDefault(f => f.Id == cardId);
-                    cardNumber = sessionState.StudiedCards.Count + 1;
-                    totalCards = sessionState.CardsToStudy.Count + sessionState.IncorrectCards.Count;
+                    cardNumber = (sessionState.StudiedCards?.Count ?? 0) + 1;
+                    totalCards = sessionState.CardsToStudy.Count + (sessionState.IncorrectCards?.Count ?? 0);
                 }
 
                 if (currentCard == null)
@@ -127,12 +127,12 @@ namespace FlashcardApp.Services
                         _leitnerBoxService.ProcessCorrectAnswer(currentCard);
 
                         // Remove from incorrect cards if it was there
-                        sessionState.IncorrectCards.Remove(currentCard.Id);
+                        sessionState.IncorrectCards?.Remove(currentCard.Id);
 
                         // Move to next card
                         if (sessionState.CurrentCardIndex < sessionState.CardsToStudy.Count)
                         {
-                            sessionState.StudiedCards.Add(currentCard.Id);
+                            sessionState.StudiedCards?.Add(currentCard.Id);
                             sessionState.CurrentCardIndex++;
                         }
                     }
@@ -142,21 +142,21 @@ namespace FlashcardApp.Services
                         _leitnerBoxService.ProcessIncorrectAnswer(currentCard);
 
                         // Add to incorrect cards if not already there
-                        if (!sessionState.IncorrectCards.Contains(currentCard.Id))
+                        if (!(sessionState.IncorrectCards?.Contains(currentCard.Id) ?? false))
                         {
-                            sessionState.IncorrectCards.Add(currentCard.Id);
+                            sessionState.IncorrectCards?.Add(currentCard.Id);
                         }
 
                         // Move to next card only if we're studying new cards
                         if (sessionState.CurrentCardIndex < sessionState.CardsToStudy.Count)
                         {
-                            sessionState.StudiedCards.Add(currentCard.Id);
+                            sessionState.StudiedCards?.Add(currentCard.Id);
                             sessionState.CurrentCardIndex++;
                         }
                         else
                         {
                             // Remove from incorrect cards list since we just studied it
-                            sessionState.IncorrectCards.RemoveAt(0);
+                            sessionState.IncorrectCards?.RemoveAt(0);
                         }
                     }
 

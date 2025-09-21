@@ -9,6 +9,7 @@
         <UseWinUI>true</UseWinUI>
         <EnableMsixTooling>true</EnableMsixTooling>
         <WindowsPackageType>None</WindowsPackageType>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
 
         <!-- Project Options -->
         <Nullable>enable</Nullable>
@@ -42,22 +43,16 @@
         <Compile Remove="FlashcardApp.csproj" />
         <Compile Remove="FlashcardApp.sln" />
         <Compile Remove="Services\ConsoleApplicationService.cs" />
-        <Compile Remove="Services\DeckService.cs" />
-        <Compile Remove="Services\LeitnerBoxService.cs" />
-        <Compile Remove="Services\StatisticsService.cs" />
-        <Compile Remove="Services\StudySessionService.cs" />
-        <Compile Remove="UI\**" />
         <Compile Remove="ProgramNew.cs" />
         <Compile Remove="KeyTest.cs" />
         <Compile Remove="Imports.cs" />
+        <Compile Remove="UI\ConsoleUIDemo.cs" />
         <EmbeddedResource Remove="FlashcardApp.Tests\**" />
         <EmbeddedResource Remove="FlashcardApp.Console\**" />
         <None Remove="FlashcardApp.Tests\**" />
         <None Remove="FlashcardApp.Console\**" />
         <None Remove="FlashcardApp.csproj" />
         <None Remove="FlashcardApp.sln" />
-        <None Remove="Models\**" />
-        <None Remove="UI\**" />
         <None Remove="ProgramNew.cs" />
         <None Remove="KeyTest.cs" />
         <None Remove="config.json" />
@@ -78,6 +73,8 @@
         <PackageReference Include="Microsoft.Web.WebView2" Version="1.*" />
         <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.*" />
         <PackageReference Include="Newtonsoft.Json" Version="13.*" />
+        <PackageReference Include="CsvHelper" Version="30.0.1" />
+        <PackageReference Include="EPPlus" Version="7.0.0" />
 
         <Manifest Include="$(ApplicationManifest)" />
     </ItemGroup>
